@@ -3,9 +3,9 @@ import React from "react";
 import { NewsCard } from "./NewsCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-// @ts-expect-error
+// @ts-expect-error: importing CSS files for Swiper styles
 import "swiper/css";
-// @ts-expect-error
+// @ts-expect-error: importing navigation styles for Swiper
 import "swiper/css/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 

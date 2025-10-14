@@ -2,11 +2,11 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-// @ts-expect-error
+// @ts-expect-error: importing CSS files for Swiper styles
 import "swiper/css";
-// @ts-expect-error
+// @ts-expect-error: importing navigation styles for Swiper
 import "swiper/css/navigation";
-// @ts-expect-error
+// @ts-expect-error: importing pagination styles for Swiper
 import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
