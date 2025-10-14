@@ -3,11 +3,11 @@ import React from "react";
 import { NewsCard } from "./NewsCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-// @ts-ignore
+// @ts-expect-error
 import "swiper/css";
-// @ts-ignore
+// @ts-expect-error
 import "swiper/css/navigation";
-// @ts-ignore
+// @ts-expect-error
 import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 export const News = () => {
