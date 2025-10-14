@@ -12,8 +12,8 @@ export const PricesTable = () => {
           <th> متوسط</th>
         </thead>
         <tbody className="text-xl">
-          {[1, 2, 3, 4, 5, 6].map(() => (
-            <tr className="my-3">
+          {[1, 2, 3, 4, 5, 6].map((_, idx) => (
+            <tr key={idx} className="my-3">
               <td>بورتلاندى عادي</td>
               <td>4,390 جنية</td>
               <td>3,500 جنية</td>
