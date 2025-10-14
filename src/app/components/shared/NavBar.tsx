@@ -26,10 +26,8 @@ export default function NavBar() {
 
         <ul className="hidden xl:flex ms-auto font-semibold">
           {links.reverse().map(({ link, to }, idx) => (
-            <Link href={to}>
-              <li key={idx} className="py-4 px-3 text-xs cursor-pointer hover:text-[#618FB5] transition">
-                {link}
-              </li>
+            <Link href={to} key={idx}>
+              <li className="py-4 px-3 text-xs cursor-pointer hover:text-[#618FB5] transition">{link}</li>
             </Link>
           ))}
         </ul>

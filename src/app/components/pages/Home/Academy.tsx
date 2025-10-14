@@ -1,6 +1,5 @@
 "use client";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+
 import React from "react";
 import { Form } from "./Form";
 import { Mail, Phone } from "lucide-react";

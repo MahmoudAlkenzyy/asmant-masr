@@ -1,6 +1,5 @@
 import React from "react";
 import { PricesTable } from "./PricesTable";
-import ImgSlider from "./ImgSlider";
 import Image from "next/image";
 
 export const Prices = () => {
