@@ -23,7 +23,7 @@ export default function NavBar() {
   return (
     <div className="bg-secoundry h-[90px]">
       <div className="w-[90%] mx-auto h-full flex items-center justify-between ">
-        <Image width={180} height={70} className="h-auto" src={"/images/home/Cement-Egypt.png"} alt="Cement Egypt" />
+        <Image width={180} height={70} className="h-auto" src={"/images/home/CementEgypt.png"} alt="Cement Egypt" />
 
         <ul className="hidden xl:flex ms-auto font-semibold ">
           {links.reverse().map(({ link, to }, idx) => (
