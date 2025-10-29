@@ -7,21 +7,22 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { StoreCard } from "./StoreCard";
+import { prodactType } from "../../../page";
 
-export const Store = () => {
+export const Store = ({ prodacts }: { prodacts: prodactType[] }) => {
   return (
     <section dir="rtl" className="bg-primary py-9">
       <div className="containerr">
         <h2 className="text-4xl font-bold mb-8 text-center text-[white]">المتجر</h2>
 
         <div className="flex justify-between items-center mb-6 relative">
-          <h3 className="text-2xl font-semibold text-[white]">أكثر المبيعات </h3>
+          <h3 className="text-2xl font-semibold text-[white] text-nowrap">أكثر المبيعات </h3>
           <div className="flex gap-2 containerr justify-end">
-            <button className="swiper-button-prev-store bg-[#A6C7E0] text-white p-2 rounded-md hover:bg-primary transition">
-              <ArrowRight />
+            <button className="swiper-button-prev-store bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-primary transition">
+              <ArrowRight size={16} />
             </button>
-            <button className="swiper-button-next-store bg-[#A6C7E0] text-white p-2 rounded-md hover:bg-primary transition">
-              <ArrowLeft />
+            <button className="swiper-button-next-store bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-primary transition">
+              <ArrowLeft size={16} />
             </button>
           </div>
         </div>
@@ -41,9 +42,9 @@ export const Store = () => {
           loop={true}
           className="mt-4"
         >
-          {[...Array(5)].map((_, i) => (
+          {prodacts.map((cardInfo, i) => (
             <SwiperSlide key={i}>
-              <StoreCard />
+              <StoreCard idx={i} cardInfo={cardInfo} />
             </SwiperSlide>
           ))}
         </Swiper>

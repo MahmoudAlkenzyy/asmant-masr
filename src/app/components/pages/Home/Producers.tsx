@@ -7,21 +7,24 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { Partner } from "../../../page";
 
-export const Producers = () => {
+export const Producers = ({ producers, isPartner = false }: { producers: Partner[]; isPartner: boolean }) => {
   return (
-    <section dir="rtl" className="bg-primary py-9 text-white">
+    <section dir="rtl" className={`${isPartner ? "" : "bg-primary text-whit"} py-9 e`}>
       <div className="containerr">
-        <h2 className="text-4xl font-bold mb-8 text-center">المنتجين وشركاء النجاح</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center">
+          {isPartner ? "شركاء الصناعة" : " المنتجين وشركاء النجاح"}
+        </h2>
 
         <div className="flex justify-between items-center mb-6 relative">
-          <h3 className="text-2xl font-semibold">شركاء النجاح</h3>
+          <h3 className="text-2xl font-semibold"> </h3>
           <div className="flex gap-2 justify-end">
-            <button className="swiper-button-prev-producers bg-[#A6C7E0] text-white p-2 rounded-md hover:bg-[#4C7A9E] transition">
-              <ArrowRight />
+            <button className="swiper-button-prev-producers bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-[#4C7A9E] transition">
+              <ArrowRight size={16} />
             </button>
-            <button className="swiper-button-next-producers bg-[#A6C7E0] text-white p-2 rounded-md hover:bg-[#4C7A9E] transition">
-              <ArrowLeft />
+            <button className="swiper-button-next-producers bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-[#4C7A9E] transition">
+              <ArrowLeft size={16} />
             </button>
           </div>
         </div>
@@ -48,10 +51,10 @@ export const Producers = () => {
             "/images/Home/cemex.webp",
             "/images/Home/MisrCement2.webp",
             "/images/Home/cemex.webp",
-          ].map((src, i) => (
+          ].map((imagePath, i) => (
             <SwiperSlide key={i} className="flex items-center justify-center bg-white rounded-xl py-5">
-              <div className="relative w-[80%] h-[120px]">
-                <Image src={src} alt="producer logo" fill className="object-contain" />
+              <div className="relative w-[80%] h-[120px] mx-auto">
+                <Image src={imagePath} alt="producer logo" fill className="!object-contain w-full mx-auto" />
               </div>
             </SwiperSlide>
           ))}

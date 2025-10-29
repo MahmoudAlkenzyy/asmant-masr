@@ -8,26 +8,27 @@ export default function NavBar() {
 
   const links = [
     { link: "الصفحة الرئيسية", to: "/" },
-    { link: "الأسعار", to: "" },
+    { link: "الأسعار", to: "prices" },
     { link: "الأخبار", to: "/news" },
-    { link: "المنتجين وشركاء النجاح", to: "" },
-    { link: "شركاء الصناعة", to: "" },
-    { link: "النقل", to: "" },
-    { link: "مجتمع أسمنت مصر", to: "" },
-    { link: "منتدى اسمنت مصر", to: "" },
-    { link: "المتجر", to: "" },
-    { link: "أكاديمية اسمنت مصر", to: "" },
+    { link: "المنتجين وشركاء النجاح", to: "/producers" },
+    { link: "شركاء الصناعة", to: "/partener" },
+    // { link: "النقل", to: "" },
+    { link: "مجتمع أسمنت مصر", to: "/community" },
+    // { link: "منتدى اسمنت مصر", to: "montada" },
+    { link: "وظائف", to: "jobs" },
+    { link: "المتجر", to: "/store" },
+    // { link: "أكاديمية اسمنت مصر", to: "" },
   ];
 
   return (
     <div className="bg-secoundry h-[90px]">
-      <div className="w-[90%] mx-auto h-full flex items-center justify-between">
+      <div className="w-[90%] mx-auto h-full flex items-center justify-between ">
         <Image width={180} height={70} className="h-auto" src={"/images/home/Cement-Egypt.png"} alt="Cement Egypt" />
 
-        <ul className="hidden xl:flex ms-auto font-semibold">
+        <ul className="hidden xl:flex ms-auto font-semibold ">
           {links.reverse().map(({ link, to }, idx) => (
             <Link href={to} key={idx}>
-              <li className="py-4 px-3 text-xs cursor-pointer hover:text-[#618FB5] transition">{link}</li>
+              <li className="py-6 px-3 text-xs cursor-pointer hover:text-[#618FB5] transition">{link}</li>
             </Link>
           ))}
         </ul>

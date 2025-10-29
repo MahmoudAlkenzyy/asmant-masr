@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NewsTab } from "./NewsTab";
 
 const TABS = [
-  { id: "all", label: "كل الأخبار" },
-  { id: "general", label: "أخبار عامة" },
-  { id: "cement", label: "أخبار الأسمنت" },
-  { id: "world", label: "أخبار الأسمنت حول العالم" },
+  { id: "all", label: "كل الاخبار" },
+  { id: "general", label: "اخبار عامة" },
+  { id: "cement", label: "اخبار الاسمنت" },
+  { id: "world", label: "اخبار الاسمنت حول العالم" },
 ];
 
 export const Tabs: React.FC<{
@@ -15,14 +15,23 @@ export const Tabs: React.FC<{
   onChange?: (id: string) => void;
 }> = ({ defaultTab = "all", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
+  const [categories, setCategories] = useState([{ id: "0a4b3d2d-2e28-4308-0e4a-08de14636697", name: "اخبار الاسمنت" }]);
 
+  const fetchNewsCategory = async () => {
+    const res = await fetch("https://48.221.114.44/api/NewsCategory/GetAllNewsCategoryList");
+    const data = await res.json();
+    setCategories(data.categories);
+  };
   const handleClick = (id: string) => {
     setActive(id);
     onChange?.(id);
   };
+  useEffect(() => {
+    fetchNewsCategory();
+  }, []);
 
   return (
-    <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-secoundry">
+    <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
       <h2 className="text-4xl font-bold mb-8 text-center pt-14">الأخبار</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
@@ -63,7 +72,7 @@ export const Tabs: React.FC<{
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
           >
-            <NewsTab />
+            <NewsTab id={categories.find((cat) => cat.name == tab.label)?.id || ""} />
           </div>
         ))}
       </div>

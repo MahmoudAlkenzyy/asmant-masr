@@ -7,7 +7,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-export const News = () => {
+import { LatestNew } from "../../../page";
+
+export const News = ({ news }: { news: LatestNew[] }) => {
   return (
     <section dir="rtl" className="bg-secoundry py-9">
       <div className="containerr">
@@ -16,10 +18,10 @@ export const News = () => {
         <div className="flex justify-between items-center mb-6 relative">
           <h3 className="text-2xl font-semibold">أهم الأخبار</h3>
           <div className="flex gap-2 containerr justify-end">
-            <button className="swiper-button-prev-custom bg-[#A6C7E0] text-white p-2 rounded-md hover:bg-primary transition">
+            <button className="swiper-button-prev-custom bg-[#A6C7E033] p-2 rounded-full hover:bg-primary transition">
               <ArrowRight />
             </button>
-            <button className="swiper-button-next-custom bg-[#A6C7E0] text-white p-2 rounded-md hover:bg-primary transition">
+            <button className="swiper-button-next-custom bg-[#A6C7E033] p-2 rounded-full hover:bg-primary transition">
               <ArrowLeft />
             </button>
           </div>
@@ -34,15 +36,15 @@ export const News = () => {
           spaceBetween={20}
           slidesPerView={1}
           breakpoints={{
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            640: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
           }}
           loop={true}
           className="mt-4"
         >
-          {[...Array(5)].map((_, i) => (
+          {news.map((news, i) => (
             <SwiperSlide key={i}>
-              <NewsCard />
+              <NewsCard idx={i} news={news} />
             </SwiperSlide>
           ))}
         </Swiper>

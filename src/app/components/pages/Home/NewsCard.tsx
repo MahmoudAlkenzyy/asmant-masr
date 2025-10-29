@@ -2,20 +2,33 @@ import { ArrowLeft, Play } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { Item } from "../News/NewsTab";
 
-export const NewsCard = ({ ispodcast = false }) => {
+interface NewCardProps {
+  ispodcast?: boolean;
+  className?: string;
+  news?: Item;
+  idx?: number;
+}
+export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className = "", news, idx = 0 }) => {
+  const images = [
+    "/images/Home/news1.png",
+    "/images/Home/news2.png",
+    "/images/Home/news4.png",
+    "/images/Home/news1.png",
+  ];
+
   return (
-    <Link href={"/new"}>
-      <div dir="rtl" className="flex flex-col min-h-[400px] w-full text-start">
+    <Link href={`/new/${news?.id}`} className={className}>
+      <div dir="rtl" className="flex flex-col min-h-[400px] h-full w-full text-start">
         <Image
-          className="rounded-xl !w-full"
-          src={"/images/Home/ads2.webp"}
+          className="rounded-xl !w-full h-full grow"
+          src={images[idx] || "/images/Home/ads2.webp"}
           alt=""
           width={500}
           height={500}
-          objectFit=""
         />
-        <h3 className="text-xl font-medium my-4">عضو بغرفة الأخشاب والأثاث</h3>
+        <h3 className="text-xl font-medium my-4">{news?.title}</h3>
         <div className="flex flex-col justify-between">
           <p className="text-[#292E2B] opacity-50 ps-10">الصناع يواجهون نقص الأيدي العاملة الماهرة بسبب الهجرة</p>
           {!ispodcast && (

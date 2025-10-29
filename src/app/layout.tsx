@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Alexandria } from "next/font/google";
-import { Footer } from "./components/shared/Footer";
-import NavBar from "./components/shared/NavBar";
+import { Providers } from "./components/shared/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
 
 const alex = Alexandria({
   subsets: ["latin", "arabic"],
-  weight: ["300", "400", "500", "600", "700"], // choose what you need
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -34,9 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${alex.className}  antialiased flex justify-start flex-col min-h-screen`}>
-        <NavBar />
-        {children}
-        <Footer />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

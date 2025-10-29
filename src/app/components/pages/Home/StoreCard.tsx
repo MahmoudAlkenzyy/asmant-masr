@@ -1,17 +1,46 @@
 import Image from "next/image";
 import React from "react";
+import { prodactType } from "../../../page";
 
-export const StoreCard = () => {
+interface StoreCardInterface {
+  cardInfo: prodactType;
+  isHome?: boolean;
+  idx?: number;
+}
+export const StoreCard: React.FC<StoreCardInterface> = ({
+  cardInfo: { cityName, companyName, productName, tradeName, productTypeName },
+  isHome = true,
+  idx = 1,
+}) => {
+  const images = [
+    "/images/Home/prodact1.png",
+    "/images/Home/prodact2.png",
+    "/images/Home/prodact1.png",
+    "/images/Home/prodact2.png",
+    "/images/Home/prodact1.png",
+    "/images/Home/prodact2.png",
+    "/images/Home/prodact1.png",
+    "/images/Home/prodact2.png",
+  ];
   return (
-    <div dir="rtl" className="flex flex-col min-h-[400px] md:w-[350px] text-start bg-[#455766] rounded-2xl">
-      <Image className="rounded-xl" src={"/images/Home/ads2.webp"} alt="" width={500} height={500} objectFit="" />
+    <div
+      dir="rtl"
+      className={`flex flex-col min-h-[400px] col-span-1  text-start ${isHome ? "bg-[#455766]" : ""} rounded-2xl`}
+    >
+      <Image
+        className="rounded-xl object-contain"
+        src={images[idx] || "/images/Home/ads2.webp"}
+        alt=""
+        width={500}
+        height={500}
+      />
       <div className="flex justify-between flex-wrap p-3">
-        <p className=" text-md font-bold text-[#FFFFFF]  w-[45%] mt-3">المنتج : أسمنت</p>
-        <p className="text-[#fff] opacity-50 text-sm  mt-3 w-[45%]">النوع : بورتلاندى عادي</p>
-        <p className="text-[#fff] opacity-50 text-sm  mt-3 w-[45%]">المحافظة : القاهرة</p>
-        <p className="text-[#fff] opacity-50 text-sm  mt-3 w-[45%]">الصنف : المسلح</p>
-        <p className="text-[#fff] opacity-50 text-sm  mt-3 w-[45%]">الشركة العربية للأسمنت</p>
-        <p className="text-[#fff] opacity-50 text-sm  mt-3 w-[45%]">الكمية : 60 طن</p>
+        <p className={`text-md font-bold ${isHome ? "text-[#FFFFFF]" : ""}  w-[45%] mt-3`}>المنتج :{productName}</p>
+        <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>النوع : {productTypeName}</p>
+        <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>المحافظة :{cityName}</p>
+        <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>الصنف :{tradeName}</p>
+        <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>الكمية : 5 طن</p>
+        <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>الشركة : {companyName}</p>
       </div>
 
       <button className="flex items-center gap-3 bg-[#D9EBF7] px-4 py-4 w-fit mt-4 rounded-xl m-3">

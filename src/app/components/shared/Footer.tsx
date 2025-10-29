@@ -6,22 +6,26 @@ export const Footer = () => {
   return (
     <footer className="bg-primary  text-white text-end mt-auto">
       <div className="py-20 containerr w-[90%] mx-auto">
-        <div className="bg-no-repeat w-fit mx-auto relative flex justify-center">
-          <Image src="/images/Home/Footer.png" className="md:w-[1200] " width={1200} height={450} alt="" />
-          <div className="absolute inset-0 flex items-center gap-6 md:gap-10 text-white flex-col justify-center px-4 text-center">
+        <div className="bg-no-repeat w-fit mx-auto relative flex justify-center py-4 ">
+          <img src="/images/Home/Footer.png" className="md:w-[1200] absolute inset-0 bottom-0 h-full " alt="" />
+          <div className="relative  flex items-center gap-6 md:gap-10 text-white flex-col justify-center px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-medium">إشترك لمعرفة التحديثات الجديدة</h2>
             <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
-              <button className="bg-white text-black py-3 px-10 md:px-12 rounded-lg cursor-pointer">إشترك الأن</button>
-              <input
-                dir="rtl"
-                className="py-3 px-4 ps-6 md:ps-16 rounded-lg border border-white w-[220px] md:w-auto"
-                placeholder="الإسم الأول"
-              />
-              <input
-                dir="rtl"
-                className="py-3 px-4 ps-6 md:ps-16 rounded-lg border border-white w-[220px] md:w-auto"
-                placeholder="البريد الإلكتروني"
-              />
+              <button className="bg-white text-black py-3 px-10 md:px-12 w-full rounded-lg cursor-pointer">
+                إشترك الأن
+              </button>
+              <div className=" flex justify-between grow">
+                <input
+                  dir="rtl"
+                  className="py-3 px-4 ps-6 md:ps-16 rounded-lg border border-white w-full grow md:w-auto"
+                  placeholder="البريد الإلكتروني"
+                />
+                <input
+                  dir="rtl"
+                  className="py-3 px-4 ps-6 md:ps-16 rounded-lg border border-white w-full grow md:w-auto"
+                  placeholder="الإسم الأول"
+                />
+              </div>
             </div>
           </div>
         </div>

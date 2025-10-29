@@ -4,9 +4,8 @@ import { ArrowLeft } from "lucide-react";
 
 export const Hero = () => {
   return (
-    <section dir="rtl" className="bg-secoundry">
+    <section dir="rtl" className="bg-white">
       <div className="min-h-screen relative flex flex-col md:flex-row containerr">
-        {/* Background Line */}
         <div className="w-[90%] mx-auto absolute overflow-hidden inset-0">
           <svg
             className="w-full"
@@ -26,10 +25,9 @@ export const Hero = () => {
           </svg>
         </div>
 
-        {/* Text Content */}
         <div className="w-full md:w-1/2 flex flex-col justify-center gap-14 px-6 md:px-0 mt-20 md:mt-0">
           <h2 className="text-4xl md:text-7xl font-bold">أسمنت مصر</h2>
-          <p className="text-[#292E2B] opacity-50 text-xl md:text-3xl font-bold leading-relaxed">
+          <p className="text-[#292E2B] opacity-50 text-xl md:text-3xl font-medium leading-relaxed">
             هو الموقع الأول المتخصص في صناعة الأسمنت والصناعات الاقتصادية المختلفة المرتبطة بها وتسعى لدعم هذه الصناعة
             وجميع الأطراف التي تتعامل معها
           </p>
@@ -58,15 +56,14 @@ export const Hero = () => {
             </div>
           </div>
 
-          <button className="bg-[#A6C7E0] self-start px-10 md:px-14 ps-8 py-4 flex gap-4 rounded-xl text-lg md:text-xl">
+          <button className="bg-[#618FB5] text-white relative z-10 self-start px-10 md:px-14 ps-8 py-4 flex gap-4 rounded-xl text-lg md:text-xl">
             تصفح منتجاتنا <ArrowLeft />
           </button>
         </div>
 
-        {/* Image */}
         <div className="w-full md:w-1/2 flex justify-center items-end mt-10 md:mt-0">
           <Image
-            src={"/images/Home/HeroImage.webp"}
+            src={"/images/Home/HomeHero.png"}
             className="w-[80%] md:w-full relative z-10 translate-y-[10%] md:translate-y-[20%]"
             alt=""
             height={900}
