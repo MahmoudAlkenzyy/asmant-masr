@@ -112,7 +112,7 @@ export const Footer = () => {
               width={180}
               height={70}
               className="h-auto mx-auto md:mx-0"
-              src={"/images/home/Cement-Egypt-footer.png"}
+              src={"/images/Home/Cement-Egypt-footer.png"}
               alt="Cement Egypt"
             />
             <p className="max-w-[80%] leading-relaxed mx-auto md:mx-0">
