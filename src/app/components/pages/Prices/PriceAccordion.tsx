@@ -5,39 +5,8 @@ import { Accordion, AccordionItem } from "@heroui/accordion";
 
 export default function PriceAccordion() {
   const headers = ["الشركة", "المنتج", "التاريخ", "أعلى سعر", "أدنى سعر", "متوسط اليوم", "متوسط الأمس", "التغيير"];
-  const defaultData = [
-    {
-      company: "شركة الأسمنت الوطنية",
-      product: "أسمنت بورتلاندي عادي",
-      date: "2025-10-22",
-      high: "1700",
-      low: "1650",
-      avgToday: "1675",
-      avgYesterday: "1680",
-      change: "-5",
-    },
-    {
-      company: "شركة السويس للأسمنت",
-      product: "أسمنت مقاوم للكبريتات",
-      date: "2025-10-22",
-      high: "1750",
-      low: "1700",
-      avgToday: "1725",
-      avgYesterday: "1720",
-      change: "+5",
-    },
-    {
-      company: "شركة مصر بني سويف",
-      product: "أسمنت فائق النعومة",
-      date: "2025-10-22",
-      high: "1800",
-      low: "1750",
-      avgToday: "1775",
-      avgYesterday: "1760",
-      change: "+15",
-    },
-  ];
-  const [prodactType, setProdactType] = useState<{ id: string; name: string }[]>([
+
+  const [prodactType] = useState([
     { id: "7e722b96-6e53-4860-39e5-08de155db96d", name: "اسمنت" },
     { id: "c452e6e3-dece-4f6d-39e6-08de155db96d", name: "حديد" },
     { id: "4fbf4456-9a19-4ff0-39e7-08de155db96d", name: "جبس" },
@@ -46,31 +15,29 @@ export default function PriceAccordion() {
   const [priceData, setPriceData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [startDate, setStartDate] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [endDate, setEndDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
-  const fetchData = async (id: string) => {
+  // 🔹 Fetch one product by id
+  const fetchData = async (id: string, start: string, end: string) => {
     const res = await fetch(
-      `https://48.221.114.44/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=2025%2F10%2F27&EndDate=2025%2F10%2F27`
+      `https://48.221.114.44/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`
     );
     const data = await res.json();
     return data.productTypes || [];
   };
-  const keyMap: Record<string, keyof (typeof defaultData)[0]> = {
-    الشركة: "company",
-    المنتج: "product",
+
+  const keyMap: Record<string, string> = {
+    الشركة: "companyName",
+    المنتج: "productTypeName",
     التاريخ: "date",
-    "أعلى سعر": "high",
-    "أدنى سعر": "low",
+    "أعلى سعر": "maxPrice",
+    "أدنى سعر": "lowestPrice",
   };
+
   const filterableHeaders = headers.filter((h) => h !== "التغيير" && h !== "متوسط اليوم" && h !== "متوسط الأمس");
-  const uniqueValues = useMemo(() => {
-    const values: Record<string, string[]> = {};
-    filterableHeaders.forEach((header) => {
-      const key = keyMap[header];
-      const unique = Array.from(new Set(defaultData.map((d) => String(d[key]))));
-      values[header] = unique;
-    });
-    return values;
-  }, []);
+
+  // 🧩 Fetch all product data
   useEffect(() => {
     const loadAll = async () => {
       setLoading(true);
@@ -78,14 +45,13 @@ export default function PriceAccordion() {
 
       for (const { id, name } of prodactType) {
         try {
-          const productGroups = await fetchData(id);
+          const productGroups = await fetchData(id, startDate.replaceAll("-", "%2F"), endDate.replaceAll("-", "%2F"));
 
-          // Flatten each productType into its own accordion item
           for (const group of productGroups) {
             allItems.push({
-              parentName: name, // e.g. اسمنت
+              parentName: name,
               productTypeId: group.productTypeId,
-              productTypeName: group.productTypeName, // e.g. أسمنت بورتلاندي عادي
+              productTypeName: group.productTypeName,
               productName: group.productName,
               companies: group.companies,
             });
@@ -100,7 +66,49 @@ export default function PriceAccordion() {
     };
 
     loadAll();
-  }, [prodactType]);
+  }, [prodactType, startDate, endDate]);
+
+  // 🔹 Extract unique filter values
+  const uniqueValues = useMemo(() => {
+    const values: Record<string, string[]> = {};
+    const allCompanies = priceData.flatMap(
+      (item) =>
+        item.companies?.map((c: any) => ({
+          companyName: c.companyName,
+          productTypeName: item.productTypeName,
+          date: c.date?.split("T")[0],
+          maxPrice: c.maxPrice,
+          lowestPrice: c.lowestPrice,
+        })) || []
+    );
+
+    filterableHeaders.forEach((header) => {
+      const key = keyMap[header];
+      const unique = Array.from(new Set(allCompanies.map((c) => String(c[key]))));
+      values[header] = unique;
+    });
+
+    return values;
+  }, [priceData]);
+
+  // 🔹 Apply filters
+  const filteredData = useMemo(() => {
+    if (Object.values(filters).every((v) => v === "")) return priceData;
+
+    return priceData
+      .map((item) => ({
+        ...item,
+        companies: item.companies?.filter((c: any) =>
+          Object.entries(filters).every(([header, value]) => {
+            if (!value) return true;
+            const key = keyMap[header];
+            const actualValue = key === "productTypeName" ? item.productTypeName : c[key];
+            return String(actualValue) === value;
+          })
+        ),
+      }))
+      .filter((item) => item.companies && item.companies.length > 0); // ✅ hide empty accordions
+  }, [priceData, filters]);
 
   return (
     <div className="w-full container mx-auto p-4" dir="rtl">
@@ -110,6 +118,7 @@ export default function PriceAccordion() {
         <div className="text-center py-6 text-gray-500">لا توجد بيانات متاحة</div>
       ) : (
         <>
+          {/* ✅ Filters + Date Inputs Together */}
           <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
             {filterableHeaders.map((header) => (
               <select
@@ -134,33 +143,53 @@ export default function PriceAccordion() {
                 ))}
               </select>
             ))}
+
+            {/* 🗓 Start Date */}
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+              title="تاريخ البداية"
+            />
+
+            {/* 🗓 End Date */}
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+              title="تاريخ النهاية"
+            />
           </div>
-          <Accordion variant="splitted" selectionMode="multiple" className="w-full flex ">
-            {priceData.map((item, index) => (
-              <AccordionItem
-                key={index}
-                title={`${item.parentName} - ${item.productTypeName}`}
-                className="bg-[#E5FBFF] rounded-xl w-full shadow-sm"
-                classNames={{
-                  base: "flex flex-col w-full",
-                  titleWrapper: "flex flex-row-reverse justify-end items-center w-full",
-                  indicator: "order-last ml-2 transition-transform duration-300 data-[state=open]:rotate-180",
-                }}
-              >
-                <div className="overflow-x-auto">
-                  <table className="min-w-full text-center text-sm md:text-base bg-[#E5FBFF] border-separate border-spacing-y-1">
-                    <thead>
-                      <tr>
-                        {headers.map((header, i) => (
-                          <th key={i} className="p-2 font-semibold border-b border-gray-200">
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {item.companies?.length > 0 ? (
-                        item.companies.map((company: any, j: number) => (
+
+          {/* ✅ Accordion */}
+          <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
+            {filteredData.length > 0 ? (
+              filteredData.map((item, index) => (
+                <AccordionItem
+                  key={index}
+                  title={`${item.parentName} - ${item.productTypeName}`}
+                  className="bg-[#E5FBFF] rounded-xl w-full shadow-sm"
+                  classNames={{
+                    base: "flex flex-col w-full",
+                    titleWrapper: "flex flex-row-reverse justify-end items-center w-full",
+                    indicator: "order-last ml-2 transition-transform duration-300 data-[state=open]:rotate-180",
+                  }}
+                >
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full text-center text-sm md:text-base bg-[#E5FBFF] border-separate border-spacing-y-1">
+                      <thead>
+                        <tr>
+                          {headers.map((header, i) => (
+                            <th key={i} className="p-2 font-semibold border-b border-gray-200">
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {item.companies?.map((company: any, j: number) => (
                           <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
                             <td className="py-3 p-2">{company.companyName}</td>
                             <td className="py-3 p-2">{item.productTypeName}</td>
@@ -177,19 +206,15 @@ export default function PriceAccordion() {
                               {company.difference}
                             </td>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan={8} className="py-3 text-gray-500">
-                            لا توجد بيانات للشركات
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </AccordionItem>
-            ))}
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </AccordionItem>
+              ))
+            ) : (
+              <div className="text-center text-gray-500 py-6">لا توجد بيانات مطابقة للبحث.</div>
+            )}
           </Accordion>
         </>
       )}

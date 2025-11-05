@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +12,7 @@ export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -30,6 +31,7 @@ export default function Page() {
 
       if (res.ok) {
         toast.success(" تم تسجيل الدخول بنجاح!");
+        router.push("/");
         // console.log("Login success:", data);
       } else {
         toast.error(" فشل تسجيل الدخول، تأكد من البريد الإلكتروني أو كلمة المرور.");

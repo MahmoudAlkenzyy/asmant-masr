@@ -23,7 +23,7 @@ export default function NavBar() {
   return (
     <div className="bg-secoundry h-[90px]">
       <div className="w-[90%] mx-auto h-full flex items-center justify-between ">
-        <Image width={180} height={70} className="h-auto" src={"/images/home/CementEgypt.png"} alt="Cement Egypt" />
+        <Image width={180} height={70} className="h-auto" src={"/images/Home/CementEgypt.png"} alt="Cement Egypt" />
 
         <ul className="hidden xl:flex ms-auto font-semibold ">
           {links.reverse().map(({ link, to }, idx) => (
@@ -32,10 +32,11 @@ export default function NavBar() {
             </Link>
           ))}
         </ul>
-
-        <button className="hidden xl:block bg-primary py-3 px-6 mx-4 rounded-lg text-white cursor-pointer">
-          تسجيل الدخول
-        </button>
+        <Link href={"/login"}>
+          <button className="hidden xl:block bg-primary py-3 px-6 mx-4 rounded-lg text-white cursor-pointer">
+            تسجيل الدخول
+          </button>
+        </Link>
 
         <button className="xl:hidden p-2" onClick={() => setMenuOpen((prev) => !prev)}>
           {menuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -51,7 +52,9 @@ export default function NavBar() {
               </li>
             ))}
             <li className="py-3 px-6">
-              <button className="w-full bg-primary py-3 rounded-lg text-white cursor-pointer">تسجيل الدخول</button>
+              <Link href={"/login"}>
+                <button className="w-full bg-primary py-3 rounded-lg text-white cursor-pointer">تسجيل الدخول</button>
+              </Link>
             </li>
           </ul>
         </div>

@@ -19,7 +19,7 @@ export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className 
   ];
 
   return (
-    <Link href={`/new/${news?.id}`} className={className}>
+    <Link href={`/new/${news?.id}`} className={`${className} my-2`}>
       <div dir="rtl" className="flex flex-col min-h-[400px] h-full w-full text-start">
         <Image
           className="rounded-xl !w-full h-full grow"

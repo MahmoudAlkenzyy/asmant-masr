@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -55,10 +56,11 @@ export const Hero = () => {
               <p className="text-[#292E2B] opacity-50 text-lg md:text-2xl">شريك نجاح</p>
             </div>
           </div>
-
-          <button className="bg-[#618FB5] text-white relative z-10 self-start px-10 md:px-14 ps-8 py-4 flex gap-4 rounded-xl text-lg md:text-xl">
-            تصفح منتجاتنا <ArrowLeft />
-          </button>
+          <Link href={"/store"}>
+            <button className="bg-[#618FB5] text-white relative z-10 self-start px-10 md:px-14 ps-8 py-4 flex gap-4 rounded-xl text-lg md:text-xl">
+              تصفح منتجاتنا <ArrowLeft />
+            </button>
+          </Link>
         </div>
 
         <div className="w-full md:w-1/2 flex justify-center items-end mt-10 md:mt-0">

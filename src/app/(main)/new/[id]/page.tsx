@@ -2,6 +2,7 @@ import React from "react";
 import { NewsCard } from "../../../components/pages/Home/NewsCard";
 import Image from "next/image";
 import { Item } from "../../../components/pages/News/NewsTab";
+import { RelatedNews } from "../../../components/pages/News/RelatedNews";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -21,11 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div className="bg-white">
         <div className="containerr">
           <div className="grid grid-cols-4 items-start gap-6 mt-6">
-            <div className="col-span-1 grid grid-cols-1 px-6">
-              {[...Array(5)].map((_, i) => (
-                <NewsCard key={i} />
-              ))}
-            </div>
+            <RelatedNews />
 
             <div className="col-span-3 flex flex-col justify-start items-end gap-6">
               <Image
