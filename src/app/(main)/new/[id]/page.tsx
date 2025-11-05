@@ -21,10 +21,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
       <div className="bg-white">
         <div className="containerr">
-          <div className="grid grid-cols-4 items-start gap-6 mt-6">
+          <div className="grid md:grid-cols-4 items-start gap-6 mt-6">
             <RelatedNews />
 
-            <div className="col-span-3 flex flex-col justify-start items-end gap-6">
+            <div className="md:col-span-3 md:order-6   flex flex-col justify-start items-end gap-6">
               <Image
                 src={data?.images?.[0] || "/images/Home/ads.webp"}
                 className="rounded-xl !w-full object-contain"

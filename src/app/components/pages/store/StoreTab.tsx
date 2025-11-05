@@ -23,7 +23,7 @@ export const StoreTab = ({ id = "" }: StoreTabProps) => {
     getProdact();
   }, []);
   return (
-    <div className="grid grid-cols-4 gap-8 p-4 py-8 pb-14">
+    <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-8 p-4 py-8 pb-14">
       {prodact?.length > 0 ? (
         prodact.map((pro: any, idx) => <StoreCard idx={idx} isHome={false} cardInfo={pro} />)
       ) : (

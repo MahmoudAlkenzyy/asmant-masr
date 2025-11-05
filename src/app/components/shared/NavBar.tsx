@@ -46,10 +46,12 @@ export default function NavBar() {
       {menuOpen && (
         <div className="xl:hidden bg-white shadow-md absolute top-[90px] left-0 w-full z-50">
           <ul className="flex flex-col font-semibold text-right">
-            {links.map(({ link }, idx) => (
-              <li key={idx} className="py-3 px-6 border-b cursor-pointer hover:bg-secoundry transition">
-                {link}
-              </li>
+            {links.map(({ link, to }, idx) => (
+              <Link href={to}>
+                <li key={idx} className="py-3 px-6 border-b cursor-pointer hover:bg-secoundry transition">
+                  {link}
+                </li>
+              </Link>
             ))}
             <li className="py-3 px-6">
               <Link href={"/login"}>

@@ -38,7 +38,6 @@ export const Jobs = () => {
       <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center pt-8">وظائف أسمنت مصر</h2>
 
       <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-9 gap-y-6 md:gap-x-6">
-        {/* الاسم الأول */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="firstName" className="font-medium">
             الاسم الأول
@@ -59,7 +58,6 @@ export const Jobs = () => {
 
         <div className="hidden md:block"></div>
 
-        {/* الاسم الأخير */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="lastName" className="font-medium">
             الاسم الأخير
@@ -78,7 +76,6 @@ export const Jobs = () => {
           )}
         </div>
 
-        {/* رقم الهاتف */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="phone" className="font-medium">
             رقم الهاتف
@@ -99,7 +96,6 @@ export const Jobs = () => {
 
         <div className="hidden md:block"></div>
 
-        {/* البريد الإلكتروني */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="email" className="font-medium">
             البريد الإلكتروني
@@ -118,7 +114,6 @@ export const Jobs = () => {
           )}
         </div>
 
-        {/* التخصص */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="specialization" className="font-medium">
             التخصص
@@ -143,7 +138,6 @@ export const Jobs = () => {
 
         <div className="hidden md:block"></div>
 
-        {/* الوظيفة */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="job" className="font-medium">
             الوظيفة
@@ -166,7 +160,6 @@ export const Jobs = () => {
           )}
         </div>
 
-        {/* عدد سنين الخبرة */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="experience" className="font-medium">
             عدد سنين الخبرة
@@ -192,7 +185,6 @@ export const Jobs = () => {
 
         <div className="hidden md:block"></div>
 
-        {/* رابط الأعمال */}
         <div className="flex flex-col md:col-span-4">
           <label htmlFor="portfolio" className="font-medium">
             رابط الأعمال
@@ -208,7 +200,6 @@ export const Jobs = () => {
           />
         </div>
 
-        {/* Upload CV */}
         <div className="flex flex-col md:col-span-9">
           <label className="text-lg font-semibold mb-2" htmlFor="cv">
             إرفاق السيرة الذاتية
@@ -237,7 +228,6 @@ export const Jobs = () => {
           )}
         </div>
 
-        {/* Submit Button */}
         <div className="col-span-9 flex justify-center mt-8">
           <button
             type="submit"
