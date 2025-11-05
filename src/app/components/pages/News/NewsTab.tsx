@@ -29,7 +29,7 @@ export interface Item {
 export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
   const [news, setNews] = useState<News>();
   const getNew = async () => {
-    const res = await fetch(`https://48.221.114.44/api/News/GetAllNewsOffset?CategoryId=${id}`);
+    const res = await fetch(`http://back.talkstent.com/api/News/GetAllNewsOffset?CategoryId=${id}`);
     const data = await res.json();
     setNews(data);
   };

@@ -10,7 +10,7 @@ export const RelatedNews = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("https://48.221.114.44/api/News/GetAllNewsOffset", {
+        const res = await fetch("http://back.talkstent.com/api/News/GetAllNewsOffset", {
           cache: "no-store",
         });
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);

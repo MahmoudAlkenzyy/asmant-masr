@@ -96,7 +96,7 @@
 //           formData.append(key, value);
 //         });
 
-//         const res = await fetch("https://48.221.114.44/api/News/CreateNews", {
+//         const res = await fetch("http://back.talkstent.com/api/News/CreateNews", {
 //           method: "POST",
 //           headers: {
 //             Authorization: `Bearer ${token}`,
@@ -164,7 +164,7 @@ export default function CreateProducerForm() {
 
     setLoading(true);
     try {
-      const res = await fetch("https://48.221.114.44/api/Producer/CreateProducer", {
+      const res = await fetch("http://back.talkstent.com/api/Producer/CreateProducer", {
         method: "POST",
         headers: {
           Authorization:

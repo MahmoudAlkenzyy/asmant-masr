@@ -21,7 +21,7 @@ export default function PriceAccordion() {
   // 🔹 Fetch one product by id
   const fetchData = async (id: string, start: string, end: string) => {
     const res = await fetch(
-      `https://48.221.114.44/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`
+      `http://back.talkstent.com/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`
     );
     const data = await res.json();
     return data.productTypes || [];
@@ -118,7 +118,6 @@ export default function PriceAccordion() {
         <div className="text-center py-6 text-gray-500">لا توجد بيانات متاحة</div>
       ) : (
         <>
-          {/* ✅ Filters + Date Inputs Together */}
           <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
             {filterableHeaders.map((header) => (
               <select
@@ -144,7 +143,6 @@ export default function PriceAccordion() {
               </select>
             ))}
 
-            {/* 🗓 Start Date */}
             <input
               type="date"
               value={startDate}
@@ -153,7 +151,6 @@ export default function PriceAccordion() {
               title="تاريخ البداية"
             />
 
-            {/* 🗓 End Date */}
             <input
               type="date"
               value={endDate}
@@ -163,7 +160,6 @@ export default function PriceAccordion() {
             />
           </div>
 
-          {/* ✅ Accordion */}
           <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
             {filteredData.length > 0 ? (
               filteredData.map((item, index) => (
@@ -192,7 +188,7 @@ export default function PriceAccordion() {
                         {item.companies?.map((company: any, j: number) => (
                           <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
                             <td className="py-3 p-2">{company.companyName}</td>
-                            <td className="py-3 p-2">{item.productTypeName}</td>
+                            <td className="py-3 p-2">{company.tradeName}</td>
                             <td className="py-3 p-2">{company.date?.split("T")[0]}</td>
                             <td className="py-3 p-2 text-green-600">{company.maxPrice}</td>
                             <td className="py-3 p-2 text-red-600">{company.lowestPrice}</td>

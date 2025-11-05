@@ -10,7 +10,7 @@ export const PartenerTab = ({ id = "" }: ProducerTabProps) => {
   console.log(id);
 
   const getProducers = async () => {
-    const res = await fetch(`https://48.221.114.44/api/Partner/GetAllPartnerList?CategoryId=${id}`, {
+    const res = await fetch(`http://back.talkstent.com/api/Partner/GetAllPartnerList?CategoryId=${id}`, {
       cache: "no-store",
     });
 

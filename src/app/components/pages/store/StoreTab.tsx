@@ -10,7 +10,7 @@ export const StoreTab = ({ id = "" }: StoreTabProps) => {
   const [prodact, setProdact] = useState([]);
 
   const getProdact = async () => {
-    const res = await fetch(`https://48.221.114.44/api/Store/GetProductStoreDetails?ProductId=${id}`, {
+    const res = await fetch(`http://back.talkstent.com/api/Store/GetProductStoreDetails?ProductId=${id}`, {
       cache: "no-store",
     });
 
