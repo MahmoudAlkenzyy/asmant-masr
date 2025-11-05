@@ -58,7 +58,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "http://back.talkstent.com/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
+          "https://back.talkstent.com/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
           {
             method: "GET",
             headers: { accept: "text/plain" },

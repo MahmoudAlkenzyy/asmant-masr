@@ -29,7 +29,7 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchPartenerCategory = async () => {
-    const res = await fetch("http://back.talkstent.com/api/PartnerCategory/GetAllPartnerCategoryList");
+    const res = await fetch("https://back.talkstent.com/api/PartnerCategory/GetAllPartnerCategoryList");
     const data = await res.json();
     setPartenerType(data.categories);
   };

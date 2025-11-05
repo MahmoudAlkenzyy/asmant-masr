@@ -54,7 +54,7 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchProdact = async () => {
-    const res = await fetch("http://back.talkstent.com/api/Product/GetAllProductsList");
+    const res = await fetch("https://back.talkstent.com/api/Product/GetAllProductsList");
     const data = await res.json();
 
     setProdactType(data.products);

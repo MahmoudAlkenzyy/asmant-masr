@@ -21,7 +21,7 @@ export default function PriceAccordion() {
   // 🔹 Fetch one product by id
   const fetchData = async (id: string, start: string, end: string) => {
     const res = await fetch(
-      `http://back.talkstent.com/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`
+      `https://back.talkstent.com/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`
     );
     const data = await res.json();
     return data.productTypes || [];

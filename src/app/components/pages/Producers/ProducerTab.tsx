@@ -9,7 +9,7 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   const [producers, setProducers] = useState({ producers: [] });
 
   const getProducers = async () => {
-    const res = await fetch(`http://back.talkstent.com/api/Producer/GetAllProducerList?CategoryId=${id}`, {
+    const res = await fetch(`https://back.talkstent.com/api/Producer/GetAllProducerList?CategoryId=${id}`, {
       cache: "no-store",
     });
 

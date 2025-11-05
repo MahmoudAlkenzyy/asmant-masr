@@ -29,7 +29,7 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchNewsCategory = async () => {
-    const res = await fetch("http://back.talkstent.com/api/ProducerCategory/GetAllProducerCategoryList");
+    const res = await fetch("https://back.talkstent.com/api/ProducerCategory/GetAllProducerCategoryList");
     const data = await res.json();
     setProducersType(data.categories);
   };
