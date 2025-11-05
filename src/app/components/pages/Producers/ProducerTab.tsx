@@ -20,10 +20,10 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
     getProducers();
   }, []);
   return (
-    <div className="flex flex-wrap gap-8 p-4 py-8 pb-14">
+    <div className="flex flex-wrap gap-2 md:gap-8 p-4 py-8 pb-14">
       {producers?.producers?.length > 0 ? (
         producers.producers.map((pro: any) => (
-          <div key={pro.id} className="md:w-[25%] w-[30%] rounded-xl overflow-hidden border border-gray-300">
+          <div key={pro.id} className="md:w-[25%] w-[45%] rounded-xl overflow-hidden border border-gray-300">
             <img
               src={pro.imagePath || "/placeholder.png"}
               alt={pro.name || "Producer"}

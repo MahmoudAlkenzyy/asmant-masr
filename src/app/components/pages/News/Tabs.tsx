@@ -45,7 +45,7 @@ export const Tabs: React.FC<{
                 aria-controls={`panel-${tab.id}`}
                 id={`tab-${tab.id}`}
                 onClick={() => handleClick(tab.id)}
-                className={`relative px-2 py-1 text-lg font-medium transition-colors outline-none
+                className={`relative px-2 py-1 text-sm md:text-lg font-medium transition-colors outline-none
                   ${isActive ? "text-[#618FB5]" : "text-gray-700 hover:text-[#618FB5]"}
                 `}
               >

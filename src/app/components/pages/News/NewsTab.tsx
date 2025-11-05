@@ -38,7 +38,7 @@ export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-4  items-center gap-6 ">
+    <div className="grid md:grid-cols-4  items-center gap-6 ">
       {news?.items?.map((items) => (
         <NewsCard news={items} />
       ))}
