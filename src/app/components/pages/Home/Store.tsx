@@ -40,10 +40,10 @@ export const Store = ({ prodacts }: { prodacts: prodactType[] }) => {
             1024: { slidesPerView: 4 },
           }}
           loop={true}
-          className="mt-4"
+          className="mt-4 "
         >
           {prodacts.map((cardInfo, i) => (
-            <SwiperSlide key={i}>
+            <SwiperSlide key={i} className="   ">
               <StoreCard idx={i} cardInfo={cardInfo} />
             </SwiperSlide>
           ))}

@@ -25,7 +25,9 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
   return (
     <div
       dir="rtl"
-      className={`flex flex-col min-h-[400px] col-span-1  text-start ${isHome ? "bg-[#455766]" : ""} rounded-2xl`}
+      className={`flex flex-col min-h-[400px] col-span-1  h-[450px] text-start ${
+        isHome ? "bg-[#455766]" : ""
+      } rounded-2xl`}
     >
       <Image
         className="rounded-xl object-contain"
