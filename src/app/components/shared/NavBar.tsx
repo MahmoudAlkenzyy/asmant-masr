@@ -13,7 +13,7 @@ export default function NavBar() {
     { link: "المنتجين وشركاء النجاح", to: "/producers" },
     { link: "شركاء الصناعة", to: "/partener" },
     // { link: "النقل", to: "" },
-    { link: "مجتمع أسمنت مصر", to: "/community" },
+    { link: "أسمنت مصر", to: "/community" },
     // { link: "منتدى اسمنت مصر", to: "montada" },
     { link: "وظائف", to: "jobs" },
     { link: "المتجر", to: "/store" },

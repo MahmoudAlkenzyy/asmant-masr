@@ -86,7 +86,7 @@ export default function Home() {
   if (!data) return <div></div>;
 
   return (
-    <div>
+    <div className="bg-secoundry">
       <NavBar />
       <Hero />
       <Partenar partenar={data.partners} />
@@ -94,9 +94,9 @@ export default function Home() {
       <HeroAds />
       <News news={data.latestNews} />
       {/* <Podcasts /> */}
-      <Store prodacts={data.storeDetails} />
+      <Store isStore={true} prodacts={data.storeDetails} />
       <Producers isPartner={false} producers={data.producers} />
-      <Academy />
+      {/* <Academy /> */}
       <Producers isPartner={true} producers={data.partners} />
       <Footer />
     </div>

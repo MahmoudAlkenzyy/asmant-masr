@@ -32,7 +32,7 @@ export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className 
         <div className="flex flex-col justify-between">
           <p className="text-[#292E2B] opacity-50 ps-10">الصناع يواجهون نقص الأيدي العاملة الماهرة بسبب الهجرة</p>
           {!ispodcast && (
-            <div className="bg-[#A6C7E0] rounded-full  flex items-center justify-center w-10 h-10 me-auto font-thin mt-auto">
+            <div className="bg-[#51E482] rounded-full  flex items-center justify-center w-10 h-10 me-auto font-thin mt-auto">
               <ArrowLeft className="cursor-pointer" />
             </div>
           )}

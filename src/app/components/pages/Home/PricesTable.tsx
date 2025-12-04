@@ -1,4 +1,9 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
+import { ArrowUp, ArrowDown } from "lucide-react";
+
 export interface pricesType {
   id: string;
   name: string;
@@ -8,28 +13,52 @@ export interface pricesType {
   lowestPrice: number;
   averagePrice: number;
 }
+
 export const PricesTable = ({ prices }: { prices: pricesType[] }) => {
+  const items = [...prices, ...prices];
+
   return (
-    <div className="bg-secoundry rounded-2xl py-5  overflow-x-auto  h-full   text-center md:w-[90%] mx-auto">
-      <h2 className="text-3xl font-semibold pb-3">أسعار المواد</h2>
-      <table className=" w-full border-separate min-w-[300px]">
-        <thead className="md:text-xl text-sm font-light">
-          <th>الصنف</th>
-          <th>أعلى سعر</th>
-          <th> اقل سعر</th>
-          <th> متوسط</th>
-        </thead>
-        <tbody className="text md:text-lg text-xs">
-          {prices.map(({ name, highestPrice, lowestPrice, averagePrice }, idx) => (
-            <tr key={idx} className="hover:bg-white">
-              <td className="py-2">{name}</td>
-              <td className="py-2">{highestPrice}</td>
-              <td className="py-2">{lowestPrice}</td>
-              <td className="py-2">{averagePrice}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <section className="py-8 overflow-hidden rounded-xl">
+      <h2 className="text-2xl font-semibold pb-5 text-start">أسعار المواد</h2>
+
+      <div className="relative w-full overflow-hidden">
+        <motion.div
+          className="flex flex-nowrap gap-20 w-max"
+          animate={{ x: ["0%", "49%"] }}
+          transition={{
+            repeat: Infinity,
+            duration: 10,
+            ease: "linear",
+          }}
+        >
+          {items.map((item, index) => {
+            const isUp = item.averagePrice >= item.lowestPrice + (item.highestPrice - item.lowestPrice) / 2;
+
+            return (
+              <div
+                key={index}
+                className="flex gap-10 items-center justify-between bg-gray-50 px-7 py-5 rounded-2xl shadow-md whitespace-nowrap"
+              >
+                <p className="font-semibold text-lg">{item.name}</p>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-xl font-bold">{item.averagePrice}</span>
+
+                  {isUp ? (
+                    <ArrowUp className="text-green-600" size={22} />
+                  ) : (
+                    <ArrowDown className="text-red-600" size={22} />
+                  )}
+
+                  <span className={`text-xs ${isUp ? "text-green-600" : "text-red-600"}`}>
+                    {isUp ? "ارتفاع" : "انخفاض"}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
   );
 };
