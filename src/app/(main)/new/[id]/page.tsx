@@ -4,8 +4,8 @@ import Image from "next/image";
 import { Item } from "../../../components/pages/News/NewsTab";
 import { RelatedNews } from "../../../components/pages/News/RelatedNews";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
   try {
     const res = await fetch(`https://cement.runasp.net/api/News/GetNewsById?Id=${id}`, {
@@ -18,26 +18,29 @@ export default async function Page({ params }: { params: { id: string } }) {
 
     const data: Item = await res.json();
 
+    const getImageSrc = (item: Item) => {
+      if (!item.images || item.images.length === 0) return "/images/Home/ads.webp";
+      const firstImg = item.images[0];
+      if (typeof firstImg === "string") return firstImg;
+      return `https://cement.runasp.net${firstImg.filePath}`;
+    };
+
     return (
       <div className="bg-white">
         <div className="containerr">
           <div className="grid md:grid-cols-4 items-start gap-6 mt-6">
             <RelatedNews />
 
-            <div className="md:col-span-3 md:order-6   flex flex-col justify-start items-end gap-6">
+            <div className="md:col-span-3 md:order-6 flex flex-col justify-start items-end gap-6">
               <Image
-                src={data?.images?.[0] || "/images/Home/ads.webp"}
+                src={getImageSrc(data)}
                 className="rounded-xl !w-full object-contain"
-                alt={data?.title || "News image"}
+                alt={data.title || "News image"}
                 height={500}
                 width={1000}
               />
-              <h3 className="text-2xl font-semibold text-right leading-relaxed">
-                {data?.title || "لا توجد تفاصيل متاحة لهذا الخبر."}
-              </h3>
-              <p className="text-xl font-normal text-right leading-relaxed">
-                {data?.content || "لا توجد تفاصيل متاحة لهذا الخبر."}
-              </p>
+              <h3 className="text-2xl font-semibold text-right leading-relaxed">{data.title}</h3>
+              <p className="text-xl font-normal text-right leading-relaxed whitespace-pre-line">{data.content}</p>
             </div>
           </div>
         </div>

@@ -20,10 +20,15 @@ export interface Item {
   title: string;
   description: string;
   content: string;
-  categoryName: string;
-  publishAt: Date;
-  images: any[];
-  videos: any[];
+  categoryId?: string;
+  category?: {
+    id: string;
+    name: string;
+  };
+  categoryName?: string;
+  publishAt: string;
+  images?: (string | { filePath: string })[];
+  videos?: any[];
 }
 
 export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
