@@ -6,10 +6,10 @@ import { Partenar } from "./components/pages/Home/Partenar";
 import { Prices } from "./components/pages/Home/Prices";
 import { HeroAds } from "./components/pages/Home/HeroAds";
 import { News } from "./components/pages/Home/News";
-import { Podcasts } from "./components/pages/Home/Podcasts";
+// import { Podcasts } from "./components/pages/Home/Podcasts";
 import { Store } from "./components/pages/Home/Store";
 import { Producers } from "./components/pages/Home/Producers";
-import { Academy } from "./components/pages/Home/Academy";
+// import { Academy } from "./components/pages/Home/Academy";
 import { Footer } from "./components/shared/Footer";
 import { pricesType } from "./components/pages/Home/PricesTable";
 
@@ -58,7 +58,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "https://back.talkstent.com/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
+          "https://cement.runasp.net/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
           {
             method: "GET",
             headers: { accept: "text/plain" },

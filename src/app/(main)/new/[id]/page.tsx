@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
   try {
-    const res = await fetch(`https://back.talkstent.com/api/News/GetNewsById?Id=${id}`, {
+    const res = await fetch(`https://cement.runasp.net/api/News/GetNewsById?Id=${id}`, {
       cache: "no-store",
     });
 

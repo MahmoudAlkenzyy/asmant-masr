@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <div className="bg-[#FFFFFF]">
       <Hero />
-      <Tabs />
+      <Tabs defaultTab="99c886cc-c9c4-4919-345c-08de3affe443" />
     </div>
   );
 }

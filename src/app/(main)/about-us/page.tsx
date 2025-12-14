@@ -8,7 +8,7 @@ export default function Page() {
     <div>
       <Hero />
       <Intro />
-      <Ads />
+      {/* <Ads /> */}
       <Info />
     </div>
   );
