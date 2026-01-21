@@ -6,7 +6,7 @@ import { Accordion, AccordionItem } from "@heroui/accordion";
 export default function PriceAccordion() {
   const headers = ["الشركة", "المنتج", "التاريخ", "أعلى سعر", "أدنى سعر", "متوسط اليوم", "متوسط الأمس", "التغيير"];
 
-  const [prodactType] = useState([
+  const [prodactType, setProdactType] = useState([
     { id: "7e722b96-6e53-4860-39e5-08de155db96d", name: "اسمنت" },
     { id: "c452e6e3-dece-4f6d-39e6-08de155db96d", name: "حديد" },
     { id: "4fbf4456-9a19-4ff0-39e7-08de155db96d", name: "جبس" },
@@ -18,10 +18,14 @@ export default function PriceAccordion() {
   const [startDate, setStartDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [endDate, setEndDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
-  // 🔹 Fetch one product by id
+  const getProductType = async () => {
+    const res = await fetch("https://cement.runasp.net/api/Product/GetAllProductsList");
+    const data = await res.json();
+    setProdactType(data.products);
+  };
   const fetchData = async (id: string, start: string, end: string) => {
     const res = await fetch(
-      `https://cement.runasp.net/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`
+      `https://cement.runasp.net/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`,
     );
     const data = await res.json();
     return data.productTypes || [];
@@ -38,6 +42,9 @@ export default function PriceAccordion() {
   const filterableHeaders = headers.filter((h) => h !== "التغيير" && h !== "متوسط اليوم" && h !== "متوسط الأمس");
 
   // 🧩 Fetch all product data
+  useEffect(() => {
+    getProductType();
+  }, []);
   useEffect(() => {
     const loadAll = async () => {
       setLoading(true);
@@ -79,7 +86,7 @@ export default function PriceAccordion() {
           date: c.date?.split("T")[0],
           maxPrice: c.maxPrice,
           lowestPrice: c.lowestPrice,
-        })) || []
+        })) || [],
     );
 
     filterableHeaders.forEach((header) => {
@@ -104,7 +111,7 @@ export default function PriceAccordion() {
             const key = keyMap[header];
             const actualValue = key === "productTypeName" ? item.productTypeName : c[key];
             return String(actualValue) === value;
-          })
+          }),
         ),
       }))
       .filter((item) => item.companies && item.companies.length > 0); // ✅ hide empty accordions
