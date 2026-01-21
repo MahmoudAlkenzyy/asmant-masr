@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { NewsCard } from "./NewsCard";
+import { NewCardProps, NewsCard } from "./NewsCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -8,8 +8,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { LatestNew } from "../../../page";
+import { Item } from "../News/NewsTab";
 
-export const News = ({ news }: { news: LatestNew[] }) => {
+export const News = ({ news }: { news: Item[] }) => {
   return (
     <section dir="rtl" className="bg-secoundry py-9">
       <div className="containerr">
@@ -42,9 +43,9 @@ export const News = ({ news }: { news: LatestNew[] }) => {
           loop={true}
           className="mt-4"
         >
-          {news.map((news, i) => (
+          {news.map((newCard, i) => (
             <SwiperSlide key={i}>
-              <NewsCard idx={i} news={news} />
+              <NewsCard idx={i} news={newCard} />
             </SwiperSlide>
           ))}
         </Swiper>

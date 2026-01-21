@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Item } from "../News/NewsTab";
 
-interface NewCardProps {
+export interface NewCardProps {
   ispodcast?: boolean;
   className?: string;
   news?: Item;
