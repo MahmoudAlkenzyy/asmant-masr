@@ -9,11 +9,19 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Partner } from "../../../page";
 
-export const Producers = ({ producers, isPartner = false }: { producers: Partner[]; isPartner: boolean }) => {
+export const Producers = ({
+  producers,
+  isPartner = false,
+  isTrue = false,
+}: {
+  producers: Partner[];
+  isPartner: boolean;
+  isTrue: boolean;
+}) => {
   return (
     <section dir="rtl" className={`${isPartner ? "" : "bg-white text-whit"} py-9 e`}>
       <div className="containerr">
-        <h2 className="text-4xl font-bold mb-8 text-center">{" المنتجين"}</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center">{isTrue ? "الوكلاء و الموزعون" : " المنتجين"}</h2>
 
         <div className="flex justify-between items-center mb-6 relative">
           <h3 className="text-2xl font-semibold"> </h3>

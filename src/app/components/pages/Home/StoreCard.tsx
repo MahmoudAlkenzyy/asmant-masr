@@ -41,8 +41,10 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
       />
       <div className="flex py-4">
         <div className="flex justify-between flex-wrap p-3">
-          <p className={`text-md font-bold ${isHome ? "text-[#FFFFFF]" : ""}  mt-3`}>المنتج :{productName}</p>
-          <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3`}>النوع : {productTypeName}</p>
+          <p className={`text-md font-bold ${isHome ? "text-[#FFFFFF]" : ""}  mt-3`}>المنتج: {productName}</p>
+          <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3`}>
+            النوع: <br /> {productTypeName}
+          </p>
           {/* <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>المحافظة :{cityName}</p>
         <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>الصنف :{tradeName}</p>
         <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>الكمية : 5 طن</p>

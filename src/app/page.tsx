@@ -95,9 +95,9 @@ export default function Home() {
       <News news={data.latestNews} />
       {/* <Podcasts /> */}
       <Store isStore={true} prodacts={data.storeDetails} />
-      <Producers isPartner={false} producers={data.producers} />
+      <Producers isTrue={false} isPartner={false} producers={data.producers} />
       {/* <Academy /> */}
-      <Producers isPartner={true} producers={data.partners} />
+      <Producers isTrue={true} isPartner={true} producers={data.partners} />
       <Footer />
     </div>
   );

@@ -69,7 +69,7 @@ export default function NavBar() {
           <Image src="/images/Home/CementEgypt.png" alt="Cement Egypt" width={180} height={70} />
 
           {/* Desktop */}
-          <ul className="hidden xl:flex items-center ms-auto font-semibold">
+          <ul dir="" className="hidden xl:flex flex-row-reverse  items-center ms-auto font-semibold">
             {links.map((item) => (
               <li key={item.link}>
                 {item.children ? (

@@ -8,14 +8,14 @@ const slides = [
   {
     id: 1,
     image: "/images/Home/slide1.png",
-    title: "أخر أخبار صناعة الأسمنت في مصر والعالم",
+    title: "أهم أخبار صناعة الأسمنت في مصر والعالم",
     buttonText: "تصفح الأخبار",
     link: "/news",
   },
   {
     id: 2,
     image: "/images/Home/slide2.png",
-    title: "تعرف علي أسعار الأسمنت في مصر من المكان الوحيد المصرح له رسميا بتداول أسعار الأسمنت في مصر",
+    title: "أسعار الأسمنت   لحظة بلحظة من مصادرها",
     buttonText: "تصفح الأسعار",
     link: "/prices",
   },
@@ -29,16 +29,16 @@ const slides = [
   {
     id: 4,
     image: "/images/Home/slide4.png",
-    title: "أخر أخبار صناعة الأسمنت في مصر والعالم",
-    buttonText: "تصفح الأخبار",
-    link: "/news",
+    title: " خبراء الدعم الفني و الصيانة و موردي قطع الغيار و الخامات",
+    buttonText: "تصف شركاء الصناعة",
+    link: "/partener",
   },
   {
     id: 5,
     image: "/images/Home/slide5.png",
-    title: "تعرف علي أسعار الأسمنت في مصر من المكان الوحيد المصرح له رسميا بتداول أسعار الأسمنت في مصر",
-    buttonText: "تصفح الأسعار",
-    link: "/prices",
+    title: "  أهم منتجين الأسمنت في مصر",
+    buttonText: "تصفح المنتجين",
+    link: "/producers",
   },
 ];
 

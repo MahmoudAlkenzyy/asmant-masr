@@ -16,7 +16,7 @@ export const Store = ({ prodacts, isStore = false }: { prodacts: prodactType[]; 
         <h2 className={`text-4xl font-bold mb-8 text-center ${isStore ? "text-[white]" : "text-[black]"}`}>المتجر</h2>
 
         <div className="flex justify-between items-center mb-6 relative">
-          <h3 className="text-2xl font-semibold text-[white] text-nowrap">أكثر المبيعات </h3>
+          <h3 className="text-2xl font-semibold text-[white] text-nowrap"> انواع الأسمنت </h3>
           <div className="flex gap-2 containerr justify-end">
             <button className="swiper-button-prev-store bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-primary transition">
               <ArrowRight size={16} />
