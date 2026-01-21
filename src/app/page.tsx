@@ -12,9 +12,10 @@ import { Producers } from "./components/pages/Home/Producers";
 // import { Academy } from "./components/pages/Home/Academy";
 import { Footer } from "./components/shared/Footer";
 import { pricesType } from "./components/pages/Home/PricesTable";
+import { Item } from "./components/pages/News/NewsTab";
 
 export interface HomeType {
-  latestNews: LatestNew[];
+  latestNews: Item[];
   latestEvents: any[];
   productTypePriceStatistics: pricesType[];
   producers: Partner[];
@@ -63,7 +64,7 @@ export default function Home() {
             method: "GET",
             headers: { accept: "text/plain" },
             signal: controller.signal,
-          }
+          },
         );
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
