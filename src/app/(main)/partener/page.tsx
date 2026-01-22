@@ -12,9 +12,16 @@ interface PartnerResponse {
   partners: Partner[];
 }
 
+const TABS = [
+  { key: "support", label: "شركاء الدعم الفني والصيانة" },
+  { key: "spare", label: "موردين قطع الغيار" },
+  { key: "raw", label: "موردين الخامات" },
+];
+
 export default function Page() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("support");
 
   useEffect(() => {
     async function fetchPartners() {
@@ -40,11 +47,23 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="bg-[#FFFFFF]">
+    <div className="bg-white">
       <Hero />
 
-      {/* Partners Grid */}
       <div className="w-[90%] mx-auto py-12">
+        <div dir="rtl" className="flex flex-wrap gap-4 justify-center mb-10">
+          {TABS.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`px-6 py-2 transition
+                ${activeTab === tab.key ? " text-[#51E482]  border-b-[#51E482] border-b-2 border-b" : "bg-white "}`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>

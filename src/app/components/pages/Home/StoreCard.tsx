@@ -14,16 +14,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
   idx = 1,
   onClick,
 }) => {
-  const images = [
-    "/images/Home/prodact1.png",
-    "/images/Home/prodact2.png",
-    "/images/Home/prodact1.png",
-    "/images/Home/prodact2.png",
-    "/images/Home/prodact1.png",
-    "/images/Home/prodact2.png",
-    "/images/Home/prodact1.png",
-    "/images/Home/prodact2.png",
-  ];
+  const images = ["/images/asmant.png"];
   return (
     <div
       dir="rtl"
@@ -33,8 +24,8 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
        rounded-2xl ${onClick ? "cursor-pointer hover:shadow-xl transition-shadow" : ""}`}
     >
       <Image
-        className="rounded-xl object-contain"
-        src={images[idx] || "/images/Home/ads2.webp"}
+        className="rounded-xl object-contain bg-[#D5F4FF] rounded-b-none"
+        src={images[idx] || "/images/asmant.png"}
         alt=""
         width={500}
         height={500}
