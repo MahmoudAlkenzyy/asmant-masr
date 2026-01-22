@@ -4,8 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,8 +46,6 @@ export default function Page() {
 
   return (
     <div dir="rtl" className="flex flex-col justify-center items-start min-h-screen bg-gray-50 containerr !w-[80%]">
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar theme="colored" />
-
       <h2 className="font-bold text-4xl text-center mb-4">تسجيل الدخول</h2>
 
       <p className="text-center text-xl text-gray-500 mb-8">

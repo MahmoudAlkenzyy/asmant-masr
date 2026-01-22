@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { StoreCard } from "../Home/StoreCard";
 import { prodactType } from "../../../page";
+import { toast } from "react-toastify";
 
 interface StoreSliderProps {
   prodacts: prodactType[];
@@ -16,7 +17,6 @@ interface StoreSliderProps {
 export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<prodactType | null>(null);
   const [formData, setFormData] = useState({
     type: "أسمنت بوزلاندي",
@@ -57,15 +57,10 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
     console.log("Form submitted:", formData);
 
     // Show toast notification
-    setShowToast(true);
+    toast.success("تم طلب الصفقة بنجاح");
 
     // Close form
     handleCloseForm();
-
-    // Hide toast after 3 seconds
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
   };
 
   if (!isMounted) {
@@ -216,24 +211,6 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
                 طلب الصفقة
               </button>
             </form>
-          </div>
-        )}
-
-        {/* Toast Notification */}
-        {showToast && (
-          <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-[#51E482] text-black px-6 py-4 rounded-lg shadow-lg z-50 animate-slideIn">
-            <div className="flex items-center gap-3">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="font-bold text-lg">تم طلب الصفقة بنجاح</span>
-            </div>
           </div>
         )}
       </div>

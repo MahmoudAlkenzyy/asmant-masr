@@ -4,10 +4,6 @@ export interface StoreApiResponse {
   storeDetails: prodactType[];
 }
 
-/**
- * Fetch store products from the API
- * This is a server-side function that can be used in Server Components
- */
 export async function getStoreProducts(): Promise<prodactType[]> {
   try {
     const res = await fetch(
@@ -15,9 +11,8 @@ export async function getStoreProducts(): Promise<prodactType[]> {
       {
         method: "GET",
         headers: { accept: "text/plain" },
-        // Revalidate every 5 minutes
         next: { revalidate: 300 },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -25,6 +20,8 @@ export async function getStoreProducts(): Promise<prodactType[]> {
     }
 
     const json: StoreApiResponse = await res.json();
+    console.log({ json });
+
     return json.storeDetails || [];
   } catch (error) {
     console.error("Failed to fetch store products:", error);
