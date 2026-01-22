@@ -122,7 +122,50 @@ export default function PriceAccordion() {
       {loading ? (
         <div className="text-center py-6 text-gray-500">جاري تحميل البيانات...</div>
       ) : priceData.length === 0 ? (
-        <div className="text-center py-6 text-gray-500">لا توجد بيانات متاحة</div>
+        <div className="">
+          <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
+            {filterableHeaders.map((header) => (
+              <select
+                key={header}
+                className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+                value={filters[header] || ""}
+                onChange={(e) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    [header]: e.target.value,
+                  }))
+                }
+              >
+                <option value="" disabled hidden>
+                  {header}
+                </option>
+                <option value="">الكل</option>
+                {uniqueValues[header]?.map((val, i) => (
+                  <option key={i} value={val}>
+                    {val}
+                  </option>
+                ))}
+              </select>
+            ))}
+
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+              title="تاريخ البداية"
+            />
+
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+              title="تاريخ النهاية"
+            />
+          </div>
+          <div className="text-center py-6 text-gray-500">لا توجد بيانات متاحة</div>
+        </div>
       ) : (
         <>
           <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">

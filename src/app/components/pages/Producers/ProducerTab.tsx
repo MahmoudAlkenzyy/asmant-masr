@@ -27,7 +27,7 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
             <img
               src={pro.imagePath ? `https://cement.runasp.net${pro.imagePath}` : "/placeholder.png"}
               alt={pro.name || "Producer"}
-              className="w-full h-full object-contain bg-black"
+              className="w-full h-full object-contain bg-gra"
             />
           </div>
         ))
