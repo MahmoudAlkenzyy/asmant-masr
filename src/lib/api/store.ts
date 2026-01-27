@@ -7,7 +7,7 @@ export interface StoreApiResponse {
 export async function getStoreProducts(): Promise<prodactType[]> {
   try {
     const res = await fetch(
-      "https://cement.runasp.net/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
+      "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
       {
         method: "GET",
         headers: { accept: "text/plain" },

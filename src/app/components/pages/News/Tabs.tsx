@@ -18,7 +18,9 @@ export const Tabs: React.FC<{
   const [categories, setCategories] = useState([{ id: "0a4b3d2d-2e28-4308-0e4a-08de14636697", name: "اخبار الاسمنت" }]);
 
   const fetchNewsCategory = async () => {
-    const res = await fetch("https://cement.runasp.net/api/NewsCategory/GetAllNewsCategoryList");
+    const res = await fetch(
+      "https://cement.northeurope.cloudapp.azure.com:5000/api/NewsCategory/GetAllNewsCategoryList",
+    );
     const data = await res.json();
     setCategories(data.categories);
   };

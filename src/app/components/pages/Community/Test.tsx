@@ -96,7 +96,7 @@
 //           formData.append(key, value);
 //         });
 
-//         const res = await fetch("https://cement.runasp.net/api/News/CreateNews", {
+//         const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/News/CreateNews", {
 //           method: "POST",
 //           headers: {
 //             Authorization: `Bearer ${token}`,
@@ -164,7 +164,7 @@ export default function CreateProducerForm() {
 
     setLoading(true);
     try {
-      const res = await fetch("https://cement.runasp.net/api/Producer/CreateProducer", {
+      const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/Producer/CreateProducer", {
         method: "POST",
         headers: {
           Authorization:

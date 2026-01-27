@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const { id } = await params;
 
   try {
-    const res = await fetch(`https://cement.runasp.net/api/News/GetNewsById?Id=${id}`, {
+    const res = await fetch(`https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetNewsById?Id=${id}`, {
       cache: "no-store",
     });
 
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       if (!item.images || item.images.length === 0) return "/images/Home/ads.webp";
       const firstImg = item.images[0];
       if (typeof firstImg === "string") return firstImg;
-      return `https://cement.runasp.net${firstImg.filePath}`;
+      return `https://cement.northeurope.cloudapp.azure.com:5000${firstImg.filePath}`;
     };
 
     return (

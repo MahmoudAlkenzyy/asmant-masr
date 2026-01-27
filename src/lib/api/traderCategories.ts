@@ -21,7 +21,7 @@ export interface TraderCategoryDetails {
   // Add other fields from the detailed response as needed
 }
 
-const API_BASE_URL = "https://cement.runasp.net/api";
+const API_BASE_URL = "https://cement.northeurope.cloudapp.azure.com:5000/api";
 const AUTH_TOKEN =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDZW1lbnRFZ3lwdCIsImp0aSI6Ijg4NjgyMThiLWNmYzktNGQyYi04N2UwLWFmYWNhMzM0N2FmNiIsImVtYWlsIjoiQ2VtZW50RWd5cHRAY2VtZW50RWd5cHQuY29tIiwidXNlclR5cGUiOiJTdXBlckFkbWluIiwidXVpZCI6IjA0MGU0OTUwLWRiNzgtNDQ5OC1hZWMyLWQ2ZTA4OWU4NDI2MSIsInJvbGVzIjoiU3VwZXJBZG1pbiIsImV4cCI6MTc4NzM4NDUwNiwiaXNzIjoiQ2VtZW50RWd5cHRJc3N1ZXIiLCJhdWQiOiJDZW1lbnRFZ3lwdEFQSVVzZXIifQ.PlCmTYWj0H7hwJy8igitExwCJ3SjtwMx-Lxsqyhj6rQ";
 

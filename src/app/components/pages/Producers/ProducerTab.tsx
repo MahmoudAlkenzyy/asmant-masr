@@ -9,9 +9,12 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   const [producers, setProducers] = useState({ producers: [] });
 
   const getProducers = async () => {
-    const res = await fetch(`https://cement.runasp.net/api/Producer/GetAllProducerList?CategoryId=${id}`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `https://cement.northeurope.cloudapp.azure.com:5000/api/Producer/GetAllProducerList?CategoryId=${id}`,
+      {
+        cache: "no-store",
+      },
+    );
 
     const producers = await res.json();
     setProducers(producers);
@@ -25,7 +28,11 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
         producers.producers.map((pro: any) => (
           <div key={pro.id} className="md:w-[25%] w-[45%] rounded-xl overflow-hidden border border-gray-300">
             <img
-              src={pro.imagePath ? `https://cement.runasp.net${pro.imagePath}` : "/placeholder.png"}
+              src={
+                pro.imagePath
+                  ? `https://cement.northeurope.cloudapp.azure.com:5000${pro.imagePath}`
+                  : "/placeholder.png"
+              }
               alt={pro.name || "Producer"}
               className="w-full h-full object-contain bg-gra"
             />

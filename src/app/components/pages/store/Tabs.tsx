@@ -54,7 +54,7 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchProdact = async () => {
-    const res = await fetch("https://cement.runasp.net/api/Product/GetAllProductsList");
+    const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList");
     const data = await res.json();
 
     setProdactType(data.products);

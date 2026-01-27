@@ -19,13 +19,13 @@ export default function PriceAccordion() {
   const [endDate, setEndDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
   const getProductType = async () => {
-    const res = await fetch("https://cement.runasp.net/api/Product/GetAllProductsList");
+    const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList");
     const data = await res.json();
     setProdactType(data.products);
   };
   const fetchData = async (id: string, start: string, end: string) => {
     const res = await fetch(
-      `https://cement.runasp.net/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`,
+      `https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=${start}&EndDate=${end}`,
     );
     const data = await res.json();
     return data.productTypes || [];

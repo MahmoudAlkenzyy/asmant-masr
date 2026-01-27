@@ -19,12 +19,12 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
     <div
       dir="rtl"
       onClick={onClick}
-      className={`flex flex-col min-h-[400px] col-span-1  h-[450px] text-start  text-white
+      className={`flex flex-col min-h-[400px] col-span-1   text-start  text-white
          bg-[#455766]
        rounded-2xl ${onClick ? "cursor-pointer hover:shadow-xl transition-shadow" : ""}`}
     >
       <Image
-        className="rounded-xl object-contain bg-[#D5F4FF] rounded-b-none"
+        className="rounded-xl object-contain bg-[#D5F4FF] rounded-b-"
         src={images[idx] || "/images/asmant.png"}
         alt=""
         width={500}
@@ -32,8 +32,8 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
       />
       <div className="flex py-4">
         <div className="flex justify-between flex-wrap p-3">
-          <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3`}>المنتج: {productName}</p>
-          <p className={`text-sm font-bold ${isHome ? "text-[#FFFFFF]" : ""}  mt-3 textnow`}>
+          <p className={`text-md font-bold ${isHome ? "text-[#FFFFFF]" : ""}  mt-3`}>المنتج: {productName}</p>
+          <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3`}>
             النوع: <br /> {productTypeName}
           </p>
           {/* <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3 w-[45%]`}>المحافظة :{cityName}</p>

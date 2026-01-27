@@ -10,7 +10,9 @@ export const Tabs: React.FC<{
   const [producersType, setProducersType] = useState<{ id: string; name: string }[]>([]);
 
   const fetchNewsCategory = async () => {
-    const res = await fetch("https://cement.runasp.net/api/ProducerCategory/GetAllProducerCategoryList");
+    const res = await fetch(
+      "https://cement.northeurope.cloudapp.azure.com:5000/api/ProducerCategory/GetAllProducerCategoryList",
+    );
     const data = await res.json();
     setProducersType(data.categories);
   };

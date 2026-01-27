@@ -10,9 +10,12 @@ export const PartenerTab = ({ id = "" }: ProducerTabProps) => {
   console.log(id);
 
   const getProducers = async () => {
-    const res = await fetch(`https://cement.runasp.net/api/Partner/GetAllPartnerList?CategoryId=${id}`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `https://cement.northeurope.cloudapp.azure.com:5000/api/Partner/GetAllPartnerList?CategoryId=${id}`,
+      {
+        cache: "no-store",
+      },
+    );
 
     const producers = await res.json();
     setProducers(producers);

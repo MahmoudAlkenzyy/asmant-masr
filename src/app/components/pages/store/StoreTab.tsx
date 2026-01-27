@@ -10,9 +10,12 @@ export const StoreTab = ({ id = "" }: StoreTabProps) => {
   const [prodact, setProdact] = useState([]);
 
   const getProdact = async () => {
-    const res = await fetch(`https://cement.runasp.net/api/Store/GetProductStoreDetails?ProductId=${id}`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetProductStoreDetails?ProductId=${id}`,
+      {
+        cache: "no-store",
+      },
+    );
 
     const prodact = await res.json();
     console.log(prodact.items);

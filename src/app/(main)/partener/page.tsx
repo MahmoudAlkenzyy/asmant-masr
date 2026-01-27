@@ -12,25 +12,53 @@ interface PartnerResponse {
   partners: Partner[];
 }
 
-const TABS = [
-  { key: "support", label: "شركاء الدعم الفني والصيانة" },
-  { key: "spare", label: "موردين قطع الغيار" },
-  { key: "raw", label: "موردين الخامات" },
-];
+interface PartnerCategoryResponse {
+  categories: { name: string; id: string }[];
+}
 
 export default function Page() {
+  const [TABS, setTABS] = useState<{ name: string; id: string }[]>([]);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("support");
+  const [activeTab, setActiveTab] = useState("319444dc-fb60-4e68-52d7-08de3affd247");
+
+  useEffect(() => {
+    async function fetchTabs() {
+      try {
+        const res = await fetch(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/PartnerCategory/GetAllPartnerCategoryList",
+          {
+            headers: {
+              accept: "text/plain",
+            },
+          },
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch partners");
+
+        const data: PartnerCategoryResponse = await res.json();
+        setTABS(data.categories || []);
+        console.log({ data: data.categories });
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTabs();
+  }, []);
 
   useEffect(() => {
     async function fetchPartners() {
       try {
-        const res = await fetch("https://cement.runasp.net/api/Partner/GetAllPartnerList", {
-          headers: {
-            accept: "text/plain",
+        const res = await fetch(
+          `https://cement.northeurope.cloudapp.azure.com:5000/api/Partner/GetAllPartnerList?CategoryId=${activeTab}`,
+          {
+            headers: {
+              accept: "text/plain",
+            },
           },
-        });
+        );
 
         if (!res.ok) throw new Error("Failed to fetch partners");
 
@@ -42,24 +70,22 @@ export default function Page() {
         setLoading(false);
       }
     }
-
     fetchPartners();
-  }, []);
-
+  }, [activeTab]);
   return (
     <div className="bg-white">
       <Hero />
 
       <div className="w-[90%] mx-auto py-12">
-        <div dir="rtl" className="flex flex-wrap gap-4 justify-center mb-10">
+        <div dir="rtl" className="flex flex-wrap gap-4 justify-start mb-10">
           {TABS.map((tab) => (
             <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-2 transition
-                ${activeTab === tab.key ? " text-[#51E482]  border-b-[#51E482] border-b-2 border-b" : "bg-white "}`}
+                ${activeTab === tab.id ? " text-[#51E482]  border-b-[#51E482] border-b-2 " : "bg-white "}`}
             >
-              {tab.label}
+              {tab.name}
             </button>
           ))}
         </div>
@@ -74,9 +100,13 @@ export default function Page() {
               partners.map((partner) => (
                 <div key={partner.id} className="rounded-xl overflow-hidden border border-gray-300">
                   <img
-                    src={partner.imagePath ? `https://cement.runasp.net${partner.imagePath}` : "/placeholder.png"}
+                    src={
+                      partner.imagePath
+                        ? `https://cement.northeurope.cloudapp.azure.com:5000${partner.imagePath}`
+                        : "/placeholder.png"
+                    }
                     alt={partner.name || "Partner"}
-                    className="w-full h-full object-contain bg-black"
+                    className="w-full h-full object-contain "
                   />
                 </div>
               ))

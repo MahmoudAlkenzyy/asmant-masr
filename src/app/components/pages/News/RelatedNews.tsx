@@ -10,7 +10,7 @@ export const RelatedNews = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("https://cement.runasp.net/api/News/GetAllNewsOffset", {
+        const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset", {
           cache: "no-store",
         });
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);

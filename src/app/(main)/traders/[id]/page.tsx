@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTraderCategories } from "@/contexts/TraderCategoriesContext";
 import { TraderCategoryDetails } from "@/lib/api/traderCategories";
+import { Hero } from "../../../components/pages/News/Hero";
 
 export default function TraderCategoryPage() {
   const params = useParams();
@@ -53,6 +54,7 @@ export default function TraderCategoryPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Hero />
       <div className="w-[90%] mx-auto py-12">
         {/* Traders Grid */}
         <div dir="rtl" className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-8 p-4 py-8 pb-14">
@@ -60,7 +62,11 @@ export default function TraderCategoryPage() {
             categoryData.traders.map((trader: any) => (
               <div key={trader.id} className="rounded-xl overflow-hidden border border-gray-300">
                 <img
-                  src={trader.imagePath ? `https://cement.runasp.net${trader.imagePath}` : "/placeholder.png"}
+                  src={
+                    trader.imagePath
+                      ? `https://cement.northeurope.cloudapp.azure.com:5000${trader.imagePath}`
+                      : "/placeholder.png"
+                  }
                   alt={trader.name || "Trader"}
                   className="w-full h-full object-contain bg-black"
                 />

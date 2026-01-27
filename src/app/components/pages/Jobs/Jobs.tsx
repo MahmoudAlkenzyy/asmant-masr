@@ -1,13 +1,92 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-
+interface yearsOfExperienceResponse {
+  yearsOfExperienceLookups: { name: string; id: string }[];
+}
+interface SpecializationResponse {
+  specializationLookups: { name: string; id: string }[];
+}
+interface jobResponse {
+  jobLookups: { name: string; id: string }[];
+}
 export const Jobs = () => {
   const [activeTab, setActiveTab] = React.useState<"individual" | "company">("individual");
+  const [loading, setLoading] = React.useState(true);
+  const [specializations, setSpecializations] = React.useState<{ id: string; name: string }[]>([]);
+  const [jobs, setJobs] = React.useState<{ id: string; name: string }[]>([]);
+  const [yearsOfExperience, setYearsOfExperience] = React.useState<{ id: string; name: string }[]>([]);
+  useEffect(() => {
+    async function fetchSpecializations() {
+      try {
+        const res = await fetch(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/SpecializationLookup/GetAllSpecializationLookupsList",
+          {
+            headers: {
+              accept: "text/plain",
+            },
+          },
+        );
 
+        if (!res.ok) throw new Error("Failed to fetch partners");
+
+        const data: SpecializationResponse = await res.json();
+        setSpecializations(data.specializationLookups || []);
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSpecializations();
+    async function fetchYearsOfExperience() {
+      try {
+        const res = await fetch(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/YearsOfExperienceLookup/GetAllYearsOfExperienceLookupsList",
+          {
+            headers: {
+              accept: "text/plain",
+            },
+          },
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch partners");
+
+        const data: yearsOfExperienceResponse = await res.json();
+        setYearsOfExperience(data.yearsOfExperienceLookups || []);
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchYearsOfExperience();
+    async function fetchJobs() {
+      try {
+        const res = await fetch(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/JobLookup/GetAllJobLookupsList",
+          {
+            headers: {
+              accept: "text/plain",
+            },
+          },
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch partners");
+
+        const data: jobResponse = await res.json();
+        setJobs(data.jobLookups || []);
+      } catch (error) {
+        console.error("Error fetching partners:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchJobs();
+  }, []);
   const formikIndividual = useFormik({
     initialValues: {
       firstName: "",
@@ -30,9 +109,42 @@ export const Jobs = () => {
       experience: Yup.string().required("عدد سنين الخبرة مطلوب"),
       cv: Yup.mixed().required("السيرة الذاتية مطلوبة"),
     }),
-    onSubmit: (values) => {
-      console.log("Individual Form submitted ✅", values);
-      toast.success("تم إرسال البيانات بنجاح!");
+    onSubmit: async (values) => {
+      try {
+        const formData = new FormData();
+        formData.append("FirstName", values.firstName);
+        formData.append("LastName", values.lastName);
+        formData.append("PhoneNumber", values.phone);
+        formData.append("Email", values.email);
+        formData.append("SpecializationId", values.specialization);
+        formData.append("JobId", values.job);
+        formData.append("YearsOfExperienceId", values.experience);
+        formData.append("WorkLink", values.portfolio);
+        if (values.cv) {
+          formData.append("CvFile", values.cv);
+        }
+
+        const response = await fetch(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/JobApplication/CreateJobApplication",
+          {
+            method: "POST",
+            headers: {
+              accept: "text/plain",
+            },
+            body: formData,
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("فشل في إرسال البيانات");
+        }
+
+        toast.success("تم إرسال البيانات بنجاح!");
+        formikIndividual.resetForm();
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        toast.error("حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.");
+      }
     },
   });
 
@@ -64,7 +176,7 @@ export const Jobs = () => {
             activeTab === "individual" ? "text-[#51E482] border-b-2 border-[#51E482]" : "text-black"
           }`}
         >
-          طلب موظفين
+          البحث عن وظيفة
         </button>
         <button
           onClick={() => setActiveTab("company")}
@@ -167,9 +279,11 @@ export const Jobs = () => {
               className="bg-[#ECF5F9] border border-[#618FB5] py-2 px-4 rounded-md mt-2"
             >
               <option value="">اختر التخصص</option>
-              <option value="فني">فني</option>
-              <option value="سائق">سائق</option>
-              <option value="محاسب">محاسب</option>
+              {specializations.map((specialization) => (
+                <option key={specialization.id} value={specialization.id}>
+                  {specialization.name}
+                </option>
+              ))}
             </select>
             {formikIndividual.touched.specialization && formikIndividual.errors.specialization && (
               <span className="text-red-500 text-sm mt-1">{formikIndividual.errors.specialization}</span>
@@ -191,9 +305,11 @@ export const Jobs = () => {
               className="bg-[#ECF5F9] border border-[#618FB5] py-2 px-4 rounded-md mt-2"
             >
               <option value="">اختر الوظيفة</option>
-              <option value="مهندس">مهندس</option>
-              <option value="أخصائي">أخصائي</option>
-              <option value="مشرف">مشرف</option>
+              {jobs.map((job) => (
+                <option key={job.id} value={job.id}>
+                  {job.name}
+                </option>
+              ))}
             </select>
             {formikIndividual.touched.job && formikIndividual.errors.job && (
               <span className="text-red-500 text-sm mt-1">{formikIndividual.errors.job}</span>
@@ -213,10 +329,11 @@ export const Jobs = () => {
               className="bg-[#ECF5F9] border border-[#618FB5] py-2 px-4 rounded-md mt-2"
             >
               <option value="">اختر عدد السنوات</option>
-              <option value="0-1">0 - 1</option>
-              <option value="1-3">1 - 3</option>
-              <option value="3-5">3 - 5</option>
-              <option value="5+">+5 سنوات</option>
+              {yearsOfExperience.map((experience) => (
+                <option key={experience.id} value={experience.id}>
+                  {experience.name}
+                </option>
+              ))}
             </select>
             {formikIndividual.touched.experience && formikIndividual.errors.experience && (
               <span className="text-red-500 text-sm mt-1">{formikIndividual.errors.experience}</span>

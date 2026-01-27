@@ -34,7 +34,9 @@ export interface Item {
 export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
   const [news, setNews] = useState<News>();
   const getNew = async () => {
-    const res = await fetch(`https://cement.runasp.net/api/News/GetAllNewsOffset?CategoryId=${id}`);
+    const res = await fetch(
+      `https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset?CategoryId=${id}`,
+    );
     const data = await res.json();
     setNews(data);
   };

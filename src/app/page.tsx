@@ -59,7 +59,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "https://cement.runasp.net/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
           {
             method: "GET",
             headers: { accept: "text/plain" },
@@ -85,13 +85,14 @@ export default function Home() {
 
   if (error) return <div>Error: {error}</div>;
   if (!data) return <div></div>;
+  console.log({ data });
 
   return (
     <div className="bg-secoundry">
       <NavBar />
       <Hero />
       <Partenar partenar={data.partners} />
-      <Prices prices={data.productTypePriceStatistics} />
+      {/* <Prices prices={data.productTypePriceStatistics} /> */}
       <HeroAds />
       <News news={data.latestNews} />
       {/* <Podcasts /> */}
