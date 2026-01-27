@@ -27,7 +27,7 @@ export interface Item {
   };
   categoryName?: string;
   publishAt: string;
-  images?: (string | { filePath: string })[];
+  images?: { filePath: string }[];
   videos?: any[];
 }
 

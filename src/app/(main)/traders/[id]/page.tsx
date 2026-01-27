@@ -62,11 +62,7 @@ export default function TraderCategoryPage() {
             categoryData.traders.map((trader: any) => (
               <div key={trader.id} className="rounded-xl overflow-hidden border border-gray-300">
                 <img
-                  src={
-                    trader.imagePath
-                      ? `https://cement.northeurope.cloudapp.azure.com:5000${trader.imagePath}`
-                      : "/placeholder.png"
-                  }
+                  src={trader.imagePath ? `${trader.imagePath}` : "/placeholder.png"}
                   alt={trader.name || "Trader"}
                   className="w-full h-full object-contain bg-black"
                 />

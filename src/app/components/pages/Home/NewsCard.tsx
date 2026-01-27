@@ -23,7 +23,7 @@ export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className 
       <div dir="rtl" className="flex flex-col min-h-[400px] h-full w-full text-start">
         <Image
           className="rounded-xl !w-full h-full grow"
-          src={images[idx] || "/images/Home/ads2.webp"}
+          src={news?.images?.[0]?.filePath || images[idx] || "/images/Home/ads2.webp"}
           alt=""
           width={500}
           height={500}

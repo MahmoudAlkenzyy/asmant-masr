@@ -100,11 +100,7 @@ export default function Page() {
               partners.map((partner) => (
                 <div key={partner.id} className="rounded-xl overflow-hidden border border-gray-300">
                   <img
-                    src={
-                      partner.imagePath
-                        ? `https://cement.northeurope.cloudapp.azure.com:5000${partner.imagePath}`
-                        : "/placeholder.png"
-                    }
+                    src={partner.imagePath ? `${partner.imagePath}` : "/placeholder.png"}
                     alt={partner.name || "Partner"}
                     className="w-full h-full object-contain "
                   />

@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 
 export default function PriceAccordion() {
-  const headers = ["الشركة", "المنتج", "التاريخ", "أعلى سعر", "أدنى سعر", "متوسط اليوم", "متوسط الأمس", "التغيير"];
+  const headers = ["الشركة", "المنتج", "أعلى سعر", "أدنى سعر", "متوسط اليوم", "متوسط الأمس", "التغيير"];
 
   const [prodactType, setProdactType] = useState([
     { id: "7e722b96-6e53-4860-39e5-08de155db96d", name: "اسمنت" },
@@ -124,7 +124,7 @@ export default function PriceAccordion() {
       ) : priceData.length === 0 ? (
         <div className="">
           <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
-            {filterableHeaders.map((header) => (
+            {filterableHeaders?.map((header) => (
               <select
                 key={header}
                 className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
@@ -212,7 +212,7 @@ export default function PriceAccordion() {
 
           <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
             {filteredData.length > 0 ? (
-              filteredData.map((item, index) => (
+              filteredData?.map((item, index) => (
                 <AccordionItem
                   key={index}
                   title={`${item.parentName} - ${item.productTypeName}`}
@@ -235,7 +235,7 @@ export default function PriceAccordion() {
                         </tr>
                       </thead>
                       <tbody>
-                        {item.companies?.map((company: any, j: number) => (
+                        {item?.companies?.map((company: any, j: number) => (
                           <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
                             <td className="py-3 p-2">{company.companyName}</td>
                             <td className="py-3 p-2">{company.tradeName}</td>
