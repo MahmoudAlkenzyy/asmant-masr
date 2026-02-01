@@ -28,11 +28,7 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
         producers.producers.map((pro: any) => (
           <div key={pro.id} className="md:w-[25%] w-[45%] rounded-xl overflow-hidden border border-gray-300">
             <img
-              src={
-                pro.imagePath
-                  ? `https://cement.northeurope.cloudapp.azure.com:5000${pro.imagePath}`
-                  : "/placeholder.png"
-              }
+              src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
               alt={pro.name || "Producer"}
               className="w-full h-full object-contain bg-gra"
             />

@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["cementegypt.blob.core.windows.net"],
+    domains: ["cementegypt.blob.core.windows.net", "cementsgyptstorage6547.blob.core.windows.net"],
   },
 };
 
