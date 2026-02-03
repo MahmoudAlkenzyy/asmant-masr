@@ -19,7 +19,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
     <div
       dir="rtl"
       onClick={onClick}
-      className={`flex flex-col min-h-[400px] col-span-1   text-start  text-white
+      className={`flex flex-col !h-full min-h-[400px] col-span-1   text-start  text-white
          bg-[#455766]
        rounded-2xl ${onClick ? "cursor-pointer hover:shadow-xl transition-shadow" : ""}`}
     >

@@ -106,10 +106,10 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
             1024: { slidesPerView: 4 },
           }}
           loop={true}
-          className="mt-4"
+          className="mt-4 store-slider-equal-height"
         >
           {prodacts.map((cardInfo, i) => (
-            <SwiperSlide key={i}>
+            <SwiperSlide key={i} className="flex">
               <StoreCard idx={i} cardInfo={cardInfo} onClick={() => handleOpenForm(cardInfo)} isHome={false} />
             </SwiperSlide>
           ))}
@@ -215,7 +215,20 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
         )}
       </div>
 
-      <style jsx>{`
+      <style jsx global>{`
+        .store-slider-equal-height .swiper-wrapper {
+          align-items: stretch !important;
+        }
+        .store-slider-equal-height .swiper-slide {
+          height: auto !important;
+          display: flex !important;
+        }
+        .store-slider-equal-height .swiper-slide > div {
+          width: 100%;
+          height: 100%;
+          display: flex !important;
+          flex-direction: column !important;
+        }
         @keyframes slideDown {
           from {
             opacity: 0;
