@@ -92,14 +92,14 @@ export default function Home() {
       <NavBar />
       <Hero />
       <Partenar partenar={data.partners} />
-      {/* <Prices prices={data.productTypePriceStatistics} /> */}
+      <Prices prices={data.productTypePriceStatistics} />
       <HeroAds />
       <News news={data.latestNews} />
       {/* <Podcasts /> */}
       <Store isStore={true} prodacts={data.storeDetails} />
       <Producers isTrue={false} isPartner={false} producers={data.producers} />
       {/* <Academy /> */}
-      <Producers isTrue={true} isPartner={true} producers={data.partners} />
+      {/* <Producers isTrue={true} isPartner={true} producers={data.partners} /> */}
       <Footer />
     </div>
   );

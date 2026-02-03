@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 
 export default function PriceAccordion() {
-  const headers = ["الشركة", "المنتج", "أعلى سعر", "أدنى سعر", "متوسط اليوم", "متوسط الأمس", "التغيير"];
+  const headers = ["الشركة", "المنتج", "المحافظة", "متوسط اليوم", "متوسط الأمس", "التغيير"];
 
   const [prodactType, setProdactType] = useState([
     { id: "7e722b96-6e53-4860-39e5-08de155db96d", name: "اسمنت" },
@@ -34,6 +34,7 @@ export default function PriceAccordion() {
   const keyMap: Record<string, string> = {
     الشركة: "companyName",
     المنتج: "productTypeName",
+    المحافظة: "cityName",
     التاريخ: "date",
     "أعلى سعر": "maxPrice",
     "أدنى سعر": "lowestPrice",
@@ -83,6 +84,7 @@ export default function PriceAccordion() {
         item.companies?.map((c: any) => ({
           companyName: c.companyName,
           productTypeName: item.productTypeName,
+          cityName: c.cityName,
           date: c.date?.split("T")[0],
           maxPrice: c.maxPrice,
           lowestPrice: c.lowestPrice,
@@ -116,6 +118,7 @@ export default function PriceAccordion() {
       }))
       .filter((item) => item.companies && item.companies.length > 0); // ✅ hide empty accordions
   }, [priceData, filters]);
+  console.log(filteredData);
 
   return (
     <div className="w-full container mx-auto p-4" dir="rtl">
@@ -239,9 +242,7 @@ export default function PriceAccordion() {
                           <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
                             <td className="py-3 p-2">{company.companyName}</td>
                             <td className="py-3 p-2">{company.tradeName}</td>
-                            <td className="py-3 p-2">{company.date?.split("T")[0]}</td>
-                            <td className="py-3 p-2 text-green-600">{company.maxPrice}</td>
-                            <td className="py-3 p-2 text-red-600">{company.lowestPrice}</td>
+                            <td className="py-3 p-2">{company.cityName || "-"}</td>
                             <td className="py-3 p-2">{company.todayAvg}</td>
                             <td className="py-3 p-2">{company.yesterdayAvg}</td>
                             <td

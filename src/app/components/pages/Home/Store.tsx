@@ -43,7 +43,7 @@ export const Store = ({ prodacts, isStore = false }: { prodacts: prodactType[]; 
           className="mt-4 "
         >
           {prodacts.map((cardInfo, i) => (
-            <SwiperSlide key={i} className="   ">
+            <SwiperSlide key={i} className="  px-2 ">
               <StoreCard idx={i} cardInfo={cardInfo} />
             </SwiperSlide>
           ))}
