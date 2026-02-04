@@ -58,14 +58,11 @@ export default function Home() {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
-          {
-            method: "GET",
-            headers: { accept: "text/plain" },
-            signal: controller.signal,
-          },
-        );
+        const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData", {
+          method: "GET",
+          headers: { accept: "text/plain" },
+          signal: controller.signal,
+        });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();

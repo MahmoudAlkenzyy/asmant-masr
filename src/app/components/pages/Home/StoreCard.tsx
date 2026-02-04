@@ -19,7 +19,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
     <div
       dir="rtl"
       onClick={onClick}
-      className={`flex flex-col !h-full min-h-[400px] col-span-1   text-start  text-white
+      className={`flex flex-col h-full w-full min-h-[400px] col-span-1 text-start text-white
          bg-[#455766]
        rounded-2xl ${onClick ? "cursor-pointer hover:shadow-xl transition-shadow" : ""}`}
     >
@@ -30,7 +30,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
         width={500}
         height={500}
       />
-      <div className="flex py-4">
+      <div className="flex py-4 flex-1">
         <div className="flex justify-between flex-wrap p-3">
           <p className={`text-md font-bold ${isHome ? "text-[#FFFFFF]" : ""}  mt-3`}>المنتج: {productName}</p>
           <p className={`${isHome ? "text-[#fff]" : ""} opacity-50 text-xs  mt-3`}>

@@ -27,7 +27,7 @@ export const PricesTable = ({ prices }: { prices: pricesType[] }) => {
           animate={{ x: ["0%", "49%"] }}
           transition={{
             repeat: Infinity,
-            duration: 10,
+            duration: 22,
             ease: "linear",
           }}
         >
@@ -45,9 +45,19 @@ export const PricesTable = ({ prices }: { prices: pricesType[] }) => {
                   <span className="text-xl font-bold">{item.averagePrice}</span>
 
                   {isUp ? (
-                    <ArrowUp className="text-green-600" size={22} />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M16 6L18.29 8.29L13.41 13.17L9.41 9.17L2 16.59L3.41 18L9.41 12L13.41 16L19.71 9.71L22 12V6H16Z"
+                        fill="#51E482"
+                      />
+                    </svg>
                   ) : (
-                    <ArrowDown className="text-red-600" size={22} />
+                    <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M14 12L16.29 9.71L11.41 4.83L7.41 8.83L0 1.41L1.41 0L7.41 6L11.41 2L17.71 8.29L20 6V12H14Z"
+                        fill="#EF3826"
+                      />
+                    </svg>
                   )}
 
                   <span className={`text-xs ${isUp ? "text-green-600" : "text-red-600"}`}>

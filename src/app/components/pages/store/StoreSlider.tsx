@@ -206,7 +206,7 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#51E482] text-black py-4 rounded-lg font-bold text-lg hover:bg-[#4a7a9a] transition"
+                className="w-full cursor-pointer bg-[#51E482] text-black py-4 rounded-lg font-bold text-lg hover:bg-[#4a7a9a] transition"
               >
                 طلب الصفقة
               </button>
