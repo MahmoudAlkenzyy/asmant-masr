@@ -13,6 +13,7 @@ import { Producers } from "./components/pages/Home/Producers";
 import { Footer } from "./components/shared/Footer";
 import { pricesType } from "./components/pages/Home/PricesTable";
 import { Item } from "./components/pages/News/NewsTab";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 
 export interface HomeType {
   latestNews: Item[];
@@ -58,11 +59,14 @@ export default function Home() {
 
     const fetchData = async () => {
       try {
-        const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData", {
-          method: "GET",
-          headers: { accept: "text/plain" },
-          signal: controller.signal,
-        });
+        const res = await fetchWithLanguage(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData",
+          {
+            method: "GET",
+            headers: { accept: "text/plain" },
+            signal: controller.signal,
+          },
+        );
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();

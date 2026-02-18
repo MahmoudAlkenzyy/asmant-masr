@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +18,7 @@ export default function Page() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://48.221.114.44/api/Auth/Login", {
+      const res = await fetchWithLanguage("https://48.221.114.44/api/Auth/Login", {
         method: "POST",
         headers: {
           accept: "text/plain",

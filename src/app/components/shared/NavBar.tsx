@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
-
+import { ChevronDown, Menu, X, Languages } from "lucide-react";
+import { motion } from "framer-motion";
 import { useTraderCategories } from "@/contexts/TraderCategoriesContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 export type NavChild = {
   link: string;
   to: string;
@@ -20,9 +21,17 @@ export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeParent, setActiveParent] = useState<string | null>(null);
   const { categories, loading } = useTraderCategories();
+  const { language, setLanguage, t } = useLanguage();
+
+  const toggleLanguage = () => {
+    const newLang = language === "ar" ? "en" : "ar";
+    setLanguage(newLang);
+    // Reload the page to fetch new data with the new language
+    window.location.reload();
+  };
 
   const traderCategories: NavItem = {
-    link: "التجار",
+    link: t("nav.traders"),
     to: "",
     children:
       !loading && categories.length > 0
@@ -31,29 +40,29 @@ export default function NavBar() {
             to: `/traders/${c.id}`,
           }))
         : [
-            { link: "السوق المحلي", to: "/local" },
-            { link: "تصدير", to: "/export" },
+            { link: t("nav.local_market"), to: "/local" },
+            { link: t("nav.export"), to: "/export" },
           ],
   };
 
   const links: NavItem[] = [
-    { link: "الصفحة الرئيسية", to: "/" },
-    { link: "الأسعار", to: "/prices" },
-    { link: "الأخبار", to: "/news" },
-    { link: "المنتجين", to: "/producers" },
+    { link: t("nav.home"), to: "/" },
+    { link: t("nav.prices"), to: "/prices" },
+    { link: t("nav.news"), to: "/news" },
+    { link: t("nav.producers"), to: "/producers" },
     traderCategories,
-    { link: "شركاء الصناعة", to: "/partener" },
+    { link: t("nav.partners"), to: "/partener" },
     {
-      link: "أسمنت مصر",
+      link: t("nav.cement_egypt"),
       to: "/",
       children: [
-        { link: "رؤيتنا", to: "/our-vision" },
-        { link: "عن أسمنت مصر", to: "/about-us" },
-        { link: "اخلاء المسئولية", to: "/our-responsibility" },
+        { link: t("nav.our_vision"), to: "/our-vision" },
+        { link: t("nav.about_us"), to: "/about-us" },
+        { link: t("nav.disclaimer"), to: "/our-responsibility" },
       ],
     },
-    { link: "وظائف", to: "/jobs" },
-    { link: "المتجر", to: "/store" },
+    { link: t("nav.jobs"), to: "/jobs" },
+    { link: t("nav.store"), to: "/store" },
   ];
 
   const handleParentClick = (item: NavItem) => {
@@ -75,22 +84,46 @@ export default function NavBar() {
                 {item.children ? (
                   <button
                     onClick={() => handleParentClick(item)}
-                    className="py-6 px-3 text-xs flex items-center gap-2 hover:text-[#618FB5]"
+                    className="py-6 px-3 text-sm flex items-center gap-2 hover:text-[#618FB5]"
                   >
                     {item.link}
                     <ChevronDown size={14} />
                   </button>
                 ) : (
-                  <Link href={item.to} className="py-6 px-3 text-xs hover:text-[#618FB5]">
-                    {item.link}
+                  <Link href={item.to} className={`py-6 px-3 text-sm hover:text-[#618FB5] `}>
+                    <motion.span
+                      className=""
+                      initial={{
+                        color: item.link === t("nav.store") ? "#000" : "#000",
+                        textShadow: "0 0 10px #618FB500",
+                      }}
+                      //   whileHover={{ color: "#618FB5" }}
+                      transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                      animate={{
+                        color: item.link === t("nav.store") ? "#618FB5" : "#000",
+                        textShadow: item.link === t("nav.store") ? "0 0 10px #618FB5" : "0 0 10px #618FB500",
+                      }}
+                    >
+                      {item.link}
+                    </motion.span>
                   </Link>
                 )}
               </li>
             ))}
           </ul>
 
+          {/* Language Switcher */}
+          <button
+            onClick={toggleLanguage}
+            className="hidden xl:flex items-center gap-2 border-primary py-2 px-4 rounded-lg text-primary hover:bg-primary hover:text-white transition-colors duration-200 mx-3"
+            title={language === "ar" ? "Switch to English" : "التبديل إلى العربية"}
+          >
+            {/* <Languages size={20} /> */}
+            <span className="font-semibold text-sm">{language === "ar" ? "EN" : "AR"}</span>
+          </button>
+
           <Link href="/login">
-            <button className="hidden xl:block bg-primary py-3 px-6 rounded-lg text-white">تسجيل الدخول</button>
+            <button className="hidden xl:block bg-primary py-3 px-6 rounded-lg text-white">{t("nav.login")}</button>
           </Link>
 
           {/* Mobile Toggle */}
@@ -145,6 +178,16 @@ export default function NavBar() {
               </li>
             ))}
           </ul>
+
+          {/* Mobile Language Switcher */}
+          <div className="border-t p-4">
+            <button
+              onClick={toggleLanguage}
+              className="w-full flex items-center justify-center gap-2 bg-primary py-3 px-6 rounded-lg"
+            >
+              <span className="font-semibold">{language === "ar" ? "Switch to English" : "التبديل إلى العربية"}</span>
+            </button>
+          </div>
         </div>
       )}
     </div>

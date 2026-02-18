@@ -1,3 +1,5 @@
+import { fetchWithLanguage } from "../fetchWithLanguage";
+
 export interface TraderCategory {
   id: string;
   name: string;
@@ -30,7 +32,7 @@ const AUTH_TOKEN =
  */
 export async function getAllTraderCategories(): Promise<TraderCategory[]> {
   try {
-    const res = await fetch(`${API_BASE_URL}/TraderCategory/GetAllTraderCategoryList`, {
+    const res = await fetchWithLanguage(`${API_BASE_URL}/TraderCategory/GetAllTraderCategoryList`, {
       method: "GET",
       headers: {
         accept: "text/plain",
@@ -57,7 +59,7 @@ export async function getAllTraderCategories(): Promise<TraderCategory[]> {
  */
 export async function getTraderCategoryById(id: string): Promise<TraderCategoryDetails | null> {
   try {
-    const res = await fetch(`${API_BASE_URL}/Trader/GetAllTraderList?Id=${id}`, {
+    const res = await fetchWithLanguage(`${API_BASE_URL}/Trader/GetAllTraderList?Id=${id}`, {
       method: "GET",
       headers: {
         accept: "text/plain",
