@@ -1,16 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { StoreTab } from "./StoreTab";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TABS = [
-  { id: "cement", label: "اسمنت" },
-  { id: "steel", label: "حديد" },
-  { id: "gypsum", label: "جبس" },
-  { id: "cer", label: "سيراميك" },
-  { id: "paint", label: "دهانات" },
-  { id: "rock", label: "طوب" },
-  { id: "sant", label: "رمل" },
-  { id: "bozlandi", label: "بوزلاني" },
+  { id: "cement", label: "اسمنت", labelEn: "Cement" },
+  { id: "steel", label: "حديد", labelEn: "Steel" },
+  { id: "gypsum", label: "جبس", labelEn: "Gypsum" },
+  { id: "cer", label: "سيراميك", labelEn: "Ceramic" },
+  { id: "paint", label: "دهانات", labelEn: "Paints" },
+  { id: "rock", label: "طوب", labelEn: "Bricks" },
+  { id: "sant", label: "رمل", labelEn: "Sand" },
+  { id: "bozlandi", label: "بوزلاني", labelEn: "Pozzolanic" },
 ];
 
 export const Tabs: React.FC<{
@@ -18,6 +20,7 @@ export const Tabs: React.FC<{
   onChange?: (id: string) => void;
 }> = ({ defaultTab = "cement", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
+  const { t, language } = useLanguage();
   const [prodactType, setProdactType] = useState([
     {
       id: "7e722b96-6e53-4860-39e5-08de155db96d",
@@ -54,10 +57,11 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchProdact = async () => {
-    const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList");
+    const res = await fetchWithLanguage(
+      "https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList",
+    );
     const data = await res.json();
-
-    setProdactType(data.products);
+    setProdactType(data.products || []);
   };
   const handleClick = (id: string) => {
     setActive(id);
@@ -65,11 +69,11 @@ export const Tabs: React.FC<{
   };
   useEffect(() => {
     fetchProdact();
-  }, []);
+  }, [language]);
 
   return (
-    <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
-      <h2 className="text-4xl font-bold mb-8 text-center pt-14">شركاء الصناعة</h2>
+    <nav aria-label="أقسام المتجر" dir={language === "ar" ? "rtl" : "ltr"} className="w-full bg-white">
+      <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.store")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
         {TABS.map((tab) => {
@@ -86,13 +90,13 @@ export const Tabs: React.FC<{
                   ${isActive ? "text-[#618FB5]" : "text-gray-700 hover:text-[#618FB5]"}
                 `}
               >
-                {tab.label}
+                {language === "ar" ? tab.label : tab.labelEn}
 
                 <span
                   className={`absolute left-0 right-0 -bottom-2 h-[2px] transition-all duration-200 ${
                     isActive ? "bg-[#618FB5] scale-x-100" : "bg-transparent scale-x-0"
                   }`}
-                  style={{ transformOrigin: "left" }}
+                  style={{ transformOrigin: language === "ar" ? "right" : "left" }}
                 />
               </button>
             </li>

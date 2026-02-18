@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { NewsTab } from "./NewsTab";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TABS = [
-  { id: "all", label: "كل الاخبار" },
-  { id: "general", label: "اخبار عامة" },
-  { id: "cement", label: "اخبار الاسمنت" },
-  { id: "world", label: "اخبار الاسمنت حول العالم" },
+  { id: "all", label: "كل الاخبار", labelEn: "All News" },
+  { id: "general", label: "اخبار عامة", labelEn: "General News" },
+  { id: "cement", label: "اخبار الاسمنت", labelEn: "Cement News" },
+  { id: "world", label: "اخبار الاسمنت حول العالم", labelEn: "Global News" },
 ];
 
 export const Tabs: React.FC<{
@@ -15,14 +17,15 @@ export const Tabs: React.FC<{
   onChange?: (id: string) => void;
 }> = ({ defaultTab = "all", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
+  const { t, language } = useLanguage();
   const [categories, setCategories] = useState([{ id: "0a4b3d2d-2e28-4308-0e4a-08de14636697", name: "اخبار الاسمنت" }]);
 
   const fetchNewsCategory = async () => {
-    const res = await fetch(
+    const res = await fetchWithLanguage(
       "https://cement.northeurope.cloudapp.azure.com:5000/api/NewsCategory/GetAllNewsCategoryList",
     );
     const data = await res.json();
-    setCategories(data.categories);
+    setCategories(data.categories || []);
   };
   const handleClick = (id: string) => {
     setActive(id);
@@ -30,11 +33,11 @@ export const Tabs: React.FC<{
   };
   useEffect(() => {
     fetchNewsCategory();
-  }, []);
+  }, [language]);
 
   return (
-    <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
-      <h2 className="text-4xl font-bold mb-8 text-center pt-14">الأخبار</h2>
+    <nav aria-label="أقسام الأخبار" dir={language === "ar" ? "rtl" : "ltr"} className="w-full bg-white">
+      <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.news")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
         {TABS.map((tab) => {
@@ -51,13 +54,13 @@ export const Tabs: React.FC<{
                   ${isActive ? "text-[#618FB5]" : "text-gray-700 hover:text-[#618FB5]"}
                 `}
               >
-                {tab.label}
+                {language === "ar" ? tab.label : tab.labelEn}
 
                 <span
                   className={`absolute left-0 right-0 -bottom-2 h-[2px] transition-all duration-200 ${
                     isActive ? "bg-[#618FB5] scale-x-100" : "bg-transparent scale-x-0"
                   }`}
-                  style={{ transformOrigin: "left" }}
+                  style={{ transformOrigin: language === "ar" ? "right" : "left" }}
                 />
               </button>
             </li>

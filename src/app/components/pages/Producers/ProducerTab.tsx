@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+
 interface ProducerTabProps {
   id?: string;
 }
@@ -9,7 +11,7 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   const [producers, setProducers] = useState({ producers: [] });
 
   const getProducers = async () => {
-    const res = await fetch(
+    const res = await fetchWithLanguage(
       `https://cement.northeurope.cloudapp.azure.com:5000/api/Producer/GetAllProducerList?CategoryId=${id}`,
       {
         cache: "no-store",

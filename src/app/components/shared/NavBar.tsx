@@ -71,7 +71,7 @@ export default function NavBar() {
   };
 
   return (
-    <div className="relative">
+    <div dir="ltr" className="relative">
       {/* Main Navbar */}
       <div className="bg-secoundry h-[90px]">
         <div className="w-[90%] mx-auto h-full flex items-center justify-between">

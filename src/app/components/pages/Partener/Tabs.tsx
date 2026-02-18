@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { PartenerTab } from "./PartenerTab";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const TABS = [
   { id: "tecnecal", label: "التقنيين" },
@@ -13,6 +15,7 @@ export const Tabs: React.FC<{
   onChange?: (id: string) => void;
 }> = ({ defaultTab = "tecnecal", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
+  const { t } = useLanguage();
   const [partenerType, setPartenerType] = useState([
     {
       id: "fa8ff85f-1976-4feb-0fbd-08de152d81c3",
@@ -29,7 +32,7 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchPartenerCategory = async () => {
-    const res = await fetch(
+    const res = await fetchWithLanguage(
       "https://cement.northeurope.cloudapp.azure.com:5000/api/PartnerCategory/GetAllPartnerCategoryList",
     );
     const data = await res.json();
@@ -45,7 +48,7 @@ export const Tabs: React.FC<{
 
   return (
     <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
-      <h2 className="text-4xl font-bold mb-8 text-center pt-14">شركاء الصناعة</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.partners")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
         {TABS.map((tab) => {
@@ -85,7 +88,7 @@ export const Tabs: React.FC<{
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
           >
-            <PartenerTab id={partenerType.find((cat) => cat.name == tab.label)?.id || ""} />
+            <PartenerTab id={partenerType.find((cat: any) => cat.name == tab.label)?.id || ""} />
           </div>
         ))}
       </div>

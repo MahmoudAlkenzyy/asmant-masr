@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { StoreCard } from "../Home/StoreCard";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StoreTabProps {
   id?: string;
@@ -8,29 +10,31 @@ interface StoreTabProps {
 
 export const StoreTab = ({ id = "" }: StoreTabProps) => {
   const [prodact, setProdact] = useState([]);
+  const { language } = useLanguage();
 
   const getProdact = async () => {
-    const res = await fetch(
+    const res = await fetchWithLanguage(
       `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetProductStoreDetails?ProductId=${id}`,
       {
         cache: "no-store",
       },
     );
 
-    const prodact = await res.json();
-    console.log(prodact.items);
-
-    setProdact(prodact.items);
+    const data = await res.json();
+    setProdact(data.items || []);
   };
   useEffect(() => {
     getProdact();
-  }, []);
+  }, [id, language]);
+
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-8 p-4 py-8 pb-14">
       {prodact?.length > 0 ? (
-        prodact.map((pro: any, idx) => <StoreCard idx={idx} isHome={false} cardInfo={pro} />)
+        prodact.map((pro: any, idx) => <StoreCard key={idx} idx={idx} isHome={false} cardInfo={pro} />)
       ) : (
-        <p className="text-gray-500 text-center">No producers found.</p>
+        <p className="text-gray-500 text-center col-span-full">
+          {language === "ar" ? "لا يوجد منتجات متاحة." : "No products available."}
+        </p>
       )}
     </div>
   );

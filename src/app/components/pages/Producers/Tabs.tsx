@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ProducerTab } from "./ProducerTab";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Tabs: React.FC<{
   defaultTab?: string;
@@ -8,9 +10,10 @@ export const Tabs: React.FC<{
 }> = ({ defaultTab = "cement", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
   const [producersType, setProducersType] = useState<{ id: string; name: string }[]>([]);
+  const { t } = useLanguage();
 
   const fetchNewsCategory = async () => {
-    const res = await fetch(
+    const res = await fetchWithLanguage(
       "https://cement.northeurope.cloudapp.azure.com:5000/api/ProducerCategory/GetAllProducerCategoryList",
     );
     const data = await res.json();
@@ -26,10 +29,10 @@ export const Tabs: React.FC<{
 
   return (
     <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
-      <h2 className="text-4xl font-bold mb-8 text-center pt-14">شركاء الصناعة</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.partners")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
-        {producersType.map(({ id, name }) => {
+        {producersType.map(({ id, name }: any) => {
           const isActive = id === active;
           return (
             <li key={id} role="presentation">
@@ -58,9 +61,9 @@ export const Tabs: React.FC<{
       </ul>
 
       <div className="mt-6 containerr">
-        {producersType.map(({ id, name }) => (
+        {producersType.map(({ id, name }: any) => (
           <div key={id} id={`panel-${id}`} role="tabpanel" aria-labelledby={`tab-${id}`} hidden={id !== active}>
-            <ProducerTab id={producersType.find((cat) => cat.name == name)?.id || ""} />
+            <ProducerTab id={producersType.find((cat: any) => cat.name == name)?.id || ""} />
           </div>
         ))}
       </div>

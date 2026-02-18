@@ -2,17 +2,23 @@
 import React, { useEffect, useState } from "react";
 import { NewsCard } from "../Home/NewsCard";
 import { Item } from "../../../components/pages/News/NewsTab";
+import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const RelatedNews = () => {
   const [news, setNews] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset", {
-          cache: "no-store",
-        });
+        const res = await fetchWithLanguage(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset",
+          {
+            cache: "no-store",
+          },
+        );
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
         const data = await res.json();
         setNews(data?.items?.slice(0, 5) || []);
@@ -24,10 +30,10 @@ export const RelatedNews = () => {
     };
 
     fetchNews();
-  }, []);
+  }, [language]);
 
   if (loading) {
-    return <div className="col-span-1 grid grid-cols-1 px-6 text-center py-6 text-gray-500">جارٍ تحميل الأخبار...</div>;
+    return <div className="col-span-1 grid grid-cols-1 px-6 text-center py-6 text-gray-500">{t("common.loading")}</div>;
   }
 
   return (
@@ -35,7 +41,9 @@ export const RelatedNews = () => {
       {news.length > 0 ? (
         news.map((item) => <NewsCard key={item.id} news={item} />)
       ) : (
-        <p className="text-center text-gray-500 py-6">لا توجد أخبار متاحة</p>
+        <p className="text-center text-gray-500 py-6">
+          {language === "ar" ? "لا توجد أخبار متاحة" : "No news available"}
+        </p>
       )}
     </div>
   );
