@@ -8,15 +8,19 @@ import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { StoreCard } from "./StoreCard";
 import { prodactType } from "../../../page";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Store = ({ prodacts, isStore = false }: { prodacts: prodactType[]; isStore: boolean }) => {
+  const { t } = useLanguage();
   return (
     <section dir="rtl" className="bg-[#618FB5] py-9">
       <div className="containerr">
-        <h2 className={`text-4xl font-bold mb-8 text-center ${isStore ? "text-[white]" : "text-[black]"}`}>المتجر</h2>
+        <h2 className={`text-4xl font-bold mb-8 text-center ${isStore ? "text-[white]" : "text-[black]"}`}>
+          {t("home.store.title")}
+        </h2>
 
         <div className="flex justify-between items-center mb-6 relative">
-          <h3 className="text-2xl font-semibold text-[white] text-nowrap"> انواع الأسمنت </h3>
+          <h3 className="text-2xl font-semibold text-[white] text-nowrap">{t("home.store.subtitle")}</h3>
           <div className="flex gap-2 containerr justify-end">
             <button className="swiper-button-prev-store bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-primary transition">
               <ArrowRight size={16} />

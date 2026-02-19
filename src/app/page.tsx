@@ -86,7 +86,7 @@ export default function Home() {
 
   if (error) return <div>Error: {error}</div>;
   if (!data) return <div></div>;
-  console.log({ data });
+  //   console.log({ data });
 
   return (
     <div className="bg-secoundry">

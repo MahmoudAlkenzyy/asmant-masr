@@ -28,7 +28,7 @@ export default function TraderCategoryPage() {
 
     loadCategoryData();
   }, [categoryId, getCategoryDetails]);
-  console.log({ categories });
+  //   console.log({ categories });
 
   if (loading) {
     return (

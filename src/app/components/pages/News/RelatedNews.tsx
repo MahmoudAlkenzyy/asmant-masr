@@ -41,9 +41,7 @@ export const RelatedNews = () => {
       {news.length > 0 ? (
         news.map((item) => <NewsCard key={item.id} news={item} />)
       ) : (
-        <p className="text-center text-gray-500 py-6">
-          {language === "ar" ? "لا توجد أخبار متاحة" : "No news available"}
-        </p>
+        <p className="text-center text-gray-500 py-6">{t("newscard.no_news")}</p>
       )}
     </div>
   );

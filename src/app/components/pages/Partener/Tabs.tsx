@@ -4,18 +4,19 @@ import { PartenerTab } from "./PartenerTab";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const TABS = [
-  { id: "tecnecal", label: "التقنيين" },
-  { id: "tog", label: "تجاريين" },
-  { id: "ex", label: "موردين" },
-];
-
 export const Tabs: React.FC<{
   defaultTab?: string;
   onChange?: (id: string) => void;
 }> = ({ defaultTab = "tecnecal", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  const TABS = [
+    { id: "tecnecal", labelKey: "partner.tab.technical" },
+    { id: "tog", labelKey: "partner.tab.commercial" },
+    { id: "ex", labelKey: "partner.tab.suppliers" },
+  ];
+
   const [partenerType, setPartenerType] = useState([
     {
       id: "fa8ff85f-1976-4feb-0fbd-08de152d81c3",
@@ -44,10 +45,17 @@ export const Tabs: React.FC<{
   };
   useEffect(() => {
     fetchPartenerCategory();
-  }, []);
+  }, [language]);
+
+  // Map tab id to the arabic name used by the API (fallback names)
+  const TAB_AR_NAMES: Record<string, string> = {
+    tecnecal: "التقنيين",
+    tog: "تجاريين",
+    ex: "موردين",
+  };
 
   return (
-    <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
+    <nav aria-label="أقسام الشركاء" dir={language === "ar" ? "rtl" : "ltr"} className="w-full bg-white">
       <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.partners")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
@@ -65,13 +73,13 @@ export const Tabs: React.FC<{
                   ${isActive ? "text-[#618FB5]" : "text-gray-700 hover:text-[#618FB5]"}
                 `}
               >
-                {tab.label}
+                {t(tab.labelKey)}
 
                 <span
                   className={`absolute left-0 right-0 -bottom-2 h-[2px] transition-all duration-200 ${
                     isActive ? "bg-[#618FB5] scale-x-100" : "bg-transparent scale-x-0"
                   }`}
-                  style={{ transformOrigin: "left" }}
+                  style={{ transformOrigin: language === "ar" ? "right" : "left" }}
                 />
               </button>
             </li>
@@ -88,7 +96,7 @@ export const Tabs: React.FC<{
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
           >
-            <PartenerTab id={partenerType.find((cat: any) => cat.name == tab.label)?.id || ""} />
+            <PartenerTab id={partenerType.find((cat: any) => cat.name == TAB_AR_NAMES[tab.id])?.id || ""} />
           </div>
         ))}
       </div>

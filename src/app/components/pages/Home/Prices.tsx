@@ -3,7 +3,7 @@ import { PricesTable, pricesType } from "./PricesTable";
 import Image from "next/image";
 
 export const Prices = ({ prices }: { prices: pricesType[] }) => {
-  console.log({ prices });
+  //   console.log({ prices });
 
   return (
     <section dir="rtl" className="">

@@ -51,7 +51,7 @@ export default function Page() {
       }
     }
     fetchTabs();
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     async function fetchPartners() {
@@ -117,9 +117,7 @@ export default function Page() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center w-full col-span-full">
-                {language === "ar" ? "لا يوجد شركاء متاحين." : "No partners available."}
-              </p>
+              <p className="text-gray-500 text-center w-full col-span-full">{t("partner.no_partners")}</p>
             )}
           </div>
         )}

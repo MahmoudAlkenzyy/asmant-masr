@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUp, ArrowDown } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface pricesType {
   id: string;
@@ -15,11 +16,12 @@ export interface pricesType {
 }
 
 export const PricesTable = ({ prices }: { prices: pricesType[] }) => {
+  const { t } = useLanguage();
   const items = [...prices, ...prices];
 
   return (
     <section className="py-8 overflow-hidden rounded-xl">
-      <h2 className="text-2xl font-semibold pb-5 text-start">أسعار المواد</h2>
+      <h2 className="text-2xl font-semibold pb-5 text-start">{t("home.prices.title")}</h2>
 
       <div className="relative w-full overflow-hidden">
         <motion.div
@@ -61,7 +63,7 @@ export const PricesTable = ({ prices }: { prices: pricesType[] }) => {
                   )}
 
                   <span className={`text-xs ${isUp ? "text-green-600" : "text-red-600"}`}>
-                    {isUp ? "ارتفاع" : "انخفاض"}
+                    {isUp ? t("common.rise") : t("common.fall")}
                   </span>
                 </div>
               </div>

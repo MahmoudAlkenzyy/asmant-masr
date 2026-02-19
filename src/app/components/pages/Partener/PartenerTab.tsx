@@ -9,7 +9,7 @@ interface ProducerTabProps {
 
 export const PartenerTab = ({ id = "" }: ProducerTabProps) => {
   const [producers, setProducers] = useState({ partners: [] });
-  console.log(id);
+  //   console.log(id);
 
   const getProducers = async () => {
     const res = await fetchWithLanguage(

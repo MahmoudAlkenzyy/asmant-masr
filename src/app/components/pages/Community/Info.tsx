@@ -1,63 +1,49 @@
+"use client";
 import React from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Info = () => {
-  const companyInfo = [
-    "توصيل جميع الفرص والعروض المتاحة في الصناعة إلى جميع المستفيدين منها",
-    "توفير جميع الخدمات والمعلومات اللازمة للصناعة بكاملها",
-    "الوصول إلى جميع المستفيدين في صناعة الأسمنت، محلياً ودولياً",
-    "الاتصال وإقامة شبكة علاقات مع الصناعة والمستفيدين منها",
-    "إعلام جميع المستفيدين بآخر المستجدات بالصناعة أولا بأول",
-    "إقامة تحالفات استراتيجية ومشاركات مع اللاعبين الأساسيين في الصناعة",
-    "الإعلان، ونشر الدوريات، وتنظيم الأحداث",
+  const { t } = useLanguage();
+
+  const companyInfoKeys = [
+    "community.info1",
+    "community.info2",
+    "community.info3",
+    "community.info4",
+    "community.info5",
+    "community.info6",
+    "community.info7",
   ];
 
-  const mainGoals = [
-    "توفير منصة موثوقة معتمدة لتقديم وتبادل المعرفة والاخبار في محيط صناع الاسمنت بشكل غير مسبوق في مصر",
-    "التعريف بفرص الاستثمار الجديدة في هذه الصناعة مما يساعد علي تعاظم قدرات هذه الصناعة علي جميع المجالات المرتبطة بها",
-    "تقديم خدمة الكترونية غير مسبوقة في مصر والوطن العربي لعمل الربط المعرفي الغائب بين المستخدم ورجال وأدوات هذه الصناعة في مصر",
-    "تقديم محتوي تحليلي مختلف شديد الخصوصية وشديد التركيز علي هذه الصناعة المتأصلة في مصر بما يساعد علي الاستدامة والتطور المعرفي لكلا من العاملين في مجال هذه الصناعة والمستهلك علي حد سواء مستعينا بكل أدوات التطور التكنولوجي بما فيها أدوات الذكاء الصناعي وتحليل البيانات بشكل مختلف وغير مسبوق",
-    "انشاء اكبر سوق الكتروني لتداول والتعامل في منتجات الاسمنت المختلفة الي جانب منتجات البناء الأخرى بشكل لم يسبق له مثيل للمستخدم المصري والعربي مما يسهل عملية التداول ويفتح افاقا كبري لكلا من العاملين في مجال الاسمنت والمستخدم الأخير الذي يسعي للحصول علي المنتج الخاص به بشكل سهل ودون تعقيد وبشكل امن في تجربة هي الاولي علي المستوي المحلي والعربي",
-  ];
+  const mainGoalsKeys = ["community.goal1", "community.goal2", "community.goal3", "community.goal4", "community.goal5"];
 
   return (
     <>
       <section dir="rtl" className="py-20 bg-[#F8F9FA]">
         <div className="containerr max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-2xl font-bold mb-10 ">الرؤيا</h2>
-          <p className="text-[#292E2B] opacity-50 text-xl md:text-2xl leading-relaxed">
-            ان تصبح منصتنا هي المصدر الأول والأكثر ثقة ومصداقية وتطورا لكل ما يتعلق بصناعة البناء والاسمنت مما يساهم في
-            تقديم البيانات والمعولمات الدقيقة عن السوق المصري المتشعب مما يساعد كلا من رجال الصناعة في مختلف المجالات
-            المتعلقة بهذه الصناعة والمستخدم الذي يستخدم منصتنا علي ثقة تامة من ان المعلومات التي ترد اليه علي صفحاتنا
-            تقوم بمساعدته في اتخاذ قراراته الخاصة الصحيحة في هذه الصناعة الكبيرة مع تقديم كل ما لدينا من خبرات في المجال
-            التكنلوجي لتعزيز الاستدامة والابتكار لتلبية طلبات السوق المحلية في المرحلة الاولي وبعدها انطلاقا الي السوق
-            العربية والعالمية
-          </p>
+          <h2 className="text-4xl md:text-2xl font-bold mb-10 ">{t("community.vision_title")}</h2>
+          <p className="text-[#292E2B] opacity-50 text-xl md:text-2xl leading-relaxed">{t("community.vision_text")}</p>
         </div>
       </section>
 
       <section dir="rtl" className="py-20 bg-white">
         <div className="containerr max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-2xl font-bold mb-10 ">الرسالة</h2>
-          <p className="text-[#292E2B] opacity-50 text-xl md:text-2xl leading-relaxed">
-            تقديم خدمة غير مسبوقة في مجال صناعة الاسمنت والصناعات المرتبطة به من خلال التقنيات الحديثة واستخدام أدوات
-            الذكاء الصناعي لتقديم خدمات ومعلومات موثوقة ومقدمة بشكل تحليلي يستطيع من خلاله كل من يتعامل مع منصتنا ان
-            يتخد قراراته التجارية بناء علي ارقام وتحليلات ومعلومات تقدم له في قالب سهل ومريح وموثوق ومعتمدا علي افضل
-            الوسائل التكنلوجية الحديثة بما يساعد في تطوير وازدهار هذه الصناعة بشكل مختلف وغير مسبوق
-          </p>
+          <h2 className="text-4xl md:text-2xl font-bold mb-10 ">{t("community.mission_title")}</h2>
+          <p className="text-[#292E2B] opacity-50 text-xl md:text-2xl leading-relaxed">{t("community.mission_text")}</p>
         </div>
       </section>
 
       <section dir="rtl" className="py-20 bg-[#F8F9FA]">
         <div className="containerr max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-2xl font-bold mb-14 ">الأهداف الرئيسية</h2>
+          <h2 className="text-4xl md:text-2xl font-bold mb-14 ">{t("community.goals_title")}</h2>
           <div className="space-y-6">
-            {mainGoals.map((goal, idx) => (
+            {mainGoalsKeys.map((key, idx) => (
               <div key={idx} className="  rounded-lg ">
                 <div className="flex gap-4 items-start">
                   <span className="text-3xl md:text-xl text-[#292E2B] opacity-50 flex-shrink-0">
                     {["１", "２", "３", "４", "５"][idx]}-
                   </span>
-                  <p className="text-[#292E2B] opacity-50 text-lg md:text-xl leading-relaxed flex-1">{goal}</p>
+                  <p className="text-[#292E2B] opacity-50 text-lg md:text-xl leading-relaxed flex-1">{t(key)}</p>
                 </div>
               </div>
             ))}
@@ -66,16 +52,16 @@ export const Info = () => {
       </section>
 
       <section className="bg-[#E5FBFF] py-20">
-        <h2 className="text-3xl md:text-2xl font-bold mb-14 text-center">معلومات عن الشركة</h2>
+        <h2 className="text-3xl md:text-2xl font-bold mb-14 text-center">{t("community.company_info_title")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-9 containerr">
-          {companyInfo.map((str, idx) => (
+          {companyInfoKeys.map((key, idx) => (
             <p
               key={idx}
               className={`bg-white text-lg md:text-xl py-9 text-center text-[#292E2B] opacity-70  px-6 rounded-lg shadow-sm ${
                 idx === 0 && "md:w-1/2 mx-auto md:col-span-2"
               }`}
             >
-              {str}
+              {t(key)}
             </p>
           ))}
         </div>

@@ -10,7 +10,7 @@ interface StoreTabProps {
 
 export const StoreTab = ({ id = "" }: StoreTabProps) => {
   const [prodact, setProdact] = useState([]);
-  const { language } = useLanguage();
+  const { t, language } = useLanguage();
 
   const getProdact = async () => {
     const res = await fetchWithLanguage(
@@ -26,15 +26,12 @@ export const StoreTab = ({ id = "" }: StoreTabProps) => {
   useEffect(() => {
     getProdact();
   }, [id, language]);
-
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-8 p-4 py-8 pb-14">
       {prodact?.length > 0 ? (
         prodact.map((pro: any, idx) => <StoreCard key={idx} idx={idx} isHome={false} cardInfo={pro} />)
       ) : (
-        <p className="text-gray-500 text-center col-span-full">
-          {language === "ar" ? "لا يوجد منتجات متاحة." : "No products available."}
-        </p>
+        <p className="text-gray-500 text-center col-span-full">{t("store.no_products")}</p>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,8 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { t, language } = useLanguage();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -30,36 +33,37 @@ export default function Page() {
       const data = await res.text();
 
       if (res.ok) {
-        toast.success(" تم تسجيل الدخول بنجاح!");
+        toast.success(t("login.success"));
         router.push("/");
-        // console.log("Login success:", data);
       } else {
-        toast.error(" فشل تسجيل الدخول، تأكد من البريد الإلكتروني أو كلمة المرور.");
-        // console.error("Login failed:", data);
+        toast.error(t("login.failed"));
       }
     } catch (error) {
       console.error(error);
-      toast.error(" حدث خطأ أثناء الاتصال بالخادم.");
+      toast.error(t("login.server_error"));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div dir="rtl" className="flex flex-col justify-center items-start min-h-screen bg-gray-50 containerr !w-[80%]">
-      <h2 className="font-bold text-4xl text-center mb-4">تسجيل الدخول</h2>
+    <div
+      dir={language === "ar" ? "rtl" : "ltr"}
+      className="flex flex-col justify-center items-start min-h-screen bg-gray-50 containerr !w-[80%]"
+    >
+      <h2 className="font-bold text-4xl text-center mb-4">{t("login.title")}</h2>
 
       <p className="text-center text-xl text-gray-500 mb-8">
-        لا يوجد لديك حساب؟{" "}
+        {t("login.no_account")}{" "}
         <Link href="/register" className="text-[#618FB5] underline">
-          تسجيل الآن
+          {t("login.register_now")}
         </Link>
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6 self-stretch ps-14">
         <div className="flex flex-col gap-2">
           <label htmlFor="email" className="text-sm font-medium text-gray-700">
-            البريد الإلكتروني
+            {t("login.email")}
           </label>
           <input
             id="email"
@@ -67,14 +71,14 @@ export default function Page() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="ادخل بريدك الإلكتروني"
+            placeholder={t("login.email_placeholder")}
             className="w-full px-4 py-3 bg-[#E5FBFF] border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
         </div>
 
         <div className="flex flex-col gap-2 relative">
           <label htmlFor="password" className="text-sm font-medium text-gray-700">
-            الرقم السري
+            {t("login.password")}
           </label>
           <input
             id="password"
@@ -82,7 +86,7 @@ export default function Page() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            placeholder="ادخل الرقم السري"
+            placeholder={t("login.password_placeholder")}
             className="w-full px-4 py-3 bg-[#E5FBFF] border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
           />
           <button
@@ -97,10 +101,10 @@ export default function Page() {
         <div className="flex justify-between items-center text-sm mt-2">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" className="w-4 h-4 text-[#618FB5] border-gray-300 rounded focus:ring-blue-400" />
-            <span>تذكرني</span>
+            <span>{t("login.remember_me")}</span>
           </label>
           <Link href="#" className="text-[#618FB5] underline">
-            نسيت كلمة السر؟
+            {t("login.forgot_password")}
           </Link>
         </div>
 
@@ -109,7 +113,7 @@ export default function Page() {
           disabled={loading}
           className="w-full bg-[#618FB5] hover:bg-[#618FB5dd] disabled:opacity-70 text-white py-3 rounded-lg mt-6 text-lg font-semibold transition-all duration-200"
         >
-          {loading ? "جارٍ تسجيل الدخول..." : "تسجيل الدخول"}
+          {loading ? t("login.loading") : t("login.submit")}
         </button>
       </form>
     </div>

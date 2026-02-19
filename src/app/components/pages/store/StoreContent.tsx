@@ -2,26 +2,28 @@
 import React from "react";
 import { StoreSlider } from "./StoreSlider";
 import { prodactType } from "../../../page";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StoreContentProps {
   products: prodactType[];
 }
 
 export const StoreContent: React.FC<StoreContentProps> = ({ products }) => {
-  const [selectedCity, setSelectedCity] = React.useState<string>("الكل");
-  const [selectedType, setSelectedType] = React.useState<string>("الكل");
+  const { t } = useLanguage();
+  const [selectedCity, setSelectedCity] = React.useState<string>("all");
+  const [selectedType, setSelectedType] = React.useState<string>("all");
 
   if (!products || products.length === 0) {
     return null;
   }
 
   // Extract unique cities and types for filters
-  const cities = ["أختر المدينة", ...new Set(products.map((p) => p.cityName).filter(Boolean))];
-  const types = ["أختر النوع", ...new Set(products.map((p) => p.productTypeName).filter(Boolean))];
+  const cities = [...new Set(products.map((p) => p.cityName).filter(Boolean))];
+  const types = [...new Set(products.map((p) => p.productTypeName).filter(Boolean))];
 
   const filteredProducts = products.filter((p) => {
-    const cityMatch = selectedCity === "الكل" || p.cityName === selectedCity;
-    const typeMatch = selectedType === "الكل" || p.productTypeName === selectedType;
+    const cityMatch = selectedCity === "all" || p.cityName === selectedCity;
+    const typeMatch = selectedType === "all" || p.productTypeName === selectedType;
     return cityMatch && typeMatch;
   });
 
@@ -30,12 +32,13 @@ export const StoreContent: React.FC<StoreContentProps> = ({ products }) => {
       <div dir="rtl" className="containerr mb-10">
         <div className="grid grid-cols-1 w-1/2 md:grid-cols-2 gap-6 bg-white p-6 border-gray-100">
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700">تصفية حسب المدينة</label>
+            <label className="font-semibold text-gray-700">{t("store.filter_by_city")}</label>
             <select
               value={selectedCity}
               onChange={(e) => setSelectedCity(e.target.value)}
               className="w-full px-4 py-3 bg-[#ECF5F9] border border-[#618FB5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007b9e] transition-all"
             >
+              <option value="all">{t("store.choose_city")}</option>
               {cities.map((city) => (
                 <option key={city} value={city}>
                   {city}
@@ -45,12 +48,13 @@ export const StoreContent: React.FC<StoreContentProps> = ({ products }) => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700">تصفية حسب النوع</label>
+            <label className="font-semibold text-gray-700">{t("store.filter_by_type")}</label>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               className="w-full px-4 py-3 bg-[#ECF5F9] border border-[#618FB5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007b9e] transition-all"
             >
+              <option value="all">{t("store.choose_type")}</option>
               {types.map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -65,15 +69,15 @@ export const StoreContent: React.FC<StoreContentProps> = ({ products }) => {
         <StoreSlider prodacts={filteredProducts} />
       ) : (
         <div className="text-center py-20 bg-gray-50 rounded-2xl containerr border-2 border-dashed border-gray-200">
-          <p className="text-xl text-gray-500 font-medium">لا توجد منتجات تطابق اختياراتك</p>
+          <p className="text-xl text-gray-500 font-medium">{t("store.no_products_match")}</p>
           <button
             onClick={() => {
-              setSelectedCity("الكل");
-              setSelectedType("الكل");
+              setSelectedCity("all");
+              setSelectedType("all");
             }}
             className="mt-4 text-[#007b9e] font-semibold hover:underline"
           >
-            إعادة تعيين المرشحات
+            {t("store.reset_filters")}
           </button>
         </div>
       )}

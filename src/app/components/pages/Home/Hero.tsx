@@ -3,53 +3,56 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-
-const slides = [
-  {
-    id: 1,
-    image: "/images/Home/slide1.png",
-    title: "أهم أخبار صناعة الأسمنت في مصر والعالم",
-    buttonText: "تصفح الأخبار",
-    link: "/news",
-  },
-  {
-    id: 2,
-    image: "/images/Home/slide2.png",
-    title: "أسعار الأسمنت   لحظة بلحظة من مصادرها",
-    buttonText: "تصفح الأسعار",
-    link: "/prices",
-  },
-  {
-    id: 3,
-    image: "/images/Home/slide3.png",
-    title: "لأول مرة في مصر .. نقلة الأسمنت بقت أون لاين",
-    buttonText: "تصفح متجرنا",
-    link: "/store",
-  },
-  {
-    id: 4,
-    image: "/images/Home/slide4.png",
-    title: " خبراء الدعم الفني و الصيانة و موردي قطع الغيار و الخامات",
-    buttonText: "تصف شركاء الصناعة",
-    link: "/partener",
-  },
-  {
-    id: 5,
-    image: "/images/Home/slide5.png",
-    title: "  أهم منتجين الأسمنت في مصر",
-    buttonText: "تصفح المنتجين",
-    link: "/producers",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Hero = () => {
+  const { t } = useLanguage();
+
+  const slides = [
+    {
+      id: 1,
+      image: "/images/Home/slide1.png",
+      titleKey: "hero.slide1.title",
+      buttonKey: "hero.slide1.button",
+      link: "/news",
+    },
+    {
+      id: 2,
+      image: "/images/Home/slide2.png",
+      titleKey: "hero.slide2.title",
+      buttonKey: "hero.slide2.button",
+      link: "/prices",
+    },
+    {
+      id: 3,
+      image: "/images/Home/slide3.png",
+      titleKey: "hero.slide3.title",
+      buttonKey: "hero.slide3.button",
+      link: "/store",
+    },
+    {
+      id: 4,
+      image: "/images/Home/slide4.png",
+      titleKey: "hero.slide4.title",
+      buttonKey: "hero.slide4.button",
+      link: "/partener",
+    },
+    {
+      id: 5,
+      image: "/images/Home/slide5.png",
+      titleKey: "hero.slide5.title",
+      buttonKey: "hero.slide5.button",
+      link: "/producers",
+    },
+  ];
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
       nextSlide();
-    }, 5000); // Auto-advance every 5 seconds
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [currentSlide]);
@@ -103,11 +106,11 @@ export const Hero = () => {
           <div className="absolute inset-0 z-20 flex flex-col justify-center items-center containerr px-6">
             <div className="max-w-4xl w-full text-center space-y-6">
               <h2 className="text-white text-2xl md:text-4xl lg:text-5xl font-bold leading-relaxed">
-                {slides[currentSlide].title}
+                {t(slides[currentSlide].titleKey)}
               </h2>
               <Link href={slides[currentSlide].link}>
                 <button className="bg-[#51E482] text-black px-8 md:px-12 py-3 md:py-4 flex gap-3 rounded-xl text-lg md:text-xl hover:bg-[#4a7a9a] transition-colors mx-auto items-center">
-                  {slides[currentSlide].buttonText} <ArrowLeft />
+                  {t(slides[currentSlide].buttonKey)} <ArrowLeft />
                 </button>
               </Link>
             </div>

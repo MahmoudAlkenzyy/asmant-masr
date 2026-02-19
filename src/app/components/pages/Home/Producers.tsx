@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Partner } from "../../../page";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Producers = ({
   producers,
@@ -18,10 +19,13 @@ export const Producers = ({
   isPartner: boolean;
   isTrue: boolean;
 }) => {
+  const { t } = useLanguage();
   return (
     <section dir="rtl" className={`${isPartner ? "" : "bg-white text-whit"} py-9 e`}>
       <div className="containerr">
-        <h2 className="text-4xl font-bold mb-8 text-center">{isTrue ? "الوكلاء و الموزعون" : " المنتجين"}</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center">
+          {isTrue ? t("home.agents.title") : t("home.producers.title")}
+        </h2>
 
         <div className="flex justify-between items-center mb-6 relative">
           <h3 className="text-2xl font-semibold"> </h3>

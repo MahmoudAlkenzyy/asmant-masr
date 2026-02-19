@@ -6,14 +6,16 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Podcasts = () => {
+  const { t } = useLanguage();
   return (
     <section dir="rtl" className="bg-secoundry py-9">
       <div className="containerr">
-        <h2 className="text-4xl font-bold mb-8 text-center ">منتدى أسمنت مصر</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center ">{t("home.forum.title")}</h2>
         <div className="flex justify-between items-center mb-6 relative">
-          <h3 className="text-2xl font-semibold text-nowrap ">أحدث اللقاءات</h3>
+          <h3 className="text-2xl font-semibold text-nowrap ">{t("home.forum.subtitle")}</h3>
           <div className="flex gap-2  containerr justify-end">
             <button className="swiper-button-prev-podcasts bg-[#A6C7E033]  p-2 rounded-full hover:bg-primary transition">
               <ArrowRight />

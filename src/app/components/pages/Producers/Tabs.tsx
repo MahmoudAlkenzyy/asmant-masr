@@ -10,7 +10,7 @@ export const Tabs: React.FC<{
 }> = ({ defaultTab = "cement", onChange }) => {
   const [active, setActive] = useState<string>(defaultTab);
   const [producersType, setProducersType] = useState<{ id: string; name: string }[]>([]);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const fetchNewsCategory = async () => {
     const res = await fetchWithLanguage(
@@ -25,11 +25,11 @@ export const Tabs: React.FC<{
   };
   useEffect(() => {
     fetchNewsCategory();
-  }, []);
+  }, [language]);
 
   return (
-    <nav aria-label="أقسام الأخبار" dir="rtl" className="w-full bg-white">
-      <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.partners")}</h2>
+    <nav aria-label="producer tabs" dir={language === "ar" ? "rtl" : "ltr"} className="w-full bg-white">
+      <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.producers")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
         {producersType.map(({ id, name }: any) => {
