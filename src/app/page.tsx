@@ -64,7 +64,7 @@ export default function Home() {
           {
             method: "GET",
             headers: { accept: "text/plain" },
-            signal: controller.signal,
+            // signal: controller.signal,
           },
         );
 
@@ -85,6 +85,7 @@ export default function Home() {
   }, []);
 
   if (error) return <div>Error: {error}</div>;
+
   if (!data) return <div></div>;
   //   console.log({ data });
 

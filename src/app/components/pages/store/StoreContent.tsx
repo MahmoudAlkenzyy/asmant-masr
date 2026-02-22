@@ -1,21 +1,36 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StoreSlider } from "./StoreSlider";
 import { prodactType } from "../../../page";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getStoreProducts } from "@/lib/api/store";
 
 interface StoreContentProps {
-  products: prodactType[];
+  // products property is no longer passed from parent
 }
 
-export const StoreContent: React.FC<StoreContentProps> = ({ products }) => {
+export const StoreContent: React.FC<StoreContentProps> = () => {
   const { t } = useLanguage();
+  const [products, setProducts] = useState<prodactType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedCity, setSelectedCity] = React.useState<string>("all");
   const [selectedType, setSelectedType] = React.useState<string>("all");
 
-  if (!products || products.length === 0) {
-    return null;
-  }
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const data = await getStoreProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // Extract unique cities and types for filters
   const cities = [...new Set(products.map((p) => p.cityName).filter(Boolean))];
@@ -26,6 +41,15 @@ export const StoreContent: React.FC<StoreContentProps> = ({ products }) => {
     const typeMatch = selectedType === "all" || p.productTypeName === selectedType;
     return cityMatch && typeMatch;
   });
+
+  if (loading) {
+    return (
+      <div className="py-20 text-center">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#007b9e]"></div>
+        <p className="mt-4 text-gray-500">{t("common.loading") || "Loading..."}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="py-10">
