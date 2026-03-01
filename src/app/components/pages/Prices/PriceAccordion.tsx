@@ -12,6 +12,8 @@ export default function PriceAccordion() {
     language === "ar" ? "الشركة" : "Company",
     language === "ar" ? "المنتج" : "Product",
     language === "ar" ? "المحافظة" : "City",
+    language === "ar" ? "أدنى سعر" : "Min Price",
+    language === "ar" ? "أعلى سعر" : "Max Price",
     language === "ar" ? "متوسط اليوم" : "Today Avg",
     language === "ar" ? "متوسط الأمس" : "Yesterday Avg",
     language === "ar" ? "التغيير" : "Change",
@@ -50,15 +52,18 @@ export default function PriceAccordion() {
     [language === "ar" ? "المحافظة" : "City"]: "cityName",
     [language === "ar" ? "التاريخ" : "Date"]: "date",
     [language === "ar" ? "أعلى سعر" : "Max Price"]: "maxPrice",
-    [language === "ar" ? "أدنى سعر" : "Min Price"]: "lowestPrice",
+    // [language === "ar" ? "أدنى سعر" : "Min Price"]: "lowestPrice",
   };
+  console.log({ headers: headers.map((h) => (h !== "أدنى سعر" && h !== "Min Price" ? h : undefined)) });
 
-  const filterableHeaders = headers.filter(
-    (h) =>
-      h !== headers[headers.length - 1] && // Change
-      h !== headers[headers.length - 2] && // Yesterday Avg
-      h !== headers[headers.length - 3], // Today Avg
-  );
+  const filterableHeaders = headers
+    .filter((h) => h !== "أدنى سعر" && h !== "Min Price" && h !== "أعلى سعر" && h !== "Max Price")
+    .filter(
+      (h) =>
+        h !== headers[headers.length - 1] && // Change
+        h !== headers[headers.length - 2] && // Yesterday Avg
+        h !== headers[headers.length - 3], // Today Avg
+    );
 
   // 🧩 Fetch all product data
   useEffect(() => {
@@ -262,6 +267,8 @@ export default function PriceAccordion() {
                             <td className="py-3 p-2">{company.companyName}</td>
                             <td className="py-3 p-2">{company.tradeName}</td>
                             <td className="py-3 p-2">{company.cityName || "-"}</td>
+                            <td className="py-3 p-2">{company.lowestPrice}</td>
+                            <td className="py-3 p-2">{company.maxPrice}</td>
                             <td className="py-3 p-2">{company.todayAvg}</td>
                             <td className="py-3 p-2">{company.yesterdayAvg}</td>
                             <td
