@@ -148,7 +148,8 @@ const translationsAr: Record<string, string> = {
   "home.agents.title": "الوكلاء و الموزعون",
 
   // Home Prices section
-  "home.prices.title": "أسعار المواد",
+  "home.prices.title": "الأسعار ",
+  "home.prices.button": "تصفح الأسعار",
 
   // Home Podcasts / Forum section
   "home.forum.title": "منتدى أسمنت مصر",
@@ -404,7 +405,7 @@ const translationsEn: Record<string, string> = {
 
   // Home Prices section
   "home.prices.title": "Material Prices",
-
+  "home.prices.button": "Browse Prices",
   // Home Podcasts / Forum section
   "home.forum.title": "Cement Egypt Forum",
   "home.forum.subtitle": "Latest Sessions",

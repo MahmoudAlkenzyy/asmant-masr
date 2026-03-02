@@ -1,10 +1,45 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+interface IdName {
+  id: string;
+  name: string;
+}
+
+interface Company {
+  companyId: string;
+  companyName: string;
+  tradeNameId?: string;
+  tradeName: string;
+  cityName: string;
+  lowestPrice: number;
+  maxPrice: number;
+  todayAvg: number;
+  yesterdayAvg: number;
+  difference: number;
+}
+
+interface ProductGroup {
+  productTypeId: string;
+  productTypeName: string;
+  productName: string;
+  companies: Company[];
+}
+
+interface PriceItem {
+  parentName: string;
+  productTypeId: string;
+  productTypeName: string;
+  productName: string;
+  companies: Company[];
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
 export default function PriceAccordion() {
   const { t, language } = useLanguage();
 
@@ -19,64 +54,81 @@ export default function PriceAccordion() {
     language === "ar" ? "التغيير" : "Change",
   ];
 
-  const [prodactType, setProdactType] = useState([
+  // ── Lookup lists ──────────────────────────────────────────────────────────
+  const [productTypes, setProductTypes] = useState<IdName[]>([
     { id: "7e722b96-6e53-4860-39e5-08de155db96d", name: "اسمنت" },
     { id: "c452e6e3-dece-4f6d-39e6-08de155db96d", name: "حديد" },
     { id: "4fbf4456-9a19-4ff0-39e7-08de155db96d", name: "جبس" },
   ]);
+  const [cities, setCities] = useState<IdName[]>([]);
+  const [companies, setCompanies] = useState<IdName[]>([]);
+  const [tradeNames, setTradeNames] = useState<IdName[]>([]);
 
-  const [priceData, setPriceData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  // ── Filter state (stores IDs, empty string = "All") ───────────────────────
+  const [selectedProductId, setSelectedProductId] = useState("");
+  const [selectedCompanyId, setSelectedCompanyId] = useState("");
+  const [selectedTradeNameId, setSelectedTradeNameId] = useState("");
+  const [selectedCityId, setSelectedCityId] = useState("");
   const [startDate, setStartDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [endDate, setEndDate] = useState<string>(new Date().toISOString().split("T")[0]);
 
-  const getProductType = async () => {
-    const res = await fetchWithLanguage(
-      "https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList",
-    );
-    const data = await res.json();
-    setProdactType(data.products);
-  };
-  const fetchData = async (id: string, start: string, end: string) => {
-    const res = await fetchWithLanguage(
-      `https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetPricePageData?ProductId=${id}&StartDate=2026/02/16&EndDate=2026/02/16`,
-    );
-    const data = await res.json();
-    return data.productTypes || [];
+  // ── Data ──────────────────────────────────────────────────────────────────
+  const [priceData, setPriceData] = useState<PriceItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // ── Fetch lookup lists on mount ───────────────────────────────────────────
+  const getProductTypes = async () => {
+    try {
+      const res = await fetchWithLanguage(
+        "https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList",
+      );
+      const data = await res.json();
+      if (data.products?.length) setProductTypes(data.products);
+    } catch (err) {
+      console.error("Failed to fetch product types:", err);
+    }
   };
 
-  const keyMap: Record<string, string> = {
-    [language === "ar" ? "الشركة" : "Company"]: "companyName",
-    [language === "ar" ? "المنتج" : "Product"]: "productTypeName",
-    [language === "ar" ? "المحافظة" : "City"]: "cityName",
-    [language === "ar" ? "التاريخ" : "Date"]: "date",
-    [language === "ar" ? "أعلى سعر" : "Max Price"]: "maxPrice",
-    // [language === "ar" ? "أدنى سعر" : "Min Price"]: "lowestPrice",
+  const getCities = async () => {
+    try {
+      const res = await fetchWithLanguage(
+        "https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetAllCitiesList",
+      );
+      const data = await res.json();
+      setCities(data.cities || []);
+    } catch (err) {
+      console.error("Failed to fetch cities:", err);
+    }
   };
-  console.log({ headers: headers.map((h) => (h !== "أدنى سعر" && h !== "Min Price" ? h : undefined)) });
 
-  const filterableHeaders = headers
-    .filter((h) => h !== "أدنى سعر" && h !== "Min Price" && h !== "أعلى سعر" && h !== "Max Price")
-    .filter(
-      (h) =>
-        h !== headers[headers.length - 1] && // Change
-        h !== headers[headers.length - 2] && // Yesterday Avg
-        h !== headers[headers.length - 3], // Today Avg
-    );
-
-  // 🧩 Fetch all product data
   useEffect(() => {
-    getProductType();
+    getProductTypes();
+    getCities();
   }, []);
-  useEffect(() => {
-    const loadAll = async () => {
-      setLoading(true);
-      const allItems: any[] = [];
 
-      for (const { id, name } of prodactType) {
+  // ── Main data fetch — triggered whenever any filter or date changes ────────
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      const allItems: PriceItem[] = [];
+
+      // Decide which product IDs to query
+      const targets = selectedProductId ? productTypes.filter((p) => p.id === selectedProductId) : productTypes;
+
+      for (const { id, name } of targets) {
         try {
-          const productGroups = await fetchData(id, startDate.replaceAll("-", "%2F"), endDate.replaceAll("-", "%2F"));
+          const params = new URLSearchParams({ ProductId: id });
+          if (selectedCompanyId) params.set("CompanyId", selectedCompanyId);
+          if (selectedTradeNameId) params.set("TradeNameId", selectedTradeNameId);
+          if (selectedCityId) params.set("CityId", selectedCityId);
+          if (startDate) params.set("StartDate", startDate.replaceAll("-", "-"));
+          if (endDate) params.set("EndDate", endDate.replaceAll("-", "-"));
+
+          const res = await fetchWithLanguage(
+            `https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetPricePageData?${params.toString()}`,
+          );
+          const data = await res.json();
+          const productGroups: ProductGroup[] = data.productTypes || [];
 
           for (const group of productGroups) {
             allItems.push({
@@ -88,158 +140,141 @@ export default function PriceAccordion() {
             });
           }
         } catch (err) {
-          console.error("Error fetching:", id, err);
+          console.error("Error fetching data for product:", id, err);
         }
       }
 
       setPriceData(allItems);
+
+      // Derive company & trade-name lists from the fresh data
+      const allCompanies: IdName[] = [];
+      const allTradeNames: IdName[] = [];
+      const seenCompanies = new Set<string>();
+      const seenTrades = new Set<string>();
+
+      for (const item of allItems) {
+        for (const c of item.companies ?? []) {
+          if (c.companyId && !seenCompanies.has(c.companyId)) {
+            seenCompanies.add(c.companyId);
+            allCompanies.push({ id: c.companyId, name: c.companyName });
+          }
+          if (c.tradeNameId && !seenTrades.has(c.tradeNameId)) {
+            seenTrades.add(c.tradeNameId);
+            allTradeNames.push({ id: c.tradeNameId, name: c.tradeName });
+          }
+        }
+      }
+      setCompanies(allCompanies);
+      setTradeNames(allTradeNames);
+
       setLoading(false);
     };
 
-    loadAll();
-  }, [prodactType, startDate, endDate]);
+    if (productTypes.length > 0) loadData();
+  }, [productTypes, selectedProductId, selectedCompanyId, selectedTradeNameId, selectedCityId, startDate, endDate]);
 
-  // 🔹 Extract unique filter values
-  const uniqueValues = useMemo(() => {
-    const values: Record<string, string[]> = {};
-    const allCompanies = priceData.flatMap(
-      (item) =>
-        item.companies?.map((c: any) => ({
-          companyName: c.companyName,
-          productTypeName: item.productTypeName,
-          cityName: c.cityName,
-          date: c.date?.split("T")[0],
-          maxPrice: c.maxPrice,
-          lowestPrice: c.lowestPrice,
-        })) || [],
-    );
+  // ── Filter bar renderer ───────────────────────────────────────────────────
+  const renderFilters = () => (
+    <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
+      {/* Product type */}
+      <select
+        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+        value={selectedProductId}
+        onChange={(e) => setSelectedProductId(e.target.value)}
+      >
+        <option value="" disabled hidden>
+          {language === "ar" ? "المنتج" : "Product"}
+        </option>
+        <option value="">{language === "ar" ? "الكل" : "All"}</option>
+        {productTypes.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </select>
+      {/* Company */}
+      <select
+        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+        value={selectedCompanyId}
+        onChange={(e) => setSelectedCompanyId(e.target.value)}
+      >
+        <option value="" disabled hidden>
+          {language === "ar" ? "الشركة" : "Company"}
+        </option>
+        <option value="">{language === "ar" ? "الكل" : "All"}</option>
+        {companies.map((c) => (
+          <option key={c.id} value={c.id}>
+            {c.name}
+          </option>
+        ))}
+      </select>
+      {/* Trade name
+      <select
+        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+        value={selectedTradeNameId}
+        onChange={(e) => setSelectedTradeNameId(e.target.value)}
+      >
+        <option value="" disabled hidden>
+          {language === "ar" ? "الاسم التجاري" : "Trade Name"}
+        </option>
+        <option value="">{language === "ar" ? "الكل" : "All"}</option>
+        {tradeNames.map((t) => (
+          <option key={t.id} value={t.id}>
+            {t.name}
+          </option>
+        ))}
+      </select> */}
+      {/* City */}
+      <select
+        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+        value={selectedCityId}
+        onChange={(e) => setSelectedCityId(e.target.value)}
+      >
+        <option value="" disabled hidden>
+          {language === "ar" ? "المحافظة" : "City"}
+        </option>
+        <option value="">{language === "ar" ? "الكل" : "All"}</option>
+        {cities.map((city) => (
+          <option key={city.id} value={city.id}>
+            {city.name}
+          </option>
+        ))}
+      </select>
+      {/* Start date */}
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+        title={language === "ar" ? "تاريخ البداية" : "Start Date"}
+      />
+      {/* End date */}
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
+        title={language === "ar" ? "تاريخ النهاية" : "End Date"}
+      />
+    </div>
+  );
 
-    filterableHeaders.forEach((header) => {
-      const key = keyMap[header];
-      const unique = Array.from(new Set(allCompanies.map((c) => String(c[key]))));
-      values[header] = unique;
-    });
-
-    return values;
-  }, [priceData, language]);
-
-  // 🔹 Apply filters
-  const filteredData = useMemo(() => {
-    if (Object.values(filters).every((v) => v === "")) return priceData;
-
-    return priceData
-      .map((item) => ({
-        ...item,
-        companies: item.companies?.filter((c: any) =>
-          Object.entries(filters).every(([header, value]) => {
-            if (!value) return true;
-            const key = keyMap[header];
-            const actualValue = key === "productTypeName" ? item.productTypeName : c[key];
-            return String(actualValue) === value;
-          }),
-        ),
-      }))
-      .filter((item) => item.companies && item.companies.length > 0); // ✅ hide empty accordions
-  }, [priceData, filters, language]);
-
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="w-full container mx-auto p-4" dir={language === "ar" ? "rtl" : "ltr"}>
       {loading ? (
         <div className="text-center py-6 text-gray-500">{t("common.loading")}</div>
-      ) : priceData.length === 0 ? (
-        <div className="">
-          <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
-            {filterableHeaders?.map((header) => (
-              <select
-                key={header}
-                className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-                value={filters[header] || ""}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    [header]: e.target.value,
-                  }))
-                }
-              >
-                <option value="" disabled hidden>
-                  {header}
-                </option>
-                <option value="">{language === "ar" ? "الكل" : "All"}</option>
-                {uniqueValues[header]?.map((val, i) => (
-                  <option key={i} value={val}>
-                    {val}
-                  </option>
-                ))}
-              </select>
-            ))}
-
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-              title={language === "ar" ? "تاريخ البداية" : "Start Date"}
-            />
-
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-              title={language === "ar" ? "تاريخ النهاية" : "End Date"}
-            />
-          </div>
-          <div className="text-center py-6 text-gray-500">
-            {language === "ar" ? "لا توجد بيانات متاحة" : "No data available"}
-          </div>
-        </div>
       ) : (
         <>
-          <div className="grid md:grid-cols-5 sm:grid-cols-3 gap-3 mb-6 p-4 rounded-xl">
-            {filterableHeaders.map((header) => (
-              <select
-                key={header}
-                className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-                value={filters[header] || ""}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    [header]: e.target.value,
-                  }))
-                }
-              >
-                <option value="" disabled hidden>
-                  {header}
-                </option>
-                <option value="">{language === "ar" ? "الكل" : "All"}</option>
-                {uniqueValues[header]?.map((val, i) => (
-                  <option key={i} value={val}>
-                    {val}
-                  </option>
-                ))}
-              </select>
-            ))}
+          {renderFilters()}
 
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-              title={language === "ar" ? "تاريخ البداية" : "Start Date"}
-            />
-
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-              title={language === "ar" ? "تاريخ النهاية" : "End Date"}
-            />
-          </div>
-
-          <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
-            {filteredData.length > 0 ? (
-              filteredData?.map((item, index) => (
+          {priceData.length === 0 ? (
+            <div className="text-center py-6 text-gray-500">
+              {language === "ar" ? "لا توجد بيانات متاحة" : "No data available"}
+            </div>
+          ) : (
+            <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
+              {priceData.map((item, index) => (
                 <AccordionItem
                   key={index}
                   title={`${item.parentName} - ${item.productTypeName}`}
@@ -262,7 +297,7 @@ export default function PriceAccordion() {
                         </tr>
                       </thead>
                       <tbody>
-                        {item?.companies?.map((company: any, j: number) => (
+                        {item.companies?.map((company, j) => (
                           <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
                             <td className="py-3 p-2">{company.companyName}</td>
                             <td className="py-3 p-2">{company.tradeName}</td>
@@ -284,13 +319,9 @@ export default function PriceAccordion() {
                     </table>
                   </div>
                 </AccordionItem>
-              ))
-            ) : (
-              <div className="text-center text-gray-500 py-6">
-                {language === "ar" ? "لا توجد بيانات مطابقة للبحث." : "No matching data found."}
-              </div>
-            )}
-          </Accordion>
+              ))}
+            </Accordion>
+          )}
         </>
       )}
     </div>

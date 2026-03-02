@@ -23,7 +23,7 @@ export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className 
   ];
 
   return (
-    <Link href={`/new/${news?.id}`} className={`${className} my-2`}>
+    <Link href={`/new/${news?.id}`} className={`${className} my-2 h-full flex flex-col`}>
       <div dir="rtl" className="flex flex-col min-h-[400px] h-full w-full text-start">
         <Image
           className="rounded-xl !w-full h-full grow"
@@ -32,12 +32,15 @@ export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className 
           width={500}
           height={500}
         />
-        <h3 className="text-xl font-medium my-4">{news?.title}</h3>
-        <div className="flex flex-col justify-between">
-          <p className="text-[#292E2B] opacity-50 ps-10">{t("newscard.subtitle")}</p>
+        <h3 className="text-xl font-medium my-4 px-1">{news?.title}</h3>
+        <div className="flex flex-col items-start px-1">
+          <p className="text-[#292E2B] opacity-50 ">{news?.description.slice(0, 40) + "..."}</p>
           {!ispodcast && (
-            <div className="bg-[#51E482] rounded-full  flex items-center justify-center w-10 h-10 me-auto font-thin mt-auto">
-              <ArrowLeft className="cursor-pointer" />
+            <div className="flex items-center justify-between w-full pt-2 px-2">
+              <p className="text-[#292E2B] opacity-50 ">{news?.publishAt?.split("T")[0]}</p>
+              <div className="bg-[#51E482] rounded-full  flex items-center justify-center w-10 h-10 font-thin mt-auto">
+                <ArrowLeft className="cursor-pointer" />
+              </div>
             </div>
           )}
         </div>

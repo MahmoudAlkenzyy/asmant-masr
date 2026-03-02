@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -15,51 +15,152 @@ interface StoreSliderProps {
   prodacts: prodactType[];
 }
 
+// ─── helper: unique non-empty values from an array ───────────────────────────
+function uniq(arr: (string | undefined | null)[]): string[] {
+  return [...new Set(arr.filter(Boolean) as string[])];
+}
+
 export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
   const { t } = useLanguage();
   const [isMounted, setIsMounted] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<prodactType | null>(null);
-  const [formData, setFormData] = useState({
-    type: "",
-    location: "",
-    category: "",
-    quantity: 60,
-    unit: "ton",
-  });
+
+  // ── 5 independent filter states (empty = "all") ───────────────────────────
+  const [selProduct, setSelProduct] = useState("");
+  const [selCompany, setSelCompany] = useState("");
+  const [selType, setSelType] = useState("");
+  const [selCity, setSelCity] = useState("");
+  const [selTrade, setSelTrade] = useState("");
+  const [quantity, setQuantity] = useState(60);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  // ── Rows that match ALL currently-set filters ─────────────────────────────
+  const matched = useMemo(
+    () =>
+      prodacts.filter((p) => {
+        if (selProduct && p.productName !== selProduct) return false;
+        if (selCompany && p.companyName !== selCompany) return false;
+        if (selType && p.productTypeName !== selType) return false;
+        if (selCity && p.cityName !== selCity) return false;
+        if (selTrade && p.tradeName !== selTrade) return false;
+        return true;
+      }),
+    [prodacts, selProduct, selCompany, selType, selCity, selTrade],
+  );
+
+  // ── Options for each dropdown = unique values from the matched set ─────────
+  const opts = useMemo(
+    () => ({
+      // For each field, unlock it from its own filter so the user can change it
+      product: uniq(
+        prodacts
+          .filter((p) => {
+            if (selCompany && p.companyName !== selCompany) return false;
+            if (selType && p.productTypeName !== selType) return false;
+            if (selCity && p.cityName !== selCity) return false;
+            if (selTrade && p.tradeName !== selTrade) return false;
+            return true;
+          })
+          .map((p) => p.productName),
+      ),
+      company: uniq(
+        prodacts
+          .filter((p) => {
+            if (selProduct && p.productName !== selProduct) return false;
+            if (selType && p.productTypeName !== selType) return false;
+            if (selCity && p.cityName !== selCity) return false;
+            if (selTrade && p.tradeName !== selTrade) return false;
+            return true;
+          })
+          .map((p) => p.companyName),
+      ),
+      type: uniq(
+        prodacts
+          .filter((p) => {
+            if (selProduct && p.productName !== selProduct) return false;
+            if (selCompany && p.companyName !== selCompany) return false;
+            if (selCity && p.cityName !== selCity) return false;
+            if (selTrade && p.tradeName !== selTrade) return false;
+            return true;
+          })
+          .map((p) => p.productTypeName),
+      ),
+      city: uniq(
+        prodacts
+          .filter((p) => {
+            if (selProduct && p.productName !== selProduct) return false;
+            if (selCompany && p.companyName !== selCompany) return false;
+            if (selType && p.productTypeName !== selType) return false;
+            if (selTrade && p.tradeName !== selTrade) return false;
+            return true;
+          })
+          .map((p) => p.cityName),
+      ),
+      trade: uniq(
+        prodacts
+          .filter((p) => {
+            if (selProduct && p.productName !== selProduct) return false;
+            if (selCompany && p.companyName !== selCompany) return false;
+            if (selType && p.productTypeName !== selType) return false;
+            if (selCity && p.cityName !== selCity) return false;
+            return true;
+          })
+          .map((p) => p.tradeName),
+      ),
+    }),
+    [prodacts, selProduct, selCompany, selType, selCity, selTrade],
+  );
+
+  // ── When a card is clicked: pre-fill all dropdowns from that card ──────────
   const handleOpenForm = (product: prodactType) => {
-    setSelectedProduct(product);
-    setFormData({
-      type: product.productTypeName || "",
-      location: product.cityName || "",
-      category: product.tradeName || "",
-      quantity: product.quantity || 60,
-      unit: "ton",
-    });
+    setSelProduct(product.productName || "");
+    setSelCompany(product.companyName || "");
+    setSelType(product.productTypeName || "");
+    setSelCity(product.cityName || "");
+    setSelTrade(product.tradeName || "");
+    setQuantity(product.quantity || 60);
     setIsFormOpen(true);
   };
 
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setSelectedProduct(null);
-  };
-
-  const calculateTotal = () => {
-    const pricePerTon = 5000;
-    return (formData.quantity * pricePerTon).toLocaleString("en-US");
-  };
+  const handleCloseForm = () => setIsFormOpen(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // console.log("Form submitted:", formData);
     toast.success(t("store.order_success"));
     handleCloseForm();
   };
+
+  // ── Reusable select renderer ───────────────────────────────────────────────
+  const Dropdown = ({
+    label,
+    value,
+    options,
+    onChange,
+  }: {
+    label: string;
+    value: string;
+    options: string[];
+    onChange: (v: string) => void;
+  }) => (
+    <div>
+      <label className="block text-sm font-semibold mb-2 text-gray-700">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#618FB5]"
+      >
+        <option value="">{label}</option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 
   if (!isMounted) {
     return (
@@ -77,10 +178,10 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
   return (
     <section dir="rtl" className="bg-[] py-9">
       <div className="containerr">
-        <h2 className="text-4xl font-bold mb-8 text-center ">{t("store.title")}</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center">{t("store.title")}</h2>
 
         <div className="flex justify-between items-center mb-6 relative">
-          <h3 className="text-2xl font-semibold  text-nowrap">{t("store.subtitle")}</h3>
+          <h3 className="text-2xl font-semibold text-nowrap">{t("store.subtitle")}</h3>
           <div className="flex gap-2 containerr justify-end">
             <button className="swiper-button-prev-store bg-[#A6C7E0] text-black p-2 rounded-full hover:bg-primary transition">
               <ArrowRight size={16} />
@@ -104,65 +205,63 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
             1024: { slidesPerView: 4 },
           }}
           loop={true}
-          className="mt-4 store-slider-equal-height"
+          className="mt-4"
+          style={{ alignItems: "stretch" }}
         >
           {prodacts.map((cardInfo, i) => (
-            <SwiperSlide key={i} className="flex">
+            <SwiperSlide key={i} className="h-full">
               <StoreCard idx={i} cardInfo={cardInfo} onClick={() => handleOpenForm(cardInfo)} isHome={false} />
             </SwiperSlide>
           ))}
         </Swiper>
 
-        {/* Order Form */}
+        {/* ── Order Form ── */}
         {isFormOpen && (
-          <div className="mt-8 max-w-4xl  mx-auto shadow-lg relative animate-slideDown">
+          <div className="mt-8 max-w-4xl mx-auto shadow-lg relative animate-slideDown">
             <form onSubmit={handleSubmit} className="space-y-6 text-[#618FB5]">
-              <div className="bg-[#D6EFF8] rounded-2xl  p-8 pb-3 mb-0 rounded-b-none ">
-                <div className="grid  gap-6">
-                  <div>
-                    <label className="block text-sm font-semibold mb-2 text-gray-700">{t("store.order_type")}</label>
-                    <select
-                      value={formData.type}
-                      onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#618FB5]"
-                    >
-                      <option value="أسمنت بوزلاندي">أسمنت بوزلاندي</option>
-                      <option value="أسمنت مقاوم">أسمنت مقاوم</option>
-                      <option value="أسمنت أبيض">أسمنت أبيض</option>
-                    </select>
-                  </div>
+              <div className="bg-[#D6EFF8] rounded-2xl p-8 pb-3 mb-0 rounded-b-none">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                  {/* 1. المنتج */}
+                  <Dropdown
+                    label={t("storecard.product")}
+                    value={selProduct}
+                    options={opts.product}
+                    onChange={(v) => setSelProduct(v)}
+                  />
 
-                  <div>
-                    <label className="block text-sm font-semibold mb-2 text-gray-700">
-                      {t("store.order_location")}
-                    </label>
-                    <select
-                      value={formData.location}
-                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#618FB5]"
-                    >
-                      <option value="القاهرة">القاهرة</option>
-                      <option value="الإسكندرية">الإسكندرية</option>
-                      <option value="الجيزة">الجيزة</option>
-                      <option value="الدقهلية">الدقهلية</option>
-                    </select>
-                  </div>
+                  {/* 2. الشركة */}
+                  <Dropdown
+                    label={t("storecard.company")}
+                    value={selCompany}
+                    options={opts.company}
+                    onChange={(v) => setSelCompany(v)}
+                  />
 
-                  <div>
-                    <label className="block text-sm font-semibold mb-2 text-gray-700">
-                      {t("store.order_category")}
-                    </label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#618FB5]"
-                    >
-                      <option value="مقاوم المسلح">مقاوم المسلح</option>
-                      <option value="عادي">عادي</option>
-                      <option value="سريع الشك">سريع الشك</option>
-                    </select>
-                  </div>
+                  {/* 3. النوع */}
+                  <Dropdown
+                    label={t("store.order_type")}
+                    value={selType}
+                    options={opts.type}
+                    onChange={(v) => setSelType(v)}
+                  />
 
+                  {/* 4. الموقع */}
+                  <Dropdown
+                    label={t("store.order_location")}
+                    value={selCity}
+                    options={opts.city}
+                    onChange={(v) => setSelCity(v)}
+                  />
+
+                  {/* 5. الفئة */}
+                  <Dropdown
+                    label={t("store.order_category")}
+                    value={selTrade}
+                    options={opts.trade}
+                    onChange={(v) => setSelTrade(v)}
+                  />
+
+                  {/* 6. الكمية */}
                   <div>
                     <label className="block text-sm font-semibold mb-2 text-gray-700">
                       {t("store.order_quantity")}
@@ -170,26 +269,27 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
                     <div className="flex gap-2">
                       <input
                         type="number"
-                        value={formData.quantity}
-                        onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 0 })}
+                        value={quantity}
+                        onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
                         className="flex-1 px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#618FB5]"
                         min="1"
                       />
-                      <div className="px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#618FB5]">
+                      <div className="px-4 py-3 border border-gray-300 bg-[#ECF5F9] rounded-lg">
                         {t("store.order_unit")}
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Matching count hint */}
+                {matched.length > 0 && (
+                  <p className="text-xs text-gray-500 mt-4">
+                    {matched.length}{" "}
+                    {matched.length === 1 ? t("store.result_singular") || "نتيجة" : t("store.result_plural") || "نتائج"}
+                  </p>
+                )}
               </div>
-              <div className="bg-[#618FB5] text-white  p-6 rounded-lg rounded-t-none">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-lg font-semibold">{t("store.order_total")}</span>
-                  <span className="text-xl font-bold text-white">
-                    {calculateTotal()} {t("store.currency")}
-                  </span>
-                </div>
-              </div>
+
               <button
                 type="submit"
                 className="w-full cursor-pointer bg-[#51E482] text-black py-4 rounded-lg font-bold text-lg hover:bg-[#4a7a9a] transition"
@@ -200,35 +300,6 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
           </div>
         )}
       </div>
-
-      <style jsx global>{`
-        .store-slider-equal-height .swiper-wrapper {
-          align-items: stretch !important;
-        }
-        .store-slider-equal-height .swiper-slide {
-          height: auto !important;
-          display: flex !important;
-        }
-        .store-slider-equal-height .swiper-slide > div {
-          width: 100%;
-          height: 100%;
-          display: flex !important;
-          flex-direction: column !important;
-        }
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-slideDown {
-          animation: slideDown 0.3s ease-out;
-        }
-      `}</style>
     </section>
   );
 };

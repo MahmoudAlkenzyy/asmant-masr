@@ -13,13 +13,17 @@ body {
   height: 100%;
 }
 
+.swiper-wrapper {
+  align-items: stretch;
+}
+
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  height: auto !important;
 }
 
 .swiper-slide img {
@@ -34,4 +38,18 @@ body {
 }
 .bg-secoundry {
   background: #e5fbff;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
 }
