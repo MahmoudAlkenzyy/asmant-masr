@@ -60,7 +60,7 @@ export default function Page() {
         </Link>
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6 self-stretch ps-14">
+      <form onSubmit={handleSubmit} className="space-y-6 self-stretch ">
         <div className="flex flex-col gap-2">
           <label htmlFor="email" className="text-sm font-medium text-gray-700">
             {t("login.email")}

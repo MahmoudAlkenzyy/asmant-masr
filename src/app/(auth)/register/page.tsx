@@ -20,6 +20,28 @@ export default function Page() {
 
       <form className="space-y-6 self-stretch ps-14">
         <div className="flex flex-col gap-2">
+          <label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+            الاسم الكامل
+          </label>
+          <input
+            id="fullName"
+            type="text"
+            className="w-full px-4 py-3 bg-[#E5FBFF] border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="phone" className="text-sm font-medium text-gray-700">
+            رقم الهاتف
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            className="w-full px-4 py-3 bg-[#E5FBFF] border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
           <label htmlFor="email" className="text-sm font-medium text-gray-700">
             البريد الإلكتروني
           </label>
