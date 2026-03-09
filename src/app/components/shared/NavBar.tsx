@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronDown, Menu, X, Languages } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ChevronDown, Menu, X, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTraderCategories } from "@/contexts/TraderCategoriesContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 export type NavChild = {
   link: string;
   to: string;
@@ -20,8 +21,22 @@ export type NavItem = {
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeParent, setActiveParent] = useState<string | null>(null);
+  const [avatarOpen, setAvatarOpen] = useState(false);
+  const avatarRef = useRef<HTMLDivElement>(null);
   const { categories, loading } = useTraderCategories();
   const { language, setLanguage, t } = useLanguage();
+  const { user, logout } = useAuth();
+
+  // Close avatar dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (avatarRef.current && !avatarRef.current.contains(e.target as Node)) {
+        setAvatarOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const toggleLanguage = () => {
     const newLang = language === "ar" ? "en" : "ar";
@@ -30,27 +45,27 @@ export default function NavBar() {
     window.location.reload();
   };
 
-  const traderCategories: NavItem = {
-    link: t("nav.traders"),
-    to: "",
-    children:
-      !loading && categories.length > 0
-        ? categories.map((c) => ({
-            link: c.name,
-            to: `/traders/${c.id}`,
-          }))
-        : [
-            { link: t("nav.local_market"), to: "/local" },
-            { link: t("nav.export"), to: "/export" },
-          ],
-  };
+  //   const traderCategories: NavItem = {
+  //     link: t("nav.traders"),
+  //     to: "",
+  //     children:
+  //       !loading && categories.length > 0
+  //         ? categories.map((c) => ({
+  //             link: c.name,
+  //             to: `/traders/${c.id}`,
+  //           }))
+  //         : [
+  //             { link: t("nav.local_market"), to: "/local" },
+  //             { link: t("nav.export"), to: "/export" },
+  //           ],
+  //   };
 
   const links: NavItem[] = [
     { link: t("nav.home"), to: "/" },
     { link: t("nav.prices"), to: "/prices" },
     { link: t("nav.news"), to: "/news" },
     { link: t("nav.producers"), to: "/producers" },
-    traderCategories,
+    // traderCategories,
     { link: t("nav.partners"), to: "/partener" },
     {
       link: t("nav.cement_egypt"),
@@ -122,12 +137,66 @@ export default function NavBar() {
             <span className="font-semibold text-sm">{language === "ar" ? "EN" : "AR"}</span>
           </button>
 
-          <Link href="/login">
-            <button className="hidden xl:block bg-primary py-3 px-6 rounded-lg text-white">{t("nav.login")}</button>
-          </Link>
+          {/* Auth: Avatar (logged in) or Login button */}
+          {user ? (
+            <div ref={avatarRef} className="relative hidden xl:block">
+              <button
+                onClick={() => setAvatarOpen((v) => !v)}
+                className="flex items-center gap-2 cursor-pointer group"
+                aria-label="User menu"
+              >
+                {/* Initials avatar */}
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm select-none shadow">
+                  {user.name
+                    .split(" ")
+                    .slice(0, 2)
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()}
+                </div>
+                <ChevronDown
+                  size={14}
+                  className={`text-gray-600 transition-transform duration-200 ${avatarOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {/* Dropdown */}
+              {avatarOpen && (
+                <div className="absolute right-0 top-[calc(100%+10px)] w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-fadeIn">
+                  {/* User info */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="font-semibold text-gray-800 text-sm truncate">{user.name}</p>
+                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                    {user.roles.length > 0 && (
+                      <span className="mt-1 inline-block text-[10px] bg-primary/10 text-primary font-semibold px-2 py-0.5 rounded-full">
+                        {user.roles[0]}
+                      </span>
+                    )}
+                  </div>
+                  {/* Logout */}
+                  <button
+                    onClick={() => {
+                      logout();
+                      setAvatarOpen(false);
+                    }}
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
+                  >
+                    <LogOut size={15} />
+                    {t("nav.logout") || "تسجيل الخروج"}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login">
+              <button className="hidden xl:block cursor-pointer bg-primary py-3 px-6 rounded-lg text-white">
+                {t("nav.login")}
+              </button>
+            </Link>
+          )}
 
           {/* Mobile Toggle */}
-          <button className="xl:hidden" onClick={() => setMenuOpen((p) => !p)}>
+          <button className="xl:hidden cursor-pointer" onClick={() => setMenuOpen((p) => !p)}>
             {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -179,8 +248,42 @@ export default function NavBar() {
             ))}
           </ul>
 
-          {/* Mobile Language Switcher */}
-          <div className="border-t p-4">
+          {/* Mobile Auth */}
+          <div className="border-t p-4 space-y-3">
+            {user ? (
+              <>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
+                    {user.name
+                      .split(" ")
+                      .slice(0, 2)
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm">{user.name}</p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-500 border border-red-200 py-2 px-4 rounded-lg text-sm font-semibold"
+                >
+                  <LogOut size={15} />
+                  {t("nav.logout") || "تسجيل الخروج"}
+                </button>
+              </>
+            ) : (
+              <Link href="/login" onClick={() => setMenuOpen(false)}>
+                <button className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold">
+                  {t("nav.login")}
+                </button>
+              </Link>
+            )}
             <button
               onClick={toggleLanguage}
               className="w-full flex items-center justify-center gap-2 bg-primary py-3 px-6 rounded-lg"

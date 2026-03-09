@@ -6,18 +6,20 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StoreCardInterface {
   cardInfo: prodactType;
+  //   StoreImageFilePath?: string | null;
   isHome?: boolean;
   idx?: number;
   onClick?: () => void;
 }
 export const StoreCard: React.FC<StoreCardInterface> = ({
-  cardInfo: { cityName, companyName, productName, tradeName, productTypeName },
+  cardInfo: { cityName, companyName, productName, tradeName, productTypeName, storeImageFilePath },
   isHome = true,
   idx = 1,
   onClick,
 }) => {
   const { t, language } = useLanguage();
   const images = ["/images/asmant.png"];
+
   return (
     <div
       dir={language === "ar" ? "rtl" : "ltr"}
@@ -28,7 +30,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
     >
       <Image
         className="rounded-xl object-contain bg-[#D5F4FF] rounded-b-"
-        src={images[idx] || "/images/asmant.png"}
+        src={storeImageFilePath || "/images/asmant.png"}
         alt=""
         width={500}
         height={500}
@@ -49,7 +51,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
           */}
         </div>
 
-        <button className="flex items-center gap-3 bg-[#D9EBF7] text-black text-nowrap self-center text-sm px-4 py-4  mt-4 rounded-xl m-3">
+        <button className="flex cursor-pointer items-center gap-3 bg-[#D9EBF7] text-black text-nowrap self-center text-sm px-4 py-4  mt-4 rounded-xl m-3">
           {t("storecard.request_deal")}
           <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path

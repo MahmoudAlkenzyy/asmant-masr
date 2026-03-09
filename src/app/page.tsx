@@ -26,10 +26,15 @@ export interface HomeType {
 export interface prodactType {
   productName: string;
   productTypeName: string;
-  companyName: string;
-  cityName: string;
-  tradeName: string;
-  quantity: number;
+  productTypeId?: string;
+  companyName?: string;
+  cityName?: string;
+  tradeName?: string;
+  storeImageFilePath: string | null;
+  quantity?: number;
+
+  id?: string;
+  productId?: string;
 }
 
 export interface LatestNew {

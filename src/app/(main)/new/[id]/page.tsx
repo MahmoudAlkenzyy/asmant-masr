@@ -28,11 +28,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       if (!item.images || item.images.length === 0) return "/images/Home/ads.webp";
       const firstImg = item.images[0];
       if (typeof firstImg === "string") return firstImg;
-      return `https://cement.northeurope.cloudapp.azure.com:5000${firstImg.filePath}`;
+      return `${firstImg.filePath}`;
     };
 
     return (
-      <div className="bg-white">
+      <div dir={language === "ar" ? "ltr" : "rtl"} className="bg-white">
         <div className="containerr">
           <div className="grid md:grid-cols-4 items-start gap-6 mt-6">
             <RelatedNews />

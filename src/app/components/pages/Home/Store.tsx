@@ -12,6 +12,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Store = ({ prodacts, isStore = false }: { prodacts: prodactType[]; isStore: boolean }) => {
   const { t } = useLanguage();
+  //   console.log({ prodacts });
+
   return (
     <section dir="rtl" className="bg-[#618FB5] py-9">
       <div className="containerr">

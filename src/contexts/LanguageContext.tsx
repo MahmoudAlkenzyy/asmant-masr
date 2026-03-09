@@ -256,6 +256,26 @@ const translationsAr: Record<string, string> = {
   "login.failed": "فشل تسجيل الدخول، تأكد من البريد الإلكتروني أو كلمة المرور.",
   "login.server_error": "حدث خطأ أثناء الاتصال بالخادم.",
 
+  // Register Page
+  "register.title": "تسجيل جديد",
+  "register.have_account": "يوجد لديك حساب؟",
+  "register.login_now": "تسجيل الدخول",
+  "register.full_name": "الاسم الكامل",
+  "register.full_name_placeholder": "أدخل اسمك الكامل",
+  "register.phone_placeholder": "أدخل رقم هاتفك",
+  "register.confirm_password": "تأكيد كلمة المرور",
+  "register.confirm_password_placeholder": "أعد إدخال كلمة المرور",
+  "register.password_mismatch": "كلمتا المرور غير متطابقتين",
+  "register.submit": "تسجيل جديد",
+  "register.loading": "جارٍ التسجيل...",
+  "register.success": "تم التسجيل بنجاح!",
+  "register.failed": "فشل التسجيل، تحقق من البيانات",
+  "register.name_required": "الاسم مطلوب",
+  "register.phone_required": "رقم الهاتف مطلوب",
+  "register.phone_invalid": "رقم الهاتف غير صحيح (مثال: 01012345678)",
+  "register.passwords_match": "كلمتا المرور متطابقتان",
+  "register.validation_errors": "يرجى تصحيح الأخطاء التالية:",
+
   // Our Vision page
   "vision.credibility_title": "المصداقية",
   "vision.credibility_text1":
@@ -306,6 +326,23 @@ const translationsAr: Record<string, string> = {
   "storecard.quantity": "الكمية",
   "storecard.company": "الشركة",
   "storecard.request_deal": "طلب صفقة",
+
+  // Auth overlay
+  "store.login_required_title": "تسجيل الدخول مطلوب",
+  "store.login_required_desc": "يجب عليك تسجيل الدخول أولاً للوصول إلى المتجر وتصفح المنتجات",
+  "store.select_city_first": "اختر المدينة أولاً",
+  "store.select_company_first": "اختر الشركة أولاً",
+  // Order form sections
+  "store.section_product": "تفاصيل المنتج",
+  "store.section_customer": "بيانات العميل",
+  "store.customer_name": "الاسم الكامل",
+  "store.customer_phone": "رقم الهاتف",
+  "store.shipping_address": "عنوان الشحن",
+  "store.fill_all_fields": "يرجى اكتمال جميع الحقول",
+  "store.order_failed": "فشل إرسال الطلب، حاول مرة أخرى",
+
+  // Navbar logout
+  "nav.logout": "تسجيل الخروج",
 };
 
 const translationsEn: Record<string, string> = {
@@ -512,6 +549,26 @@ const translationsEn: Record<string, string> = {
   "login.failed": "Login failed. Check your email or password.",
   "login.server_error": "A server error occurred. Please try again.",
 
+  // Register Page
+  "register.title": "Register",
+  "register.have_account": "Already have an account?",
+  "register.login_now": "Login",
+  "register.full_name": "Full Name",
+  "register.full_name_placeholder": "Enter your full name",
+  "register.phone_placeholder": "Enter your phone number",
+  "register.confirm_password": "Confirm Password",
+  "register.confirm_password_placeholder": "Re-enter your password",
+  "register.password_mismatch": "Passwords do not match",
+  "register.submit": "Register",
+  "register.loading": "Registering...",
+  "register.success": "Registered successfully!",
+  "register.failed": "Registration failed. Please check your details.",
+  "register.name_required": "Name is required",
+  "register.phone_required": "Phone number is required",
+  "register.phone_invalid": "Invalid phone number (example: 01012345678)",
+  "register.passwords_match": "Passwords match",
+  "register.validation_errors": "Please fix the following errors:",
+
   // Our Vision page
   "vision.credibility_title": "Credibility",
   "vision.credibility_text1":
@@ -562,4 +619,21 @@ const translationsEn: Record<string, string> = {
   "storecard.quantity": "Quantity",
   "storecard.company": "Company",
   "storecard.request_deal": "Request Deal",
+
+  // Auth overlay
+  "store.login_required_title": "Login Required",
+  "store.login_required_desc": "You must log in first to access the store and browse products",
+  "store.select_city_first": "Select city first",
+  "store.select_company_first": "Select company first",
+  // Order form sections
+  "store.section_product": "Product Details",
+  "store.section_customer": "Customer Details",
+  "store.customer_name": "Full Name",
+  "store.customer_phone": "Phone Number",
+  "store.shipping_address": "Shipping Address",
+  "store.fill_all_fields": "Please fill in all required fields",
+  "store.order_failed": "Order failed, please try again",
+
+  // Navbar logout
+  "nav.logout": "Logout",
 };

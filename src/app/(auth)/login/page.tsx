@@ -7,6 +7,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,24 +16,29 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { t, language } = useLanguage();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = await fetchWithLanguage("https://48.221.114.44/api/Auth/Login", {
-        method: "POST",
-        headers: {
-          accept: "text/plain",
-          "Content-Type": "application/json-patch+json",
+      const res = await fetchWithLanguage(
+        "https://cement.northeurope.cloudapp.azure.com:5000/api/Auth/customer-login",
+        {
+          method: "POST",
+          headers: {
+            accept: "text/plain",
+            "Content-Type": "application/json-patch+json",
+          },
+          body: JSON.stringify({ email, password }),
         },
-        body: JSON.stringify({ email, password }),
-      });
+      );
 
-      const data = await res.text();
+      const data = await res.json();
 
-      if (res.ok) {
+      if (res.ok && data?.isAuthenticated) {
+        login(data);
         toast.success(t("login.success"));
         router.push("/");
       } else {

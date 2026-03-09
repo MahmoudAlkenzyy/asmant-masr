@@ -37,7 +37,7 @@ export const RelatedNews = () => {
   }
 
   return (
-    <div className="col-span-1 order-5 grid grid-cols-1 px-6">
+    <div className="col-span-1 order-5 grid grid-cols-1 px-6 gap-3 pb-10">
       {news.length > 0 ? (
         news.map((item) => <NewsCard key={item.id} news={item} />)
       ) : (
