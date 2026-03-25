@@ -98,6 +98,7 @@ const translationsAr: Record<string, string> = {
   "common.cv_required": "يرجى إرفاق السيرة الذاتية",
   "common.rise": "ارتفاع",
   "common.fall": "انخفاض",
+  "common.range": "المتوسط",
 
   // Jobs
   "jobs.title": "وظائف أسمنت مصر",
@@ -391,6 +392,7 @@ const translationsEn: Record<string, string> = {
   "common.cv_required": "Please attach your CV",
   "common.rise": "Rise",
   "common.fall": "Fall",
+  "common.range": "Range",
 
   // Jobs
   "jobs.title": "Cement Egypt Jobs",

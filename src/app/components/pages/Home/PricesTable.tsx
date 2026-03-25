@@ -49,16 +49,14 @@ export const PricesTable = ({ prices }: { prices: pricesType[] }) => {
             return (
               <div
                 key={index}
-                className="flex gap-10 items-center justify-between bg-gray-50 px-7 py-5 rounded-2xl shadow-md whitespace-nowrap"
+                className="flex gap-10 w-[400px] items-center justify-between bg-gray-50 px-7 py-5 rounded-2xl shadow-md whitespace-nowrap"
               >
-                <p className="font-semibold text-lg">{item.name}</p>
+                <p className="font-semibold text-lg text-wrap">{item.name}</p>
 
                 <div className="flex flex-col items-center gap-2">
-                  <span className={`text-xs ${isUp ? "text-green-600" : "text-red-600"}`}>
-                    {isUp ? t("common.rise") : t("common.fall")}
-                  </span>
+                  <span className={`text-xs ${isUp ? "text-green-600" : "text-red-600"}`}>{t("common.range")}</span>
                   <div className="flex items-center  gap-2">
-                    <span className="text-xl font-bold">{item.averagePrice}</span>
+                    <span className="text-xl font-bold ">{item.averagePrice}</span>
 
                     {isUp ? (
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

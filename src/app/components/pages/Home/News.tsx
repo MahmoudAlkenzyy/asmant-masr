@@ -43,11 +43,11 @@ export const News = ({ news }: { news: Item[] }) => {
             1024: { slidesPerView: 4 },
           }}
           loop={true}
-          className="mt-4"
+          className="mt-4 !pb-2"
           style={{ alignItems: "stretch" }}
         >
           {news.map((newCard, i) => (
-            <SwiperSlide key={i} className="self-stretch h-full py-3">
+            <SwiperSlide key={i} className="h-auto py-3">
               <NewsCard idx={i} news={newCard} />
             </SwiperSlide>
           ))}

@@ -19,7 +19,7 @@ export const Partenar = ({ partenar }: { partenar: Partner[] }) => {
       <div className="relative w-full">
         <motion.div
           className="flex gap-14 w-max"
-          animate={{ x: ["0%", "-50%"] }}
+          animate={{ x: ["50%", "0%"] }}
           transition={{
             repeat: Infinity,
             duration: 10,
@@ -30,7 +30,7 @@ export const Partenar = ({ partenar }: { partenar: Partner[] }) => {
             transition: { duration: 0 },
           }}
         >
-          {logos.map((src, idx) => (
+          {[...logos, ...logos].map((src, idx) => (
             <div key={`first-${idx}`} className="w-[180px] flex-shrink-0 flex items-center justify-center">
               <Image src={src} alt={`Partner ${idx}`} width={200} height={120} className="object-contain" />
             </div>
