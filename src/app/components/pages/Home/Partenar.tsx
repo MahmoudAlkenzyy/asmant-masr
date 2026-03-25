@@ -3,8 +3,10 @@
 import { Partner } from "../../../page";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useLanguage } from "../../../../contexts/LanguageContext";
 
 export const Partenar = ({ partenar }: { partenar: Partner[] }) => {
+  const { t } = useLanguage();
   const logos = [
     "/images/Home/mondi.png",
     "/images/Home/MCG.png",
@@ -15,7 +17,7 @@ export const Partenar = ({ partenar }: { partenar: Partner[] }) => {
   ];
 
   return (
-    <section className="bg-primary py-20 my-10 overflow-hidden">
+    <section dir="rtl" className="bg-primary py-20 my-10 overflow-hidden">
       <div className="relative w-full">
         <motion.div
           className="flex gap-14 w-max"
