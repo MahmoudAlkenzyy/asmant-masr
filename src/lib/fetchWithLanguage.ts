@@ -1,26 +1,17 @@
-/**
- * Custom fetch wrapper that automatically includes Accept-Language header
- */
 import Cookies from "js-cookie";
 
 export async function fetchWithLanguage(url: string, options: RequestInit = {}): Promise<Response> {
   let language = "ar";
-
+  const token = JSON.parse(localStorage.getItem("cement_auth_user") || "{}").token;
   if (typeof window !== "undefined") {
     // Client-side: check localStorage then cookies
     language = localStorage.getItem("language") || Cookies.get("language") || "ar";
-  } else {
-    // Server-side: check headers if possible, or we'd need to pass it.
-    // In Next.js App Router, we can use headers() or cookies() from 'next/headers'
-    // but this function is a generic helper.
-    // For now, it will default to 'ar' unless we find another way.
-    // A better way would be to pass the language to the function if called on server.
   }
-
   // Merge headers
   const headers = {
     ...options.headers,
     "Accept-Language": language,
+    Authorization: `Bearer ${token}`,
   };
 
   return fetch(url, {

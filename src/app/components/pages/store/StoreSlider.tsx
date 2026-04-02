@@ -59,6 +59,10 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
   const [selTradeName, setSelTradeName] = useState("");
   const [loadingTrades, setLoadingTrades] = useState(false);
 
+  // ── Avg price ─────────────────────────────────────────────────────────────
+  const [avgPrice, setAvgPrice] = useState<number | null>(null);
+  const [loadingAvgPrice, setLoadingAvgPrice] = useState(false);
+
   // ── Quantity ─────────────────────────────────────────────────────────────
   const [quantity, setQuantity] = useState(60);
 
@@ -130,6 +134,35 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
       .finally(() => setLoadingTrades(false));
   }, [selCompanyId, selProductTypeId]);
 
+  const getAvgPrice = async (tradeId: string, cityId: string) => {
+    setLoadingAvgPrice(true);
+    setAvgPrice(null);
+    try {
+      const res = await fetchWithLanguage(
+        `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetAvgPrice?TradeNameId=${tradeId}&CityId=${cityId}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+      const data = await res.json();
+      setAvgPrice(data.avgPrice ?? null);
+    } catch (err) {
+      console.error("Failed to fetch avg price:", err);
+    } finally {
+      setLoadingAvgPrice(false);
+    }
+  };
+
+  // ── When trade name + city are both selected → fetch avg price ────────────
+  useEffect(() => {
+    if (selTradeId && selCityId) {
+      getAvgPrice(selTradeId, selCityId);
+    } else {
+      setAvgPrice(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selTradeId, selCityId]);
   // ── Card click: open form & pre-fill customer data ────────────────────────
   const handleOpenForm = async (product: prodactType) => {
     console.log({ product });
@@ -415,8 +448,22 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
                       </div>
                     </div>
                   </div>
+                  {/* 6. متوسط السعر */}
                 </div>
               </div>
+              {(loadingAvgPrice || avgPrice !== null) && (
+                <div className="flex items-center text-white justify-between bg-[#618FB5] py-5 gap-3 px-4 rounded-b-lg">
+                  <span className="text-sm font-semibold ">{t("store.avg_price") || "متوسط السعر"}:</span>
+                  {loadingAvgPrice ? (
+                    <div className="h-4 w-4 border-2 border-[#618FB5] border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <span className="text-lg font-bold te">
+                      {avgPrice && avgPrice * quantity}{" "}
+                      <span className="text-sm font-normal">{t("store.avg_price_unit") || "جنيه / طن"}</span>
+                    </span>
+                  )}
+                </div>
+              )}
 
               {/* ── DIVIDER ──────────────────────────────────────────────── */}
               {/* <div className="flex items-center gap-4 bg-[#618FB5]/10 px-8 py-3">

@@ -33,12 +33,14 @@ export interface TradeNamesApiResponse {
 
 export async function getStoreProducts(): Promise<prodactType[]> {
   try {
+    const token = JSON.parse(localStorage.getItem("cement_auth_user") || "{}").token;
     const res = await fetchWithLanguage(
       "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData?ProductId=7e722b96-6e53-4860-39e5-08de155db96d",
       {
         method: "GET",
         headers: {
           accept: "text/plain",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -57,12 +59,14 @@ export async function getStoreProducts(): Promise<prodactType[]> {
 
 export async function getProductTypes(id?: string): Promise<ProductStoreType[]> {
   try {
+    const token = JSON.parse(localStorage.getItem("cement_auth_user") || "{}").token;
     const res = await fetchWithLanguage(
       `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetProductTypes?id=${id}`,
       {
         method: "GET",
         headers: {
           accept: "text/plain",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -80,10 +84,11 @@ export async function getProductTypes(id?: string): Promise<ProductStoreType[]> 
 }
 
 export async function getCompanies(productTypeId: string, cityId: string): Promise<CompanyOption[]> {
+  const token = JSON.parse(localStorage.getItem("cement_auth_user") || "{}").token;
   try {
     const res = await fetchWithLanguage(
       `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetCompanies?ProductTypeId=${productTypeId}&CityId=${cityId}`,
-      { method: "GET", headers: { accept: "text/plain" } },
+      { method: "GET", headers: { accept: "text/plain", Authorization: `Bearer ${token}` } },
     );
     if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch companies`);
     const json: CompaniesApiResponse = await res.json();
@@ -95,10 +100,11 @@ export async function getCompanies(productTypeId: string, cityId: string): Promi
 }
 
 export async function getTradeNames(companyId: string, productTypeId: string): Promise<TradeNameOption[]> {
+  const token = JSON.parse(localStorage.getItem("cement_auth_user") || "{}").token;
   try {
     const res = await fetchWithLanguage(
       `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetTradeNames?CompanyId=${companyId}&ProductTypeId=${productTypeId}`,
-      { method: "GET", headers: { accept: "text/plain" } },
+      { method: "GET", headers: { accept: "text/plain", Authorization: `Bearer ${token}` } },
     );
     if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch trade names`);
     const json: TradeNamesApiResponse = await res.json();

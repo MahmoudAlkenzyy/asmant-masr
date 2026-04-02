@@ -341,6 +341,8 @@ const translationsAr: Record<string, string> = {
   "store.shipping_address": "عنوان الشحن",
   "store.fill_all_fields": "يرجى اكتمال جميع الحقول",
   "store.order_failed": "فشل إرسال الطلب، حاول مرة أخرى",
+  "store.avg_price": "متوسط السعر",
+  "store.avg_price_unit": "جنيه / طن",
 
   // Navbar logout
   "nav.logout": "تسجيل الخروج",
@@ -635,6 +637,8 @@ const translationsEn: Record<string, string> = {
   "store.shipping_address": "Shipping Address",
   "store.fill_all_fields": "Please fill in all required fields",
   "store.order_failed": "Order failed, please try again",
+  "store.avg_price": "Average Price",
+  "store.avg_price_unit": "EGP / Ton",
 
   // Navbar logout
   "nav.logout": "Logout",

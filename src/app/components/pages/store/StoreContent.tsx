@@ -14,7 +14,7 @@ interface StoreContentProps {
 
 export const StoreContent: React.FC<StoreContentProps> = () => {
   const { t } = useLanguage();
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, isAuth } = useAuth();
   const [products, setProducts] = useState<ProductStoreType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedCity, setSelectedCity] = React.useState<string>("all");
@@ -55,7 +55,7 @@ export const StoreContent: React.FC<StoreContentProps> = () => {
   return (
     <div className="py-10 relative">
       {/* ── Blur overlay when user is NOT logged in ────────────────────────── */}
-      {!user && (
+      {!user && !isAuth?.hasMarketAccess && (
         <div className="absolute inset-0 z-20 backdrop-blur-md bg-white/40 flex flex-col items-center justify-center gap-6 rounded-2xl">
           {/* Lock icon */}
           <div className="w-20 h-20 rounded-full bg-[#618FB5]/10 border-2 border-[#618FB5]/30 flex items-center justify-center">
