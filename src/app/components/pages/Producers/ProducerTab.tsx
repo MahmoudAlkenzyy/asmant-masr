@@ -3,13 +3,21 @@ import React, { useEffect, useState } from "react";
 
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Link from "next/link";
 
 interface ProducerTabProps {
   id?: string;
 }
-
+interface Producer {
+  id: string;
+  name: string;
+  categoryName: string;
+  imagePath: string;
+  websiteUrl: string;
+  websiteVisible: boolean;
+}
 export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
-  const [producers, setProducers] = useState({ producers: [] });
+  const [producers, setProducers] = useState<{ producers: Producer[] }>({ producers: [] });
   const { t } = useLanguage();
 
   const getProducers = async () => {
@@ -29,17 +37,29 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   return (
     <div className="flex flex-wrap  p-4 py-8 pb-14">
       {producers?.producers?.length > 0 ? (
-        producers.producers.map((pro: any) => (
-          <div key={pro.id} className=" px-4 py-2 w-[45%] md:w-[25%]">
-            <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
-              <img
-                src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
-                alt={pro.name || "Producer"}
-                className="w-full h-full object-contain bg-gra"
-              />
+        producers.producers.map((pro) =>
+          pro.websiteVisible ? (
+            <Link href={pro.websiteUrl} key={pro.id} className=" px-4 py-2 w-[45%] md:w-[25%]">
+              <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
+                <img
+                  src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
+                  alt={pro.name || "Producer"}
+                  className="w-full h-full object-contain bg-gra"
+                />
+              </div>
+            </Link>
+          ) : (
+            <div key={pro.id} className=" px-4 py-2 w-[45%] md:w-[25%]">
+              <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
+                <img
+                  src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
+                  alt={pro.name || "Producer"}
+                  className="w-full h-full object-contain bg-gra"
+                />
+              </div>
             </div>
-          </div>
-        ))
+          ),
+        )
       ) : (
         <p className="text-gray-500 text-center">{t("common.no_producers")}</p>
       )}

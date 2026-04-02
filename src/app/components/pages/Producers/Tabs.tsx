@@ -60,7 +60,7 @@ export const Tabs: React.FC<{
         })}
       </ul>
 
-      <div className="mt-6 containerr">
+      <div className="mt-6 containerr min-h-[600px] ">
         {producersType.map(({ id, name }: any) => (
           <div key={id} id={`panel-${id}`} role="tabpanel" aria-labelledby={`tab-${id}`} hidden={id !== active}>
             <ProducerTab id={producersType.find((cat: any) => cat.name == name)?.id || ""} />
