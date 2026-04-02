@@ -21,7 +21,26 @@ export interface HomeType {
   productTypePriceStatistics: pricesType[];
   producers: Partner[];
   partners: Partner[];
+  advertisements: {
+    topBanner: advertisementType;
+    secondSectionLeft: advertisementType;
+    secondSectionRight: advertisementType;
+  };
   storeDetails: prodactType[];
+}
+export interface advertisementType {
+  id: string;
+  page: string;
+  section: string;
+  items: advertisementItem[];
+}
+export interface advertisementItem {
+  id: string;
+  groupId: string;
+  order: number;
+  imagePath: string;
+  fileName: string;
+  createdAt: string;
 }
 export interface prodactType {
   productName: string;
@@ -98,9 +117,12 @@ export default function Home() {
     <div className="bg-secoundry">
       <NavBar />
       <Hero />
-      <Partenar partenar={data.partners} />
+      <Partenar partenars={data.advertisements.topBanner.items} />
       <Prices prices={data.productTypePriceStatistics} />
-      <HeroAds />
+      <HeroAds
+        rightAds={data.advertisements.secondSectionRight.items}
+        leftAds={data.advertisements.secondSectionLeft.items}
+      />
       <News news={data.latestNews} />
       {/* <Podcasts /> */}
       <Store isStore={true} prodacts={data.storeDetails} />

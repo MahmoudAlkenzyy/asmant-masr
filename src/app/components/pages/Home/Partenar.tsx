@@ -1,11 +1,11 @@
 "use client";
 
-import { Partner } from "../../../page";
+import { advertisementItem, advertisementType, Partner } from "../../../page";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../../../contexts/LanguageContext";
 
-export const Partenar = ({ partenar }: { partenar: Partner[] }) => {
+export const Partenar = ({ partenars }: { partenars: advertisementItem[] }) => {
   const { t } = useLanguage();
   const logos = [
     "/images/Home/mondi.png",
@@ -32,15 +32,21 @@ export const Partenar = ({ partenar }: { partenar: Partner[] }) => {
             transition: { duration: 0 },
           }}
         >
-          {[...logos, ...logos].map((src, idx) => (
+          {[...partenars, ...partenars].map((src, idx) => (
             <div key={`first-${idx}`} className="w-[180px] flex-shrink-0 flex items-center justify-center">
-              <Image src={src} alt={`Partner ${idx}`} width={200} height={120} className="object-contain" />
+              <Image src={src.imagePath} alt={`Partner ${idx}`} width={200} height={120} className="object-contain" />
             </div>
           ))}
 
-          {logos.map((src, idx) => (
+          {partenars.map((src, idx) => (
             <div key={`second-${idx}`} className="w-[180px] flex-shrink-0 flex items-center justify-center">
-              <Image src={src} alt={`Partner duplicate ${idx}`} width={200} height={120} className="object-contain" />
+              <Image
+                src={src.imagePath}
+                alt={`Partner duplicate ${idx}`}
+                width={200}
+                height={120}
+                className="object-contain"
+              />
             </div>
           ))}
         </motion.div>

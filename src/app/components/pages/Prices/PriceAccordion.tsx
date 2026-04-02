@@ -308,7 +308,7 @@ export default function PriceAccordion() {
 
       {/* ── Overlay 2: Logged in but no market access ─────────────────────── */}
       {user && isAuth && !isAuth.isSubscribed && (
-        <div className="absolute inset-0 z-30 backdrop-blur-md bg-white/50 flex flex-col items-center justify-center gap-6 rounded-2xl min-h-[400px]">
+        <div className="absolute inset-0 z-30 backdrop-blur-md bg-white/10 flex flex-col items-center justify-center gap-6 rounded-2xl min-h-[400px]">
           {/* Shield icon */}
           <div className="w-20 h-20 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center">
             <ShieldOff size={36} className="text-orange-500" />
