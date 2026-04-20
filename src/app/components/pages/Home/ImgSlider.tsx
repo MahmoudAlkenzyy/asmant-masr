@@ -7,7 +7,7 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import Image from "next/image";
 import { advertisementItem } from "../../../page";
 
-export default function ImgSlider({ ads }: { ads?: advertisementItem[] }) {
+export default function ImgSlider({ ads, className }: { ads?: advertisementItem[]; className?: string }) {
   return (
     <Swiper
       autoplay={{
@@ -17,7 +17,7 @@ export default function ImgSlider({ ads }: { ads?: advertisementItem[] }) {
       pagination={true}
       modules={[Pagination, Navigation, Autoplay]}
       loop={true}
-      className="mySwiper min-h-[300px]"
+      className={`${className} mySwiper min-h-[300px]`}
     >
       {ads ? (
         ads.map((ad, idx) => (

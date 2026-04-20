@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { NewsCard } from "../Home/NewsCard";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
+import { Ads } from "../Community/Ads";
+import ImgSlider from "../Home/ImgSlider";
 
 interface NewsTabProps {
   id: string;
@@ -47,7 +49,12 @@ export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
 
   return (
     <div className="grid md:grid-cols-4  items-center gap-6 ">
-      {news?.items?.map((items) => (
+      {news?.items?.slice(0, 4).map((items) => (
+        <NewsCard key={items.id} news={items} />
+      ))}
+      <ImgSlider className="col-span-2" />
+      <ImgSlider className="col-span-2" />
+      {news?.items?.slice(4).map((items) => (
         <NewsCard key={items.id} news={items} />
       ))}
     </div>

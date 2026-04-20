@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Link from "next/link";
+import ImgSlider from "../Home/ImgSlider";
 
 interface ProducerTabProps {
   id?: string;
@@ -34,32 +35,51 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   useEffect(() => {
     getProducers();
   }, []);
+  const renderProducer = (pro: Producer) =>
+    pro.websiteVisible ? (
+      <Link href={pro.websiteUrl} key={pro.id} className=" px-4 py-2">
+        <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
+          <img
+            src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
+            alt={pro.name || "Producer"}
+            className="w-full h-full object-contain bg-gra"
+          />
+        </div>
+      </Link>
+    ) : (
+      <div key={pro.id} className=" px-4 py-2">
+        <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
+          <img
+            src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
+            alt={pro.name || "Producer"}
+            className="w-full h-full object-contain bg-gra"
+          />
+        </div>
+      </div>
+    );
+
   return (
-    <div className="flex flex-wrap  p-4 py-8 pb-14">
+    <div className="p-4 py-8 pb-14">
       {producers?.producers?.length > 0 ? (
-        producers.producers.map((pro) =>
-          pro.websiteVisible ? (
-            <Link href={pro.websiteUrl} key={pro.id} className=" px-4 py-2 w-[45%] md:w-[25%]">
-              <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
-                <img
-                  src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
-                  alt={pro.name || "Producer"}
-                  className="w-full h-full object-contain bg-gra"
-                />
-              </div>
-            </Link>
-          ) : (
-            <div key={pro.id} className=" px-4 py-2 w-[45%] md:w-[25%]">
-              <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
-                <img
-                  src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
-                  alt={pro.name || "Producer"}
-                  className="w-full h-full object-contain bg-gra"
-                />
-              </div>
+        <>
+          {/* First 8 producers */}
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            {producers.producers.slice(0, 8).map(renderProducer)}
+          </div>
+
+          {/* Two full-width ImgSliders */}
+          <div className="grid grid-cols-2 md:grid-cols-4 my-4">
+            <ImgSlider className="col-span-2" />
+            <ImgSlider className="col-span-2" />
+          </div>
+
+          {/* Remaining producers */}
+          {producers.producers.length > 8 && (
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {producers.producers.slice(8).map(renderProducer)}
             </div>
-          ),
-        )
+          )}
+        </>
       ) : (
         <p className="text-gray-500 text-center">{t("common.no_producers")}</p>
       )}
