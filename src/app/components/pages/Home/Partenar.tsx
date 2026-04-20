@@ -21,7 +21,7 @@ export const Partenar = ({ partenars }: { partenars: advertisementItem[] }) => {
       <div className="relative w-full">
         <motion.div
           className="flex gap-14 w-max"
-          animate={{ x: ["0%", "-50%"] }}
+          animate={{ x: ["50%", "0%"] }}
           transition={{
             repeat: Infinity,
             duration: 10,

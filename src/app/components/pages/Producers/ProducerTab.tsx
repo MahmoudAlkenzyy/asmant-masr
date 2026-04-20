@@ -63,21 +63,17 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
       {producers?.producers?.length > 0 ? (
         <>
           {/* First 8 producers */}
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {producers.producers.slice(0, 8).map(renderProducer)}
-          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4">{producers.producers.slice(0, 8).map(renderProducer)}</div>
 
           {/* Two full-width ImgSliders */}
-          <div className="grid grid-cols-2 md:grid-cols-4 my-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 my-4 gap-4">
             <ImgSlider className="col-span-2" />
             <ImgSlider className="col-span-2" />
           </div>
 
           {/* Remaining producers */}
           {producers.producers.length > 8 && (
-            <div className="grid grid-cols-2 md:grid-cols-4">
-              {producers.producers.slice(8).map(renderProducer)}
-            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4">{producers.producers.slice(8).map(renderProducer)}</div>
           )}
         </>
       ) : (
