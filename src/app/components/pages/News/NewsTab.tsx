@@ -4,6 +4,7 @@ import { NewsCard } from "../Home/NewsCard";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { Ads } from "../Community/Ads";
 import ImgSlider from "../Home/ImgSlider";
+import { AdvertisementGroup, fetchAds } from "../../../../lib/api/Ads";
 
 interface NewsTabProps {
   id: string;
@@ -36,6 +37,7 @@ export interface Item {
 
 export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
   const [news, setNews] = useState<News>();
+  const [ads, setAds] = useState<AdvertisementGroup[]>([]);
   const getNew = async () => {
     const res = await fetchWithLanguage(
       `https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset?CategoryId=${id}`,
@@ -45,6 +47,9 @@ export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
   };
   useEffect(() => {
     getNew();
+    fetchAds({ pageName: "NewsPage" }).then((ads) => {
+      setAds(ads);
+    });
   }, [id]);
 
   return (
@@ -52,8 +57,8 @@ export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
       {news?.items?.slice(0, 4).map((items) => (
         <NewsCard key={items.id} news={items} />
       ))}
-      <ImgSlider className="col-span-2" />
-      <ImgSlider className="col-span-2" />
+      <ImgSlider ads={ads.find((ad) => ad.section === "SecondSectionLeft")?.items} className="col-span-2" />
+      <ImgSlider ads={ads.find((ad) => ad.section === "SecondSectionRight")?.items} className="col-span-2" />
       {news?.items?.slice(4).map((items) => (
         <NewsCard key={items.id} news={items} />
       ))}

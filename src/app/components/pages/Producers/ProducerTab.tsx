@@ -5,6 +5,7 @@ import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Link from "next/link";
 import ImgSlider from "../Home/ImgSlider";
+import { AdvertisementGroup, fetchAds } from "../../../../lib/api/Ads";
 
 interface ProducerTabProps {
   id?: string;
@@ -19,6 +20,7 @@ interface Producer {
 }
 export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   const [producers, setProducers] = useState<{ producers: Producer[] }>({ producers: [] });
+  const [ads, setAds] = useState<AdvertisementGroup[]>([]);
   const { t } = useLanguage();
 
   const getProducers = async () => {
@@ -34,6 +36,9 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   };
   useEffect(() => {
     getProducers();
+    fetchAds({ pageName: "ProducersPage" }).then((ads) => {
+      setAds(ads);
+    });
   }, []);
   const renderProducer = (pro: Producer) =>
     pro.websiteVisible ? (
@@ -67,8 +72,9 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
 
           {/* Two full-width ImgSliders */}
           <div className="grid grid-cols-2 md:grid-cols-4 my-4 gap-4">
-            <ImgSlider className="col-span-2" />
-            <ImgSlider className="col-span-2" />
+            <ImgSlider ads={ads.find((ad) => ad.section === "SecondSectionLeft")?.items} className="col-span-2" />
+
+            <ImgSlider ads={ads.find((ad) => ad.section === "SecondSectionRight")?.items} className="col-span-2" />
           </div>
 
           {/* Remaining producers */}

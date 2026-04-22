@@ -54,17 +54,10 @@ export const Producers = ({
           loop={true}
           className="mt-4"
         >
-          {[
-            "/images/Home/Lafarge.webp",
-            "/images/Home/cemex.webp",
-            "/images/Home/MisrCement2.webp",
-            "/images/Home/cemex.webp",
-            "/images/Home/MisrCement2.webp",
-            "/images/Home/cemex.webp",
-          ].map((imagePath, i) => (
+          {producers.map((partner, i) => (
             <SwiperSlide key={i} className="flex items-center justify-center bg-white rounded-xl py-5">
               <div className="relative w-[80%] h-[120px] mx-auto">
-                <Image src={imagePath} alt="producer logo" fill className="!object-contain w-full mx-auto" />
+                <Image src={partner.imagePath} alt="producer logo" fill className="!object-contain w-full mx-auto" />
               </div>
             </SwiperSlide>
           ))}
