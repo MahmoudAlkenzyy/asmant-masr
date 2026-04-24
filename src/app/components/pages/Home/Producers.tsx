@@ -20,6 +20,7 @@ export const Producers = ({
   isTrue: boolean;
 }) => {
   const { t } = useLanguage();
+
   return (
     <section dir="rtl" className={`${isPartner ? "" : "bg-white text-whit"} py-9 e`}>
       <div className="containerr">
