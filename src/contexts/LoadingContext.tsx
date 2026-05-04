@@ -14,18 +14,27 @@ const LoadingContext = createContext<LoadingContextType>({
 
 export const useLoading = () => useContext(LoadingContext);
 
-export const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
+const LoadingHandler = () => {
+  const { setNavigating } = useContext(InternalLoadingContext);
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Handle navigation loading
   useEffect(() => {
-    setIsNavigating(true);
-    const timer = setTimeout(() => setIsNavigating(false), 800);
+    setNavigating(true);
+    const timer = setTimeout(() => setNavigating(false), 800);
     return () => clearTimeout(timer);
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, setNavigating]);
+
+  return null;
+};
+
+const InternalLoadingContext = createContext<{
+  setNavigating: (val: boolean) => void;
+}>({ setNavigating: () => {} });
+
+export const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const value = {
     isLoading: isLoading || isNavigating,
@@ -34,7 +43,13 @@ export const LoadingProvider = ({ children }: { children: React.ReactNode }) => 
 
   return (
     <LoadingContext.Provider value={value}>
-      {children}
+      <InternalLoadingContext.Provider value={{ setNavigating: setIsNavigating }}>
+        <React.Suspense fallback={null}>
+          <LoadingHandler />
+        </React.Suspense>
+        {children}
+      </InternalLoadingContext.Provider>
     </LoadingContext.Provider>
   );
 };
+

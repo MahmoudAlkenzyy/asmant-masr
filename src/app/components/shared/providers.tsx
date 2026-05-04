@@ -16,11 +16,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <LanguageProvider>
             <TraderCategoriesProvider>
-              <LoadingProvider>
-                <PageLoader />
-                {children}
-                <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme="colored" />
-              </LoadingProvider>
+              <React.Suspense fallback={null}>
+                <LoadingProvider>
+                  <PageLoader />
+                  {children}
+                  <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme="colored" />
+                </LoadingProvider>
+              </React.Suspense>
             </TraderCategoriesProvider>
           </LanguageProvider>
         </AuthProvider>
