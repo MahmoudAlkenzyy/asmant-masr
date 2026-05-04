@@ -7,6 +7,7 @@ import { getProductTypes, getStoreProducts, ProductStoreType } from "@/lib/api/s
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { LockKeyhole, ShieldOff, X, ScrollText } from "lucide-react";
+import { useLoading } from "@/contexts/LoadingContext";
 
 interface StoreContentProps {
   // products property is no longer passed from parent
@@ -15,6 +16,7 @@ interface StoreContentProps {
 export const StoreContent: React.FC<StoreContentProps> = () => {
   const { t, language } = useLanguage();
   const { user, isLoading: authLoading, isAuth } = useAuth();
+  const { setIsLoading } = useLoading();
   const [products, setProducts] = useState<ProductStoreType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [showPolitics, setShowPolitics] = useState<boolean>(false);
@@ -22,6 +24,7 @@ export const StoreContent: React.FC<StoreContentProps> = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
+      setIsLoading(true);
       try {
         const data = await getProductTypes();
         setProducts(data);
@@ -29,6 +32,7 @@ export const StoreContent: React.FC<StoreContentProps> = () => {
         console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -36,12 +40,7 @@ export const StoreContent: React.FC<StoreContentProps> = () => {
   }, []);
 
   if (loading || authLoading) {
-    return (
-      <div className="py-20 text-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#007b9e]"></div>
-        <p className="mt-4 text-gray-500">{t("common.loading") || "Loading..."}</p>
-      </div>
-    );
+    return <div className="min-h-[600px]" />; // Keep layout height but show nothing as global loader is active
   }
 
   return (

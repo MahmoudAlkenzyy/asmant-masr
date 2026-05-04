@@ -6,6 +6,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PageLoader } from "./PageLoader";
+import { LoadingProvider } from "@/contexts/LoadingContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -14,8 +16,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <LanguageProvider>
             <TraderCategoriesProvider>
-              {children}
-              <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme="colored" />
+              <LoadingProvider>
+                <PageLoader />
+                {children}
+                <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme="colored" />
+              </LoadingProvider>
             </TraderCategoriesProvider>
           </LanguageProvider>
         </AuthProvider>
@@ -23,3 +28,5 @@ export function Providers({ children }: { children: React.ReactNode }) {
     </section>
   );
 }
+
+

@@ -23,6 +23,7 @@ const alex = Alexandria({
   subsets: ["latin", "arabic"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-alexandria",
 });
 
 export default function RootLayout({
@@ -32,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${alex.className}  antialiased flex justify-start flex-col min-h-screen`}>
+      <body className={`${alex.variable} ${geistSans.variable} ${geistMono.variable} ${alex.className} antialiased flex justify-start flex-col min-h-screen`}>
         <Providers>{children}</Providers>
       </body>
     </html>

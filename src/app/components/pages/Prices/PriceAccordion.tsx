@@ -7,6 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { LockKeyhole, ShieldOff } from "lucide-react";
+import { useLoading } from "@/contexts/LoadingContext";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface IdName {
@@ -46,6 +47,7 @@ interface PriceItem {
 export default function PriceAccordion() {
   const { t, language } = useLanguage();
   const { user, isLoading: authLoading, isAuth } = useAuth();
+  const { setIsLoading } = useLoading();
 
   const headers = [
     language === "ar" ? "الشركة" : "Company",
@@ -114,6 +116,7 @@ export default function PriceAccordion() {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
+      setIsLoading(true);
       const allItems: PriceItem[] = [];
 
       // Decide which product IDs to query
@@ -172,6 +175,7 @@ export default function PriceAccordion() {
       setTradeNames(allTradeNames);
 
       setLoading(false);
+      setIsLoading(false);
     };
 
     if (productTypes.length > 0) loadData();
@@ -266,13 +270,9 @@ export default function PriceAccordion() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   // Auth loading guard
-  if (authLoading) {
-    return (
-      <div className="py-20 text-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#007b9e]"></div>
-        <p className="mt-4 text-gray-500">{t("common.loading")}</p>
-      </div>
-    );
+  if (authLoading || loading) {
+    return <div className="min-h-[80dvh]" />;
+    // Show empty container while global loader is active
   }
 
   return (
@@ -336,68 +336,64 @@ export default function PriceAccordion() {
       )}
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
-      {loading ? (
-        <div className="text-center py-6 text-gray-500">{t("common.loading")}</div>
-      ) : (
-        <>
-          {renderFilters()}
+      <>
+        {renderFilters()}
 
-          {priceData.length === 0 ? (
-            <div className="text-center py-6 text-gray-500">
-              {language === "ar" ? "لا توجد بيانات متاحة" : "No data available"}
-            </div>
-          ) : (
-            <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
-              {priceData.map((item, index) => (
-                <AccordionItem
-                  key={index}
-                  title={`${item.parentName} - ${item.productTypeName}`}
-                  className="bg-[#E5FBFF] rounded-xl w-full shadow-sm"
-                  classNames={{
-                    base: "flex flex-col w-full",
-                    titleWrapper: "flex flex-row-reverse justify-end items-center w-full",
-                    indicator: "order-last ml-2 transition-transform duration-300 data-[state=open]:rotate-180",
-                  }}
-                >
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full text-center text-sm md:text-base bg-[#E5FBFF] border-separate border-spacing-y-1">
-                      <thead>
-                        <tr>
-                          {headers.map((header, i) => (
-                            <th key={i} className="p-2 font-semibold border-b border-gray-200">
-                              {header}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {item.companies?.map((company, j) => (
-                          <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
-                            <td className="py-3 p-2">{company.companyName}</td>
-                            <td className="py-3 p-2">{company.tradeName}</td>
-                            <td className="py-3 p-2">{company.cityName || "-"}</td>
-                            <td className="py-3 p-2">{company.lowestPrice}</td>
-                            <td className="py-3 p-2">{company.maxPrice}</td>
-                            <td className="py-3 p-2">{company.todayAvg}</td>
-                            <td className="py-3 p-2">{company.yesterdayAvg}</td>
-                            <td
-                              className={`py-3 p-2 font-semibold ${
-                                company.difference >= 0 ? "text-green-600" : "text-red-600"
-                              }`}
-                            >
-                              {company.difference}
-                            </td>
-                          </tr>
+        {priceData.length === 0 ? (
+          <div className="text-center py-6 text-gray-500">
+            {language === "ar" ? "لا توجد بيانات متاحة" : "No data available"}
+          </div>
+        ) : (
+          <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
+            {priceData.map((item, index) => (
+              <AccordionItem
+                key={index}
+                title={`${item.parentName} - ${item.productTypeName}`}
+                className="bg-[#E5FBFF] rounded-xl w-full shadow-sm"
+                classNames={{
+                  base: "flex flex-col w-full",
+                  titleWrapper: "flex flex-row-reverse justify-end items-center w-full",
+                  indicator: "order-last ml-2 transition-transform duration-300 data-[state=open]:rotate-180",
+                }}
+              >
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-center text-sm md:text-base bg-[#E5FBFF] border-separate border-spacing-y-1">
+                    <thead>
+                      <tr>
+                        {headers.map((header, i) => (
+                          <th key={i} className="p-2 font-semibold border-b border-gray-200">
+                            {header}
+                          </th>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          )}
-        </>
-      )}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {item.companies?.map((company, j) => (
+                        <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
+                          <td className="py-3 p-2">{company.companyName}</td>
+                          <td className="py-3 p-2">{company.tradeName}</td>
+                          <td className="py-3 p-2">{company.cityName || "-"}</td>
+                          <td className="py-3 p-2">{company.lowestPrice}</td>
+                          <td className="py-3 p-2">{company.maxPrice}</td>
+                          <td className="py-3 p-2">{company.todayAvg}</td>
+                          <td className="py-3 p-2">{company.yesterdayAvg}</td>
+                          <td
+                            className={`py-3 p-2 font-semibold ${
+                              company.difference >= 0 ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {company.difference}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        )}
+      </>
     </div>
   );
 }
