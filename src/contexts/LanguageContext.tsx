@@ -346,6 +346,7 @@ const translationsAr: Record<string, string> = {
 
   // Navbar logout
   "nav.logout": "تسجيل الخروج",
+  "nav.old_website": "الموقع القديم",
 };
 
 const translationsEn: Record<string, string> = {
@@ -642,4 +643,5 @@ const translationsEn: Record<string, string> = {
 
   // Navbar logout
   "nav.logout": "Logout",
+  "nav.old_website": "Old Website",
 };

@@ -127,6 +127,16 @@ export default function NavBar() {
             ))}
           </ul>
 
+          {/* Old Website Button */}
+          <a
+            href="https://old.cementegypt.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden xl:flex items-center gap-2 border-2 border-[#618FB5] py-2 px-4 rounded-lg text-[#618FB5] hover:bg-[#618FB5] hover:text-white transition-all duration-200 mx-2 font-bold text-sm"
+          >
+            {t("nav.old_website")}
+          </a>
+
           {/* Language Switcher */}
           <button
             onClick={toggleLanguage}
@@ -284,11 +294,21 @@ export default function NavBar() {
                 </button>
               </Link>
             )}
+            <a
+              href="https://old.cementegypt.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 border-2 border-[#618FB5] text-[#618FB5] py-3 px-6 rounded-lg font-bold"
+            >
+              {t("nav.old_website")}
+            </a>
             <button
               onClick={toggleLanguage}
               className="w-full flex items-center justify-center gap-2 bg-primary py-3 px-6 rounded-lg"
             >
-              <span className="font-semibold">{language === "ar" ? "Switch to English" : "التبديل إلى العربية"}</span>
+              <span className="font-semibold text-white">
+                {language === "ar" ? "Switch to English" : "التبديل إلى العربية"}
+              </span>
             </button>
           </div>
         </div>
