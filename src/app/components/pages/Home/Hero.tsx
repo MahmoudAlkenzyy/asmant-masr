@@ -105,9 +105,9 @@ export const Hero = () => {
 
           <div className="absolute inset-0 z-20 flex flex-col justify-center items-center containerr px-6">
             <div className="max-w-4xl w-full text-center space-y-6">
-              <h2 className="text-white text-2xl md:text-4xl lg:text-5xl font-bold leading-relaxed">
+              <h1 className="text-white text-2xl md:text-4xl lg:text-5xl font-bold leading-relaxed">
                 {t(slides[currentSlide].titleKey)}
-              </h2>
+              </h1>
               <Link href={slides[currentSlide].link}>
                 <button className="bg-[#51E482] text-black px-8 md:px-12 py-3 md:py-4 flex gap-3 rounded-xl text-lg md:text-xl hover:bg-[#4a7a9a] transition-colors mx-auto items-center">
                   {t(slides[currentSlide].buttonKey)} <ArrowLeft />

@@ -1,12 +1,20 @@
-"use client";
-import { Hero } from "../../components/pages/News/Hero";
-import { StoreContent } from "../../components/pages/store/StoreContent";
+import { Metadata } from "next";
+import StoreClient from "./StoreClient";
+
+export const metadata: Metadata = {
+  title: "Store | المتجر",
+  description: "Browse our store for the best construction materials and cement products in Egypt. High quality and competitive prices.",
+};
 
 export default function Page() {
   return (
-    <div>
+    <div className="bg-white">
       <Hero src="/images/Home/herostore.png" />
-      <StoreContent />
+      <div className="containerr py-10 text-center">
+        <h1 className="text-4xl font-bold text-primary mb-2">متجر أسمنت مصر</h1>
+        <p className="text-gray-500">أفضل منتجات الأسمنت ومواد البناء بأعلى جودة</p>
+      </div>
+      <StoreClient />
     </div>
   );
 }

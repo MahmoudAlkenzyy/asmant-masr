@@ -4,6 +4,29 @@ import Image from "next/image";
 import { Item } from "../../../components/pages/News/NewsTab";
 import { RelatedNews } from "../../../components/pages/News/RelatedNews";
 import { cookies } from "next/headers";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const res = await fetch(`https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetNewsById?Id=${id}`, {
+      cache: "force-cache",
+    });
+    if (!res.ok) return { title: "News | Asmant Masr" };
+    const data: Item = await res.json();
+    return {
+      title: `${data.title} | Asmant Masr`,
+      description: data.content?.substring(0, 160),
+      openGraph: {
+        title: data.title,
+        description: data.content?.substring(0, 160),
+        images: data.images?.[0] ? [typeof data.images[0] === "string" ? data.images[0] : data.images[0].filePath] : [],
+      },
+    };
+  } catch (error) {
+    return { title: "News | Asmant Masr" };
+  }
+}
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

@@ -1,5 +1,11 @@
+import { Metadata } from "next";
 import { Hero } from "../../components/pages/News/Hero";
 import Tabs from "../../components/pages/Producers/Tabs";
+
+export const metadata: Metadata = {
+  title: "Producers | المنتجون",
+  description: "Browse the list of top cement producers in Egypt. Get details about their products, quality standards, and distribution networks.",
+};
 
 export default function Page() {
   return (
