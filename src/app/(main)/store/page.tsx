@@ -1,9 +1,11 @@
 import { Metadata } from "next";
 import StoreClient from "./StoreClient";
+import { Hero } from "../../components/pages/News/Hero";
 
 export const metadata: Metadata = {
   title: "Store | المتجر",
-  description: "Browse our store for the best construction materials and cement products in Egypt. High quality and competitive prices.",
+  description:
+    "Browse our store for the best construction materials and cement products in Egypt. High quality and competitive prices.",
 };
 
 export default function Page() {
