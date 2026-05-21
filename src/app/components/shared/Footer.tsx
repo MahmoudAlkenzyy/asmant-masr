@@ -166,6 +166,8 @@ export const Footer = () => {
                 </svg>
               </span>
             </div>
+            <p className="max-w-[80%] m-0  mx-auto md:mx-0">Support@cementegypt.com</p>
+            <p className="max-w-[80%] m-0  mx-auto md:mx-0">Info@cementegypt.com</p>
           </div>
         </div>
       </div>
