@@ -14,7 +14,7 @@ export const StoreTab = ({ id = "" }: StoreTabProps) => {
 
   const getProdact = async () => {
     const res = await fetchWithLanguage(
-      `https://cement.northeurope.cloudapp.azure.com:5000/api/Store/GetProductStoreDetails?ProductId=${id}`,
+      `https://cement.northeurope.cloudapp.azure.com:4433/api/Store/GetProductStoreDetails?ProductId=${id}`,
       {
         cache: "no-store",
       },

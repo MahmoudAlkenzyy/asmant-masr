@@ -29,7 +29,7 @@ export const Jobs = () => {
     async function fetchSpecializations() {
       try {
         const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/SpecializationLookup/GetAllSpecializationLookupsList",
+          "https://cement.northeurope.cloudapp.azure.com:4433/api/SpecializationLookup/GetAllSpecializationLookupsList",
           {
             headers: {
               accept: "text/plain",
@@ -49,7 +49,7 @@ export const Jobs = () => {
     async function fetchYearsOfExperience() {
       try {
         const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/YearsOfExperienceLookup/GetAllYearsOfExperienceLookupsList",
+          "https://cement.northeurope.cloudapp.azure.com:4433/api/YearsOfExperienceLookup/GetAllYearsOfExperienceLookupsList",
           {
             headers: {
               accept: "text/plain",
@@ -69,7 +69,7 @@ export const Jobs = () => {
     async function fetchJobs() {
       try {
         const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/JobLookup/GetAllJobLookupsList",
+          "https://cement.northeurope.cloudapp.azure.com:4433/api/JobLookup/GetAllJobLookupsList",
           {
             headers: {
               accept: "text/plain",
@@ -133,7 +133,7 @@ export const Jobs = () => {
         }
 
         const response = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/JobApplication/CreateJobApplication",
+          "https://cement.northeurope.cloudapp.azure.com:4433/api/JobApplication/CreateJobApplication",
           {
             method: "POST",
             headers: {

@@ -23,7 +23,7 @@ interface Ads {
 export async function fetchAds({ pageName }: { pageName: string }) {
   try {
     const res = await fetchWithLanguage(
-      `https://cement.northeurope.cloudapp.azure.com:5000/api/Advertisments/GetAllAdvertisement?Page=${pageName}`,
+      `https://cement.northeurope.cloudapp.azure.com:4433/api/Advertisments/GetAllAdvertisement?Page=${pageName}`,
       {
         method: "GET",
         headers: {

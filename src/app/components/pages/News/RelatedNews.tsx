@@ -14,7 +14,7 @@ export const RelatedNews = () => {
     const fetchNews = async () => {
       try {
         const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset",
+          "https://cement.northeurope.cloudapp.azure.com:4433/api/News/GetAllNewsOffset",
           {
             cache: "no-store",
           },

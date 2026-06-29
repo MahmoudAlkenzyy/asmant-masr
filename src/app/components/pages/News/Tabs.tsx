@@ -22,7 +22,7 @@ export const Tabs: React.FC<{
 
   const fetchNewsCategory = async () => {
     const res = await fetchWithLanguage(
-      "https://cement.northeurope.cloudapp.azure.com:5000/api/NewsCategory/GetAllNewsCategoryList",
+      "https://cement.northeurope.cloudapp.azure.com:4433/api/NewsCategory/GetAllNewsCategoryList",
     );
     const data = await res.json();
     setCategories(data.categories || []);

@@ -58,7 +58,7 @@ export const Tabs: React.FC<{
 
   const fetchProdact = async () => {
     const res = await fetchWithLanguage(
-      "https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList",
+      "https://cement.northeurope.cloudapp.azure.com:4433/api/Product/GetAllProductsList",
     );
     const data = await res.json();
     setProdactType(data.products || []);

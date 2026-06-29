@@ -22,7 +22,7 @@ export default function HomeClient() {
     const fetchData = async () => {
       try {
         const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData",
+          "https://cement.northeurope.cloudapp.azure.com:4433/api/Home/GetHomePageData",
           {
             method: "GET",
             headers: { accept: "text/plain" },
