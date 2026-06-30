@@ -6,11 +6,6 @@ import { TraderCategoryDetails } from "@/lib/api/traderCategories";
 import { Hero } from "../../../components/pages/News/Hero";
 import { useEffect, useState } from "react";
 
-interface Trader {
-  id: string;
-  name: string;
-  imagePath: string;
-}
 
 export default function TraderClient({ categoryId }: { categoryId: string }) {
   const { getCategoryDetails } = useTraderCategories();
@@ -58,7 +53,7 @@ export default function TraderClient({ categoryId }: { categoryId: string }) {
       <div className="w-[90%] mx-auto py-12">
         <div dir="rtl" className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-8 p-4 py-8 pb-14">
           {categoryData.traders && categoryData.traders.length > 0 ? (
-            categoryData.traders.map((trader: Trader) => (
+            categoryData.traders.map((trader) => (
               <div key={trader.id} className="rounded-xl overflow-hidden border border-gray-300">
                 <Image
                   src={trader.imagePath ? `${trader.imagePath}` : "/placeholder.png"}
