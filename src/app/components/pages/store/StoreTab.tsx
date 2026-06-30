@@ -8,6 +8,19 @@ interface StoreTabProps {
   id?: string;
 }
 
+interface StoreProduct {
+  id: string;
+  productName: string;
+  productTypeName: string;
+  companyName?: string;
+  cityName?: string;
+  tradeName?: string;
+  storeImageFilePath: string | null;
+  quantity?: number;
+  productId?: string;
+  productTypeId?: string;
+}
+
 export const StoreTab = ({ id = "" }: StoreTabProps) => {
   const [prodact, setProdact] = useState([]);
   const { t, language } = useLanguage();
@@ -29,7 +42,7 @@ export const StoreTab = ({ id = "" }: StoreTabProps) => {
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-8 p-4 py-8 pb-14">
       {prodact?.length > 0 ? (
-        prodact.map((pro: any, idx) => <StoreCard key={idx} idx={idx} isHome={false} cardInfo={pro} />)
+        prodact.map((pro: StoreProduct, idx) => <StoreCard key={idx} idx={idx} isHome={false} cardInfo={pro} />)
       ) : (
         <p className="text-gray-500 text-center col-span-full">{t("store.no_products")}</p>
       )}

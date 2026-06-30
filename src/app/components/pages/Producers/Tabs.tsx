@@ -32,7 +32,7 @@ export const Tabs: React.FC<{
       <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.producers")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
-        {producersType.map(({ id, name }: any) => {
+        {producersType.map(({ id, name }: { id: string; name: string }) => {
           const isActive = id === active;
           return (
             <li key={id} role="presentation">
@@ -61,9 +61,9 @@ export const Tabs: React.FC<{
       </ul>
 
       <div className="mt-6 containerr min-h-[600px] ">
-        {producersType.map(({ id, name }: any) => (
+        {producersType.map(({ id, name }: { id: string; name: string }) => (
           <div key={id} id={`panel-${id}`} role="tabpanel" aria-labelledby={`tab-${id}`} hidden={id !== active}>
-            <ProducerTab id={producersType.find((cat: any) => cat.name == name)?.id || ""} />
+            <ProducerTab id={producersType.find((cat: { id: string; name: string }) => cat.name == name)?.id || ""} />
           </div>
         ))}
       </div>

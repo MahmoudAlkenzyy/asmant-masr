@@ -1,12 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import { useTraderCategories } from "@/contexts/TraderCategoriesContext";
 import { TraderCategoryDetails } from "@/lib/api/traderCategories";
 import { Hero } from "../../../components/pages/News/Hero";
 import { useEffect, useState } from "react";
 
+interface Trader {
+  id: string;
+  name: string;
+  imagePath: string;
+}
+
 export default function TraderClient({ categoryId }: { categoryId: string }) {
-  const { getCategoryDetails, categories } = useTraderCategories();
+  const { getCategoryDetails } = useTraderCategories();
   const [categoryData, setCategoryData] = useState<TraderCategoryDetails | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,11 +58,13 @@ export default function TraderClient({ categoryId }: { categoryId: string }) {
       <div className="w-[90%] mx-auto py-12">
         <div dir="rtl" className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-8 p-4 py-8 pb-14">
           {categoryData.traders && categoryData.traders.length > 0 ? (
-            categoryData.traders.map((trader: any) => (
+            categoryData.traders.map((trader: Trader) => (
               <div key={trader.id} className="rounded-xl overflow-hidden border border-gray-300">
-                <img
+                <Image
                   src={trader.imagePath ? `${trader.imagePath}` : "/placeholder.png"}
                   alt={trader.name || "Trader"}
+                  width={300}
+                  height={200}
                   className="w-full h-full object-contain bg-black"
                 />
               </div>

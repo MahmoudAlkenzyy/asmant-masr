@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { NewsCard } from "../Home/NewsCard";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
-import { Ads } from "../Community/Ads";
+
 import ImgSlider from "../Home/ImgSlider";
 import { AdvertisementGroup, fetchAds } from "../../../../lib/api/Ads";
 
@@ -32,7 +32,7 @@ export interface Item {
   categoryName?: string;
   publishAt: string;
   images?: { filePath: string }[];
-  videos?: any[];
+  videos?: unknown[];
 }
 
 export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {

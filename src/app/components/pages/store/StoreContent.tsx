@@ -9,9 +9,7 @@ import Link from "next/link";
 import { LockKeyhole, ShieldOff, X, ScrollText } from "lucide-react";
 import { useLoading } from "@/contexts/LoadingContext";
 
-interface StoreContentProps {
-  // products property is no longer passed from parent
-}
+type StoreContentProps = Record<string, never>;
 
 export const StoreContent: React.FC<StoreContentProps> = () => {
   const { t, language } = useLanguage();

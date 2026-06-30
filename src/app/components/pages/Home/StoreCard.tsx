@@ -19,6 +19,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
 }) => {
   const { t, language } = useLanguage();
   const images = ["/images/asmant.png"];
+  // console.log(cardinfo);
 
   return (
     <div
@@ -51,7 +52,10 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
           */}
         </div>
 
-        <button className="flex cursor-pointer items-center gap-3 bg-[#D9EBF7] text-black text-nowrap self-center text-sm px-4 py-4  mt-4 rounded-xl m-3">
+        <a
+          href={"/store"}
+          className="flex cursor-pointer items-center gap-3 bg-[#D9EBF7] text-black text-nowrap self-center text-sm px-4 py-4  mt-4 rounded-xl m-3"
+        >
           {t("storecard.request_deal")}
           <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -59,7 +63,7 @@ export const StoreCard: React.FC<StoreCardInterface> = ({
               fill="#292E2B"
             />
           </svg>
-        </button>
+        </a>
       </div>
     </div>
   );

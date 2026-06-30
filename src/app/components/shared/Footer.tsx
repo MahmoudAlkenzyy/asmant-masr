@@ -3,7 +3,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Facebook, LucideFacebook } from "lucide-react";
 
 export const Footer = () => {
   const { t } = useLanguage();
@@ -11,7 +10,13 @@ export const Footer = () => {
     <footer dir={t("common.dir")} className="bg-primary  text-white text-end mt-auto">
       <div className="py-20 containerr w-[90%] mx-auto">
         <div className="bg-no-repeat w-fit mx-auto relative flex justify-center py-4 ">
-          <img src="/images/Home/Footer.png" className="md:w-[1200] absolute inset-0 bottom-0 h-full " alt="" />
+          <Image
+            src="/images/Home/Footer.png"
+            width={1200}
+            height={600}
+            className="md:w-[1200] absolute inset-0 bottom-0 h-full "
+            alt=""
+          />
           <div className="relative  flex items-center gap-6 md:gap-10 text-white flex-col justify-center px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-medium">{t("footer.subscribe_title")}</h2>
             <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
@@ -38,30 +43,43 @@ export const Footer = () => {
           <ul className="w-full sm:w-1/2 md:w-1/6 space-y-2">
             <li className="font-bold">{t("footer.company")}</li>
             <li>
-              <Link href="/">{t("footer.home")}</Link>
+              <Link href="/">{t("nav.home")}</Link>
             </li>
             <li>
-              <Link href="/pricing">{t("footer.prices")}</Link>
+              <Link href="/about-us">{t("nav.about_us")}</Link>
             </li>
             <li>
-              <Link href="/news">{t("footer.news")}</Link>
+              <Link href="/our-vision">{t("nav.our_vision")}</Link>
             </li>
             <li>
-              <Link href="/partners">{t("footer.partners_producers")}</Link>
+              <Link href="/our-responsibility">{t("nav.disclaimer")}</Link>
+            </li>
+          </ul>
+
+          <ul className="w-full sm:w-1/2 md:w-1/6 space-y-2">
+            <li className="font-bold">{t("nav.cement_egypt")}</li>
+            <li>
+              <Link href="/prices">{t("nav.prices")}</Link>
             </li>
             <li>
-              <Link href="/forum">{t("footer.forum")}</Link>
+              <Link href="/store">{t("nav.store")}</Link>
             </li>
             <li>
-              <Link href="/store">{t("footer.store")}</Link>
+              <Link href="/producers">{t("nav.producers")}</Link>
             </li>
             <li>
-              <Link href="/academy">{t("footer.academy")}</Link>
+              <Link href="/partener">{t("nav.partners")}</Link>
+            </li>
+            <li>
+              <Link href="/jobs">{t("nav.jobs")}</Link>
             </li>
           </ul>
 
           <ul className="w-full sm:w-1/2 md:w-1/6 space-y-2">
             <li className="font-bold">{t("footer.news_section")}</li>
+            <li>
+              <Link href="/news">{t("nav.news")}</Link>
+            </li>
             <li>
               <Link href="/news/general">{t("footer.general_news")}</Link>
             </li>
@@ -74,40 +92,18 @@ export const Footer = () => {
             <li>
               <Link href="/news/world">{t("footer.world_news")}</Link>
             </li>
-            <li>
-              <Link href="/forum">{t("footer.forum")}</Link>
-            </li>
-            <li>
-              <Link href="/store">{t("footer.store")}</Link>
-            </li>
-            <li>
-              <Link href="/academy">{t("footer.academy")}</Link>
-            </li>
           </ul>
 
           <ul className="w-full sm:w-1/2 md:w-1/6 space-y-2">
             <li className="font-bold">{t("footer.material_prices")}</li>
             <li>
-              <Link href="/prices/cement">{t("footer.cement")}</Link>
+              <Link href="/prices">{t("footer.cement")}</Link>
             </li>
             <li>
-              <Link href="/prices/iron">{t("footer.iron")}</Link>
+              <Link href="/prices">{t("footer.iron")}</Link>
             </li>
             <li>
-              <Link href="/prices/gypsum">{t("footer.gypsum")}</Link>
-            </li>
-          </ul>
-
-          <ul className="w-full sm:w-1/2 md:w-1/6 space-y-2">
-            <li className="font-bold">{t("footer.community")}</li>
-            <li>
-              <Link href="/jobs">{t("footer.jobs")}</Link>
-            </li>
-            <li>
-              <Link href="/deals">{t("footer.deals")}</Link>
-            </li>
-            <li>
-              <Link href="/academy">{t("footer.academy")}</Link>
+              <Link href="/prices">{t("footer.gypsum")}</Link>
             </li>
           </ul>
 
@@ -149,14 +145,19 @@ export const Footer = () => {
                   />
                 </svg>
               </span>
-              <span className="border border-white rounded-full w-7 h-7 flex items-center justify-center bg-white">
+              <a
+                href="https://www.facebook.com/share/18tEYdGDxS/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-white rounded-full w-7 h-7 flex items-center justify-center bg-white"
+              >
                 <svg width="7" height="13" viewBox="0 0 7 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M1.86888 12.1749V6.62136H0V4.45703H1.86888V2.8609C1.86888 1.00861 3.0002 0 4.65258 0C5.44408 0 6.12434 0.0589293 6.32258 0.0852686V2.02102L5.17657 2.02154C4.27792 2.02154 4.10392 2.44857 4.10392 3.0752V4.45703H6.24712L5.96807 6.62136H4.10391V12.1749H1.86888Z"
                     fill="#618FB5"
                   />
                 </svg>
-              </span>
+              </a>
               <span className="border border-white rounded-full w-7 h-7 flex items-center justify-center">
                 <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

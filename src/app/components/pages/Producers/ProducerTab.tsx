@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Image from "next/image";
 import Link from "next/link";
 import ImgSlider from "../Home/ImgSlider";
 import { AdvertisementGroup, fetchAds } from "../../../../lib/api/Ads";
@@ -44,9 +45,11 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
     pro.websiteVisible ? (
       <Link href={pro.websiteUrl} key={pro.id} className=" px-4 py-2">
         <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
-          <img
+          <Image
             src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
             alt={pro.name || "Producer"}
+            width={300}
+            height={200}
             className="w-full h-full object-contain bg-gra"
           />
         </div>
@@ -54,9 +57,11 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
     ) : (
       <div key={pro.id} className=" px-4 py-2">
         <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
-          <img
+          <Image
             src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}
             alt={pro.name || "Producer"}
+            width={300}
+            height={200}
             className="w-full h-full object-contain bg-gra"
           />
         </div>

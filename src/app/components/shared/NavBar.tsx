@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Menu, X, LogOut, User } from "lucide-react";
+import { ChevronDown, Menu, X, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTraderCategories } from "@/contexts/TraderCategoriesContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -23,7 +23,7 @@ export default function NavBar() {
   const [activeParent, setActiveParent] = useState<string | null>(null);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const avatarRef = useRef<HTMLDivElement>(null);
-  const { categories, loading } = useTraderCategories();
+  useTraderCategories();
   const { language, setLanguage, t } = useLanguage();
   const { user, logout } = useAuth();
 

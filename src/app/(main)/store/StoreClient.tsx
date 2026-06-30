@@ -5,7 +5,7 @@ import { StoreContent } from "../../components/pages/store/StoreContent";
 export default function StoreClient() {
   return (
     <div>
-      <Hero src="/images/Home/herostore.png" />
+      {/* <Hero src="/images/Home/herostore.png" /> */}
       <StoreContent />
     </div>
   );

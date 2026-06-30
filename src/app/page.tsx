@@ -5,7 +5,7 @@ import { Item } from "./components/pages/News/NewsTab";
 
 export interface HomeType {
   latestNews: Item[];
-  latestEvents: any[];
+  latestEvents: unknown[];
   productTypePriceStatistics: pricesType[];
   producers: Partner[];
   partners: Partner[];
@@ -51,8 +51,8 @@ export interface LatestNew {
   content: string;
   categoryName: string;
   publishAt: Date;
-  images: any[];
-  videos: any[];
+  images: unknown[];
+  videos: unknown[];
 }
 
 export interface Partner {

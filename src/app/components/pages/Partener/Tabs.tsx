@@ -4,6 +4,11 @@ import { PartenerTab } from "./PartenerTab";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+interface PartnerCategory {
+  id: string;
+  name: string;
+}
+
 export const Tabs: React.FC<{
   defaultTab?: string;
   onChange?: (id: string) => void;
@@ -17,7 +22,7 @@ export const Tabs: React.FC<{
     { id: "ex", labelKey: "partner.tab.suppliers" },
   ];
 
-  const [partenerType, setPartenerType] = useState([
+  const [partenerType, setPartenerType] = useState<PartnerCategory[]>([
     {
       id: "fa8ff85f-1976-4feb-0fbd-08de152d81c3",
       name: "التقنيين",
@@ -94,7 +99,7 @@ export const Tabs: React.FC<{
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
           >
-            <PartenerTab id={partenerType.find((cat: any) => cat.name == TAB_AR_NAMES[tab.id])?.id || ""} />
+            <PartenerTab id={partenerType.find((cat: PartnerCategory) => cat.name == TAB_AR_NAMES[tab.id])?.id || ""} />
           </div>
         ))}
       </div>

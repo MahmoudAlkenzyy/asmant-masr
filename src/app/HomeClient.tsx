@@ -21,19 +21,16 @@ export default function HomeClient() {
 
     const fetchData = async () => {
       try {
-        const res = await fetchWithLanguage(
-          "https://newapi.cementegypt.com/api/Home/GetHomePageData",
-          {
-            method: "GET",
-            headers: { accept: "text/plain" },
-          },
-        );
+        const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/Home/GetHomePageData", {
+          method: "GET",
+          headers: { accept: "text/plain" },
+        });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         setData(json);
-      } catch (err: any) {
-        if (err.name !== "AbortError") {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name !== "AbortError") {
           console.error("Failed to fetch data:", err);
           setError(err.message);
         }
@@ -48,6 +45,7 @@ export default function HomeClient() {
   if (error) return <div>Error: {error}</div>;
 
   if (!data) return <div></div>;
+  console.log(data.storeDetails);
 
   return (
     <div className="bg-secoundry">
