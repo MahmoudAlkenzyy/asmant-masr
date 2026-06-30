@@ -88,7 +88,7 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
   // ── On mount: fetch cities ────────────────────────────────────────────────
   useEffect(() => {
     setIsMounted(true);
-    fetchWithLanguage("https://cement.northeurope.cloudapp.azure.com:4433/api/Store/GetCities")
+    fetchWithLanguage("https://newapi.cementegypt.com/api/Store/GetCities")
       .then((res) => res.json())
       .then((json) => setCities(json.cities || []))
       .catch((err) => console.error("Failed to fetch cities:", err));
@@ -139,7 +139,7 @@ export const StoreSlider: React.FC<StoreSliderProps> = ({ prodacts }) => {
     setAvgPrice(null);
     try {
       const res = await fetchWithLanguage(
-        `https://cement.northeurope.cloudapp.azure.com:4433/api/Store/GetAvgPrice?TradeNameId=${tradeId}&CityId=${cityId}`,
+        `https://newapi.cementegypt.com/api/Store/GetAvgPrice?TradeNameId=${tradeId}&CityId=${cityId}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },

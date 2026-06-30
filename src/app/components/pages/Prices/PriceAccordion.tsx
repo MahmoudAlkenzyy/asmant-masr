@@ -85,9 +85,7 @@ export default function PriceAccordion() {
   // ── Fetch lookup lists on mount ───────────────────────────────────────────
   const getProductTypes = async () => {
     try {
-      const res = await fetchWithLanguage(
-        "https://cement.northeurope.cloudapp.azure.com:4433/api/Product/GetAllProductsList",
-      );
+      const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/Product/GetAllProductsList");
       const data = await res.json();
       if (data.products?.length) setProductTypes(data.products);
     } catch (err) {
@@ -97,9 +95,7 @@ export default function PriceAccordion() {
 
   const getCities = async () => {
     try {
-      const res = await fetchWithLanguage(
-        "https://cement.northeurope.cloudapp.azure.com:4433/api/PricePage/GetAllCitiesList",
-      );
+      const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/PricePage/GetAllCitiesList");
       const data = await res.json();
       setCities(data.cities || []);
     } catch (err) {
@@ -132,7 +128,7 @@ export default function PriceAccordion() {
           if (endDate) params.set("EndDate", endDate.replaceAll("-", "-"));
 
           const res = await fetchWithLanguage(
-            `https://cement.northeurope.cloudapp.azure.com:4433/api/PricePage/GetPricePageData?${params.toString()}`,
+            `https://newapi.cementegypt.com/api/PricePage/GetPricePageData?${params.toString()}`,
           );
           const data = await res.json();
           const productGroups: ProductGroup[] = data.productTypes || [];

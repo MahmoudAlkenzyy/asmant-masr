@@ -29,7 +29,7 @@ export default function PartnerClient() {
     async function fetchTabs() {
       try {
         const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:4433/api/PartnerCategory/GetAllPartnerCategoryList",
+          "https://newapi.cementegypt.com/api/PartnerCategory/GetAllPartnerCategoryList",
           {
             headers: {
               accept: "text/plain",
@@ -58,7 +58,7 @@ export default function PartnerClient() {
       if (!activeTab) return;
       try {
         const res = await fetchWithLanguage(
-          `https://cement.northeurope.cloudapp.azure.com:4433/api/Partner/GetAllPartnerList?CategoryId=${activeTab}`,
+          `https://newapi.cementegypt.com/api/Partner/GetAllPartnerList?CategoryId=${activeTab}`,
           {
             headers: {
               accept: "text/plain",

@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         hostname: "cement.northeurope.cloudapp.azure.com",
         port: "4433",
       },
+      {
+        protocol: "https",
+        hostname: "newapi.cementegypt.com",
+      },
     ],
   },
 };

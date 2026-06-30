@@ -21,9 +21,7 @@ export const Tabs: React.FC<{
   const [categories, setCategories] = useState([{ id: "0a4b3d2d-2e28-4308-0e4a-08de14636697", name: "اخبار الاسمنت" }]);
 
   const fetchNewsCategory = async () => {
-    const res = await fetchWithLanguage(
-      "https://cement.northeurope.cloudapp.azure.com:4433/api/NewsCategory/GetAllNewsCategoryList",
-    );
+    const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/NewsCategory/GetAllNewsCategoryList");
     const data = await res.json();
     setCategories(data.categories || []);
   };

@@ -25,7 +25,7 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
 
   const getProducers = async () => {
     const res = await fetchWithLanguage(
-      `https://cement.northeurope.cloudapp.azure.com:4433/api/Producer/GetAllProducerList?CategoryId=${id}`,
+      `https://newapi.cementegypt.com/api/Producer/GetAllProducerList?CategoryId=${id}`,
       {
         cache: "no-store",
       },

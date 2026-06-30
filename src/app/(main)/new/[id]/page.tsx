@@ -9,7 +9,7 @@ import { Metadata } from "next";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   try {
-    const res = await fetch(`https://cement.northeurope.cloudapp.azure.com:4433/api/News/GetNewsById?Id=${id}`, {
+    const res = await fetch(`https://newapi.cementegypt.com/api/News/GetNewsById?Id=${id}`, {
       cache: "force-cache",
     });
     if (!res.ok) return { title: "News | Asmant Masr" };
@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const language = cookieStore.get("language")?.value || "ar";
 
   try {
-    const res = await fetch(`https://cement.northeurope.cloudapp.azure.com:4433/api/News/GetNewsById?Id=${id}`, {
+    const res = await fetch(`https://newapi.cementegypt.com/api/News/GetNewsById?Id=${id}`, {
       cache: "no-store",
       headers: {
         "Accept-Language": language,

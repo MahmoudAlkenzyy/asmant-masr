@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const getAuth = async (token: string) => {
-    const res = await fetch("https://cement.northeurope.cloudapp.azure.com:4433/api/Account/me", {
+    const res = await fetch("https://newapi.cementegypt.com/api/Account/me", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

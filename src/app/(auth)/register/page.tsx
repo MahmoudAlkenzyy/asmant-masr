@@ -92,7 +92,7 @@ export default function Page() {
 
     setLoading(true);
     try {
-      const res = await fetch("https://cement.northeurope.cloudapp.azure.com:4433/api/Auth/Register", {
+      const res = await fetch("https://newapi.cementegypt.com/api/Auth/Register", {
         method: "POST",
         headers: {
           accept: "text/plain",

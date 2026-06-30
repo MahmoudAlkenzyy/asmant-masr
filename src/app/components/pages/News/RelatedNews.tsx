@@ -13,12 +13,9 @@ export const RelatedNews = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetchWithLanguage(
-          "https://cement.northeurope.cloudapp.azure.com:4433/api/News/GetAllNewsOffset",
-          {
-            cache: "no-store",
-          },
-        );
+        const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/News/GetAllNewsOffset", {
+          cache: "no-store",
+        });
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
         const data = await res.json();
         setNews(data?.items?.slice(0, 5) || []);
