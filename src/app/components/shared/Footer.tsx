@@ -17,26 +17,26 @@ export const Footer = () => {
             className="md:w-[1200] absolute inset-0 bottom-0 h-full "
             alt=""
           />
-          <div className="relative  flex items-center gap-6 md:gap-10 text-white flex-col justify-center px-4 text-center">
+          {/* <div className="relative  flex items-center gap-6 md:gap-10 text-white flex-col justify-center px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-medium">{t("footer.subscribe_title")}</h2>
             <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
-              <button className="bg-white text-black py-3 px-10 md:px-12 w-full rounded-lg cursor-pointer">
+              <a className="bg-white text-black py-3 px-10 md:px-12 w-full rounded-lg cursor-pointer" href="/login">
                 {t("footer.subscribe_btn")}
-              </button>
-              <div className=" flex justify-between grow">
+              </a>
+              <div className=" flex justify-between grow opacity-0 relative -z-10">
                 <input
                   dir="rtl"
-                  className="py-3 px-4 ps-6 md:ps-16 rounded-lg border border-white w-full grow md:w-auto"
+                  className=" px-4 ps-6 md:ps-16 rounded-lg border border-white w-full grow md:w-auto"
                   placeholder={t("footer.email_placeholder")}
                 />
                 <input
                   dir="rtl"
-                  className="py-3 px-4 ps-6 md:ps-16 rounded-lg border border-white w-full grow md:w-auto"
+                  className=" px-4 ps-6 md:ps-16 rounded-lg border border-white w-full grow md:w-auto"
                   placeholder={t("footer.name_placeholder")}
                 />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex flex-row-reverse text-start flex-wrap justify-between mt-16 text-lg gap-10 md:gap-0">
@@ -81,16 +81,16 @@ export const Footer = () => {
               <Link href="/news">{t("nav.news")}</Link>
             </li>
             <li>
-              <Link href="/news/general">{t("footer.general_news")}</Link>
+              <Link href="/news">{t("footer.general_news")}</Link>
             </li>
             <li>
-              <Link href="/news/cement">{t("footer.cement_news")}</Link>
+              <Link href="/news">{t("footer.cement_news")}</Link>
             </li>
             <li>
-              <Link href="/news/egypt">{t("footer.egypt_news")}</Link>
+              <Link href="/news">{t("footer.egypt_news")}</Link>
             </li>
             <li>
-              <Link href="/news/world">{t("footer.world_news")}</Link>
+              <Link href="/news">{t("footer.world_news")}</Link>
             </li>
           </ul>
 

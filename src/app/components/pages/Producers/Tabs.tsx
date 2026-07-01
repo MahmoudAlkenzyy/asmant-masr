@@ -18,6 +18,7 @@ export const Tabs: React.FC<{
     );
     const data = await res.json();
     setProducersType(data.categories);
+    setActive(data.categories[0].id);
   };
   const handleClick = (id: string) => {
     setActive(id);

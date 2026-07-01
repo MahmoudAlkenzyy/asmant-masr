@@ -43,7 +43,8 @@ export const Store = ({ prodacts, isStore = false }: { prodacts: prodactType[]; 
           slidesPerView={1}
           breakpoints={{
             640: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
+            1024: { slidesPerView: 3 },
+            1400: { slidesPerView: 4 },
           }}
           loop={true}
           className="mt-4 "

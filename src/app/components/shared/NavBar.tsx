@@ -140,7 +140,7 @@ export default function NavBar() {
           {/* Language Switcher */}
           <button
             onClick={toggleLanguage}
-            className="hidden xl:flex items-center gap-2 border-primary py-2 px-4 rounded-lg text-primary hover:bg-primary hover:text-white transition-colors duration-200 mx-3"
+            className="hidden xl:flex items-center gap-2 border-primary py-2 px-4 rounded-lg text-primary hover:bg-primary hover:text-[#83b2d8] transition-colors duration-200 mx-3"
             title={language === "ar" ? "Switch to English" : "التبديل إلى العربية"}
           >
             {/* <Languages size={20} /> */}

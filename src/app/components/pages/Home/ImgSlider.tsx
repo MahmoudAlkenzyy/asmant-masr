@@ -28,13 +28,13 @@ export default function ImgSlider({ ads, className }: { ads?: advertisementItem[
       ) : (
         <>
           <SwiperSlide className="h-full md:min-h-[400] min-h-[300px]">
-            <Image src="/images/Home/ads.webp" fill className="object-contain rounded-2xl" alt="" />
+            <Image src="/images/Home/ads.webp" fill className="object-fill rounded-2xl" alt="" />
           </SwiperSlide>
           <SwiperSlide className="h-full min-h-[400]">
-            <Image src="/images/Home/ads2.webp" fill className="object-contain rounded-2xl" alt="" />
+            <Image src="/images/Home/ads2.webp" fill className="object-fill rounded-2xl" alt="" />
           </SwiperSlide>
           <SwiperSlide className="h-full min-h-[400]">
-            <Image src="/images/Home/ads.webp" fill className="object-contain rounded-2xl" alt="" />
+            <Image src="/images/Home/ads.webp" fill className="object-fill rounded-2xl" alt="" />
           </SwiperSlide>
         </>
       )}
