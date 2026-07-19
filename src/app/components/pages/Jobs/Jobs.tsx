@@ -6,6 +6,9 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { LockKeyhole } from "lucide-react";
+import Link from "next/link";
 
 interface yearsOfExperienceResponse {
   yearsOfExperienceLookups: { name: string; id: string }[];
@@ -19,6 +22,7 @@ interface jobResponse {
 
 export const Jobs = () => {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<"individual" | "company">("individual");
   const [loading, setLoading] = useState(true);
   const [specializations, setSpecializations] = useState<{ id: string; name: string }[]>([]);
@@ -168,17 +172,35 @@ export const Jobs = () => {
       cv: Yup.mixed().required(t("jobs.required")),
     }),
     onSubmit: async (values) => {
-      const data = {};
-      fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/PostJob/Create", {
-        method: "POST",
-        body: JSON.stringify({
-          CompanyName: values.companyName,
-          JobDescription: values.jobDetails,
-          Document: values.cv,
-        }),
-      });
-      console.log("Company Form submitted ✅", values);
-      toast.success(t("jobs.success"));
+      try {
+        const formData = new FormData();
+        formData.append("CompanyName", values.companyName);
+        formData.append("JobDescription", values.jobDetails);
+        if (values.cv) {
+          formData.append("Document", values.cv);
+        }
+
+        const response = await fetchWithLanguage(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/PostedJob/Create",
+          {
+            method: "POST",
+            headers: {
+              accept: "text/plain",
+            },
+            body: formData,
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to send data");
+        }
+
+        toast.success(t("jobs.success"));
+        formikCompany.resetForm();
+      } catch (error) {
+        console.error("Error submitting company form:", error);
+        toast.error(t("jobs.error"));
+      }
     },
   });
 
@@ -412,6 +434,31 @@ export const Jobs = () => {
             </button>
           </div>
         </form>
+      ) : !user ? (
+        <div className="flex flex-col items-center justify-center py-16 gap-6 bg-gray-50 border border-gray-100 rounded-2xl max-w-xl mx-auto shadow-sm">
+          {/* Lock icon */}
+          <div className="w-20 h-20 rounded-full bg-[#618FB5]/10 border-2 border-[#618FB5]/30 flex items-center justify-center">
+            <LockKeyhole size={36} className="text-[#618FB5]" />
+          </div>
+
+          {/* Message */}
+          <div className="text-center px-6">
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              {language === "ar" ? "تسجيل الدخول مطلوب" : "Login Required"}
+            </h3>
+            <p className="text-gray-500 text-base max-w-md mx-auto">
+              {language === "ar"
+                ? "يجب عليك تسجيل الدخول أولاً لتتمكن من إعلان ونشر وظيفة جديدة."
+                : "You must log in first to announce and post a new job."}
+            </p>
+          </div>
+
+          <Link href="/login">
+            <button className="cursor-pointer bg-[#618FB5] hover:bg-[#507aa0] transition-colors text-white font-bold px-10 py-3 rounded-xl text-lg shadow-lg shadow-[#618FB5]/30">
+              {language === "ar" ? "تسجيل الدخول" : "Login"}
+            </button>
+          </Link>
+        </div>
       ) : (
         <form onSubmit={formikCompany.handleSubmit} className="flex flex-col gap-y-6">
           <div className="flex flex-col">
