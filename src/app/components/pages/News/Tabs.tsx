@@ -25,7 +25,7 @@ export const Tabs: React.FC<{
       "https://cement.northeurope.cloudapp.azure.com:5000/api/NewsCategory/GetAllNewsCategoryList",
     );
     const data = await res.json();
-
+    setActive(data.categories[0].id);
     setCategories(data.categories || []);
   };
   const handleClick = (id: string) => {
