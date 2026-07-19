@@ -32,12 +32,11 @@ export const NewsCard: React.FC<NewCardProps> = ({ ispodcast = false, className 
       >
         {/* ── Fixed-height image area ── */}
         <div className="relative w-full shrink-0" style={{ height: "350px" }}>
-          <Image
-            className="object-cover rounded-t-xl"
+          <img
+            className="object-fill rounded-t-xl h-full w-full"
             src={news?.images?.[0]?.filePath || images[idx % images.length] || "/images/Home/ads2.webp"}
             alt={news?.title || ""}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
+            // sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
           />
         </div>
 

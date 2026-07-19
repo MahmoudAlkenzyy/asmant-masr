@@ -25,6 +25,7 @@ export const Tabs: React.FC<{
       "https://cement.northeurope.cloudapp.azure.com:5000/api/NewsCategory/GetAllNewsCategoryList",
     );
     const data = await res.json();
+
     setCategories(data.categories || []);
   };
   const handleClick = (id: string) => {
@@ -34,13 +35,14 @@ export const Tabs: React.FC<{
   useEffect(() => {
     fetchNewsCategory();
   }, [language]);
+  console.log({ categories, TABS });
 
   return (
     <nav aria-label="أقسام الأخبار" dir={language === "ar" ? "rtl" : "ltr"} className="w-full bg-white">
       <h2 className="text-4xl font-bold mb-8 text-center pt-14">{t("nav.news")}</h2>
 
       <ul role="tablist" className="flex gap-4 pb-6 overflow-auto containerr ">
-        {TABS.map((tab) => {
+        {categories.map((tab) => {
           const isActive = tab.id === active;
           return (
             <li key={tab.id} role="presentation">
@@ -54,7 +56,7 @@ export const Tabs: React.FC<{
                   ${isActive ? "text-[#618FB5]" : "text-gray-700 hover:text-[#618FB5]"}
                 `}
               >
-                {language === "ar" ? tab.label : tab.labelEn}
+                {tab.name}
 
                 <span
                   className={`absolute left-0 right-0 -bottom-2 h-[2px] transition-all duration-200 ${
@@ -69,7 +71,7 @@ export const Tabs: React.FC<{
       </ul>
 
       <div className="mt-6 containerr">
-        {TABS.map((tab) => (
+        {categories.map((tab) => (
           <div
             key={tab.id}
             id={`panel-${tab.id}`}
@@ -77,7 +79,7 @@ export const Tabs: React.FC<{
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
           >
-            <NewsTab id={categories.find((cat) => cat.name == tab.label)?.id || ""} />
+            <NewsTab id={categories.find((cat) => cat.name == tab.name)?.id || ""} />
           </div>
         ))}
       </div>
