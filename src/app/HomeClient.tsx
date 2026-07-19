@@ -21,10 +21,13 @@ export default function HomeClient() {
 
     const fetchData = async () => {
       try {
-        const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/Home/GetHomePageData", {
-          method: "GET",
-          headers: { accept: "text/plain" },
-        });
+        const res = await fetchWithLanguage(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/Home/GetHomePageData",
+          {
+            method: "GET",
+            headers: { accept: "text/plain" },
+          },
+        );
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();

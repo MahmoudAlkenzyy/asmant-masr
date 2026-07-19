@@ -29,7 +29,7 @@ export const Jobs = () => {
     async function fetchSpecializations() {
       try {
         const res = await fetchWithLanguage(
-          "https://newapi.cementegypt.com/api/SpecializationLookup/GetAllSpecializationLookupsList",
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/SpecializationLookup/GetAllSpecializationLookupsList",
           {
             headers: {
               accept: "text/plain",
@@ -49,7 +49,7 @@ export const Jobs = () => {
     async function fetchYearsOfExperience() {
       try {
         const res = await fetchWithLanguage(
-          "https://newapi.cementegypt.com/api/YearsOfExperienceLookup/GetAllYearsOfExperienceLookupsList",
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/YearsOfExperienceLookup/GetAllYearsOfExperienceLookupsList",
           {
             headers: {
               accept: "text/plain",
@@ -68,11 +68,14 @@ export const Jobs = () => {
 
     async function fetchJobs() {
       try {
-        const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/JobLookup/GetAllJobLookupsList", {
-          headers: {
-            accept: "text/plain",
+        const res = await fetchWithLanguage(
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/JobLookup/GetAllJobLookupsList",
+          {
+            headers: {
+              accept: "text/plain",
+            },
           },
-        });
+        );
 
         if (!res.ok) throw new Error("Failed to fetch jobs");
 
@@ -130,7 +133,7 @@ export const Jobs = () => {
         }
 
         const response = await fetchWithLanguage(
-          "https://newapi.cementegypt.com/api/JobApplication/CreateJobApplication",
+          "https://cement.northeurope.cloudapp.azure.com:5000/api/JobApplication/CreateJobApplication",
           {
             method: "POST",
             headers: {
@@ -164,7 +167,16 @@ export const Jobs = () => {
       jobDetails: Yup.string().required(t("jobs.required")),
       cv: Yup.mixed().required(t("jobs.required")),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      const data = {};
+      fetch("https://cement.northeurope.cloudapp.azure.com:5000/api/PostJob/Create", {
+        method: "POST",
+        body: JSON.stringify({
+          CompanyName: values.companyName,
+          JobDescription: values.jobDetails,
+          Document: values.cv,
+        }),
+      });
       console.log("Company Form submitted ✅", values);
       toast.success(t("jobs.success"));
     },

@@ -38,7 +38,9 @@ export const Tabs: React.FC<{
   ]);
 
   const fetchPartenerCategory = async () => {
-    const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/PartnerCategory/GetAllPartnerCategoryList");
+    const res = await fetchWithLanguage(
+      "https://cement.northeurope.cloudapp.azure.com:5000/api/PartnerCategory/GetAllPartnerCategoryList",
+    );
     const data = await res.json();
     setPartenerType(data.categories);
   };

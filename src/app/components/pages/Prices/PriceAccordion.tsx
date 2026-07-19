@@ -6,7 +6,7 @@ import { fetchWithLanguage } from "@/lib/fetchWithLanguage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
-import { LockKeyhole, ShieldOff } from "lucide-react";
+import { LockKeyhole, ShieldOff, X } from "lucide-react";
 import { useLoading } from "@/contexts/LoadingContext";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -75,17 +75,39 @@ export default function PriceAccordion() {
   const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [selectedTradeNameId, setSelectedTradeNameId] = useState("");
   const [selectedCityId, setSelectedCityId] = useState("");
-  const [startDate, setStartDate] = useState<string>(new Date().toISOString().split("T")[0]);
-  const [endDate, setEndDate] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
+  // ── Date helpers ──────────────────────────────────────────────────────────
+  const today = new Date().toISOString().split("T")[0];
+
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStart = e.target.value;
+    setStartDate(newStart);
+    // Auto-correct: if existing endDate is before the new startDate, bump it up
+    if (endDate && newStart && endDate < newStart) {
+      setEndDate(newStart);
+    }
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEnd = e.target.value;
+    // Guard: end must be >= startDate
+    if (startDate && newEnd < startDate) return;
+    setEndDate(newEnd);
+  };
 
   // ── Data ──────────────────────────────────────────────────────────────────
   const [priceData, setPriceData] = useState<PriceItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showSubscribePopup, setShowSubscribePopup] = useState(false);
 
   // ── Fetch lookup lists on mount ───────────────────────────────────────────
   const getProductTypes = async () => {
     try {
-      const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/Product/GetAllProductsList");
+      const res = await fetchWithLanguage(
+        "https://cement.northeurope.cloudapp.azure.com:5000/api/Product/GetAllProductsList",
+      );
       const data = await res.json();
       if (data.products?.length) setProductTypes(data.products);
     } catch (err) {
@@ -95,7 +117,9 @@ export default function PriceAccordion() {
 
   const getCities = async () => {
     try {
-      const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/PricePage/GetAllCitiesList");
+      const res = await fetchWithLanguage(
+        "https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetAllCitiesList",
+      );
       const data = await res.json();
       setCities(data.cities || []);
     } catch (err) {
@@ -128,11 +152,25 @@ export default function PriceAccordion() {
           if (endDate) params.set("EndDate", endDate.replaceAll("-", "-"));
 
           const res = await fetchWithLanguage(
-            `https://newapi.cementegypt.com/api/PricePage/GetPricePageData?${params.toString()}`,
+            `https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetPricePageData?${params.toString()}`,
           );
+
+          // ── 401 Unauthorized: subscription required ────────────────────────
+          if (res.status === 401) {
+            setShowSubscribePopup(true);
+            continue; // skip this product, keep going for others
+          }
+
+          if (!res.ok) {
+            console.error(`HTTP ${res.status} for product ${id}`);
+
+            continue;
+          }
+
           const data = await res.json();
           const productGroups: ProductGroup[] = data.productTypes || [];
 
+          setShowSubscribePopup(false);
           for (const group of productGroups) {
             allItems.push({
               parentName: name,
@@ -174,7 +212,13 @@ export default function PriceAccordion() {
       setIsLoading(false);
     };
 
-    if (productTypes.length > 0) loadData();
+    if (productTypes.length > 0 && startDate && endDate) {
+      loadData();
+    } else {
+      // Dates not set yet — don't fetch, just stop the spinner
+      setLoading(false);
+      setIsLoading(false);
+    }
   }, [productTypes, selectedProductId, selectedCompanyId, selectedTradeNameId, selectedCityId, startDate, endDate]);
 
   // ── Filter bar renderer ───────────────────────────────────────────────────
@@ -245,21 +289,50 @@ export default function PriceAccordion() {
         ))}
       </select>
       {/* Start date */}
-      <input
-        type="date"
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-        title={language === "ar" ? "تاريخ البداية" : "Start Date"}
-      />
+      <div className="flex flex-col gap-1">
+        {/* <label className="text-xs font-medium text-gray-500 px-1">
+          {language === "ar" ? "تاريخ البداية" : "Start Date"}
+        </label> */}
+        <input
+          type="date"
+          value={startDate}
+          max={today}
+          onChange={handleStartDateChange}
+          className="border border-gray-300 rounded-lg px-3 py-3 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none w-full"
+        />
+      </div>
+
       {/* End date */}
-      <input
-        type="date"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-        className="border border-gray-300 rounded-lg px-3 py-4 text-sm focus:ring-2 bg-[#E5FBFF] focus:ring-blue-400 focus:outline-none"
-        title={language === "ar" ? "تاريخ النهاية" : "End Date"}
-      />
+      <div className="flex flex-col gap-1">
+        {/* <label
+            className={`text-xs font-medium px-1 flex items-center gap-1 ${
+                !startDate ? "text-gray-400" : "text-gray-500"
+            }`}
+            >
+            {language === "ar" ? "تاريخ النهاية" : "End Date"}
+            {!startDate && (
+                <span
+                className="text-[10px] text-gray-400 italic"
+                title={language === "ar" ? "اختر تاريخ البداية أولاً" : "Choose a start date first"}
+                >
+                {language === "ar" ? "(اختر البداية أولاً)" : "(pick start first)"}
+                </span>
+            )}
+            </label> */}
+        <input
+          type="date"
+          value={endDate}
+          min={startDate || undefined}
+          max={today}
+          disabled={!startDate}
+          onChange={handleEndDateChange}
+          className={`border rounded-lg px-3 py-3 text-sm focus:ring-2 focus:outline-none w-full transition-opacity duration-200 ${
+            !startDate
+              ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed opacity-60"
+              : "border-gray-300 bg-[#E5FBFF] focus:ring-blue-400"
+          }`}
+        />
+      </div>
     </div>
   );
 
@@ -273,122 +346,96 @@ export default function PriceAccordion() {
 
   return (
     <div className="w-full container mx-auto p-4 relative min-h-[80dvh]" dir={language === "ar" ? "rtl" : "ltr"}>
-      {/* ── Overlay 1: Not logged in ──────────────────────────────────────── */}
-      {!user && (
-        <div className="absolute inset-0 z-30 backdrop-blur-md bg-white/50 flex flex-col items-center justify-center gap-6 rounded-2xl min-h-[400px]">
-          {/* Lock icon */}
-          <div className="w-20 h-20 rounded-full bg-[#618FB5]/10 border-2 border-[#618FB5]/30 flex items-center justify-center">
-            <LockKeyhole size={36} className="text-[#618FB5]" />
-          </div>
-
-          {/* Message */}
-          <div className="text-center px-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">
-              {language === "ar" ? "تسجيل الدخول مطلوب" : "Login Required"}
-            </h3>
-            <p className="text-gray-500 text-base max-w-sm mx-auto">
-              {language === "ar"
-                ? "يجب عليك تسجيل الدخول أولاً للوصول إلى صفحة الأسعار"
-                : "You must log in first to access the price list"}
-            </p>
-          </div>
-
-          {/* CTA */}
-          <Link href="/login">
-            <button className="cursor-pointer bg-[#618FB5] hover:bg-[#507aa0] transition-colors text-white font-bold px-10 py-3 rounded-xl text-lg shadow-lg shadow-[#618FB5]/30">
-              {language === "ar" ? "تسجيل الدخول" : "Login"}
-            </button>
-          </Link>
-        </div>
-      )}
+      {/* ── Subscription-required popup ───────────────────────────────────── */}
 
       {/* ── Overlay 2: Logged in but no market access ─────────────────────── */}
-      {user && isAuth && !isAuth.isSubscribed && (
-        <div className="absolute inset-0 z-30 backdrop-blur-md bg-white/10 flex flex-col items-center justify-center gap-6 rounded-2xl min-h-[400px]">
-          {/* Shield icon */}
-          <div className="w-20 h-20 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center">
-            <ShieldOff size={36} className="text-orange-500" />
-          </div>
-
-          {/* Message */}
-          <div className="text-center px-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">
-              {language === "ar" ? "ليس لديك صلاحية الوصول" : "Access Not Granted"}
-            </h3>
-            <p className="text-gray-500 text-base max-w-sm mx-auto">
-              {language === "ar"
-                ? "يرجى التواصل مع مزود الخدمة للاشتراك والحصول على صلاحية الوصول إلى الأسعار"
-                : "Please contact your service provider to subscribe and gain access to price data"}
-            </p>
-          </div>
-
-          {/* CTA → WhatsApp */}
-          <a href="https://wa.me/201110007733" target="_blank" rel="noopener noreferrer">
-            <button className="cursor-pointer bg-[#25D366] hover:bg-[#1ebe5c] transition-colors text-white font-bold px-10 py-3 rounded-xl text-lg shadow-lg shadow-[#25D366]/30">
-              {language === "ar" ? "تواصل مع مزود الخدمة" : "Contact Service Provider"}
-            </button>
-          </a>
-        </div>
-      )}
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
       <>
         {renderFilters()}
+        <div className="relative">
+          {showSubscribePopup && (
+            <div className="absolute inset-0 z-30 backdrop-blur-md bg-white/10 flex flex-col items-center justify-center gap-6 rounded-2xl min-h-[400px]">
+              {/* Shield icon */}
+              <div className="w-20 h-20 rounded-full bg-orange-100 border-2 border-orange-300 flex items-center justify-center">
+                <ShieldOff size={36} className="text-orange-500" />
+              </div>
 
-        {priceData.length === 0 ? (
-          <div className="text-center py-6 text-gray-500">
-            {language === "ar" ? "لا توجد بيانات متاحة" : "No data available"}
-          </div>
-        ) : (
-          <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
-            {priceData.map((item, index) => (
-              <AccordionItem
-                key={index}
-                title={`${item.parentName} - ${item.productTypeName}`}
-                className="bg-[#E5FBFF] rounded-xl w-full shadow-sm"
-                classNames={{
-                  base: "flex flex-col w-full",
-                  titleWrapper: "flex flex-row-reverse justify-end items-center w-full",
-                  indicator: "order-last ml-2 transition-transform duration-300 data-[state=open]:rotate-180",
-                }}
-              >
-                <div className="overflow-x-auto">
-                  <table className="min-w-full text-center text-sm md:text-base bg-[#E5FBFF] border-separate border-spacing-y-1">
-                    <thead>
-                      <tr>
-                        {headers.map((header, i) => (
-                          <th key={i} className="p-2 font-semibold border-b border-gray-200">
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {item.companies?.map((company, j) => (
-                        <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
-                          <td className="py-3 p-2">{company.companyName}</td>
-                          <td className="py-3 p-2">{company.tradeName}</td>
-                          <td className="py-3 p-2">{company.cityName || "-"}</td>
-                          <td className="py-3 p-2">{company.lowestPrice}</td>
-                          <td className="py-3 p-2">{company.maxPrice}</td>
-                          <td className="py-3 p-2">{company.todayAvg}</td>
-                          <td className="py-3 p-2">{company.yesterdayAvg}</td>
-                          <td
-                            className={`py-3 p-2 font-semibold ${
-                              company.difference >= 0 ? "text-green-600" : "text-red-600"
-                            }`}
-                          >
-                            {company.difference}
-                          </td>
+              {/* Message */}
+              <div className="text-center px-6">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  {language === "ar" ? "ليس لديك صلاحية الوصول" : "Access Not Granted"}
+                </h3>
+                <p className="text-gray-500 text-base max-w-sm mx-auto">
+                  {language === "ar"
+                    ? "يرجى التواصل مع مزود الخدمة للاشتراك والحصول على صلاحية الوصول إلى الأسعار"
+                    : "Please contact your service provider to subscribe and gain access to price data"}
+                </p>
+              </div>
+
+              {/* CTA → WhatsApp */}
+              <a href="https://wa.me/201110007733" target="_blank" rel="noopener noreferrer">
+                <button className="cursor-pointer bg-[#25D366] hover:bg-[#1ebe5c] transition-colors text-white font-bold px-10 py-3 rounded-xl text-lg shadow-lg shadow-[#25D366]/30">
+                  {language === "ar" ? "تواصل مع مزود الخدمة" : "Contact Service Provider"}
+                </button>
+              </a>
+            </div>
+          )}
+          {priceData.length === 0 ? (
+            <div className="text-center py-6 text-gray-500">
+              {language === "ar" ? "لا توجد بيانات متاحة" : "No data available"}
+            </div>
+          ) : (
+            <Accordion variant="splitted" selectionMode="multiple" className="w-full flex flex-col gap-3">
+              {priceData.map((item, index) => (
+                <AccordionItem
+                  key={index}
+                  title={`${item.parentName} - ${item.productTypeName}`}
+                  className="bg-[#E5FBFF] rounded-xl w-full shadow-sm"
+                  classNames={{
+                    base: "flex flex-col w-full",
+                    titleWrapper: "flex flex-row-reverse justify-end items-center w-full",
+                    indicator: "order-last ml-2 transition-transform duration-300 data-[state=open]:rotate-180",
+                  }}
+                >
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full text-center text-sm md:text-base bg-[#E5FBFF] border-separate border-spacing-y-1">
+                      <thead>
+                        <tr>
+                          {headers.map((header, i) => (
+                            <th key={i} className="p-2 font-semibold border-b border-gray-200">
+                              {header}
+                            </th>
+                          ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        )}
+                      </thead>
+                      <tbody>
+                        {item.companies?.map((company, j) => (
+                          <tr key={j} className="hover:bg-gray-50 transition-colors rounded-lg">
+                            <td className="py-3 p-2">{company.companyName}</td>
+                            <td className="py-3 p-2">{company.tradeName}</td>
+                            <td className="py-3 p-2">{company.cityName || "-"}</td>
+                            <td className="py-3 p-2">{company.lowestPrice}</td>
+                            <td className="py-3 p-2">{company.maxPrice}</td>
+                            <td className="py-3 p-2">{company.todayAvg}</td>
+                            <td className="py-3 p-2">{company.yesterdayAvg}</td>
+                            <td
+                              className={`py-3 p-2 font-semibold ${
+                                company.difference >= 0 ? "text-green-600" : "text-red-600"
+                              }`}
+                            >
+                              {company.difference}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
+        </div>
       </>
     </div>
   );

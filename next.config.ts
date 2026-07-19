@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "cement.northeurope.cloudapp.azure.com",
+      },
+      {
+        protocol: "https",
         hostname: "cementegypt.blob.core.windows.net",
       },
       {

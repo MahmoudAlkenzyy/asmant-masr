@@ -23,14 +23,17 @@ export default function Page() {
     setLoading(true);
 
     try {
-      const res = await fetchWithLanguage("https://newapi.cementegypt.com/api/Auth/customer-login", {
-        method: "POST",
-        headers: {
-          accept: "text/plain",
-          "Content-Type": "application/json-patch+json",
+      const res = await fetchWithLanguage(
+        "https://cement.northeurope.cloudapp.azure.com:5000/api/Auth/customer-login",
+        {
+          method: "POST",
+          headers: {
+            accept: "text/plain",
+            "Content-Type": "application/json-patch+json",
+          },
+          body: JSON.stringify({ email, password }),
         },
-        body: JSON.stringify({ email, password }),
-      });
+      );
 
       const data = await res.json();
 

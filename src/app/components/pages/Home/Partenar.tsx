@@ -20,7 +20,7 @@ export const Partenar = ({ partenars }: { partenars: advertisementItem[] }) => {
     <section dir="rtl" className="bg-primary py-20 my-10 overflow-hidden">
       <div className="relative w-full">
         <motion.div
-          className="flex gap-14 w-max"
+          className="flex justify-center gap-14 w-full "
           animate={{ x: ["50%", "0%"] }}
           transition={{
             repeat: Infinity,

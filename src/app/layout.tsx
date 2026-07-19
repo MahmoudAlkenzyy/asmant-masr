@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Alexandria } from "next/font/google";
 import { Providers } from "./components/shared/providers";
+import WhatsAppButton from "./components/shared/WhatsAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,6 +67,7 @@ export default function RootLayout({
         className={`${alex.variable} ${geistSans.variable} ${geistMono.variable} ${alex.className} antialiased flex justify-start flex-col min-h-screen`}
       >
         <Providers>{children}</Providers>
+        <WhatsAppButton />
       </body>
     </html>
   );

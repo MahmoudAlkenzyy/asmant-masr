@@ -39,7 +39,9 @@ export const NewsTab: React.FC<NewsTabProps> = ({ id }) => {
   const [news, setNews] = useState<News>();
   const [ads, setAds] = useState<AdvertisementGroup[]>([]);
   const getNew = async () => {
-    const res = await fetchWithLanguage(`https://newapi.cementegypt.com/api/News/GetAllNewsOffset?CategoryId=${id}`);
+    const res = await fetchWithLanguage(
+      `https://cement.northeurope.cloudapp.azure.com:5000/api/News/GetAllNewsOffset?CategoryId=${id}`,
+    );
     const data = await res.json();
     setNews(data);
   };

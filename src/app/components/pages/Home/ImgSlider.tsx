@@ -17,25 +17,33 @@ export default function ImgSlider({ ads, className }: { ads?: advertisementItem[
       pagination={true}
       modules={[Pagination, Navigation, Autoplay]}
       loop={true}
-      className={`${className} mySwiper min-h-[300px]`}
+      className={`${className ?? ""} mySwiper w-full`}
+      style={{ height: "100%" }}
     >
       {ads ? (
         ads.map((ad, idx) => (
-          <SwiperSlide key={idx} className="h-full md:min-h-[400] min-h-[300px]">
-            <Image src={ad.imagePath} fill className="object-contain rounded-2xl" alt="" />
+          <SwiperSlide key={idx} style={{ height: "100%" }}>
+            {/* relative + w-full + h-full gives next/image fill a real sized box */}
+            <div className="relative w-full min-h-[300px] md:min-h-[400px] h-full">
+              <Image
+                src={ad.imagePath}
+                fill
+                className="object-cover rounded-2xl"
+                alt=""
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </SwiperSlide>
         ))
       ) : (
         <>
-          <SwiperSlide className="h-full md:min-h-[400] min-h-[400px]">
-            <Image src="/images/Home/ads.webp" fill className="object-fill rounded-2xl" alt="" />
-          </SwiperSlide>
-          <SwiperSlide className="h-full min-h-[400px]">
-            <Image src="/images/Home/ads2.webp" fill className="object-fill rounded-2xl" alt="" />
-          </SwiperSlide>
-          <SwiperSlide className="h-full min-h-[400px]">
-            <Image src="/images/Home/ads.webp" fill className="object-fill rounded-2xl" alt="" />
-          </SwiperSlide>
+          {["/images/Home/ads.webp", "/images/Home/ads2.webp", "/images/Home/ads.webp"].map((src, idx) => (
+            <SwiperSlide key={idx} style={{ height: "100%" }}>
+              <div className="relative w-full min-h-[300px] md:min-h-[400px] h-full">
+                <Image src={src} fill className="object-cover rounded-2xl" alt="" sizes="100vw" />
+              </div>
+            </SwiperSlide>
+          ))}
         </>
       )}
     </Swiper>
