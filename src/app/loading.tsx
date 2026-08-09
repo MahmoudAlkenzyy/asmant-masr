@@ -13,6 +13,8 @@ export default function Loading() {
         justifyContent: "center",
         background: "rgba(255, 255, 255, 0.98)",
         backdropFilter: "blur(10px)",
+        opacity: 0,
+        animation: "delayed-fade-in 400ms forwards",
       }}
     >
       {/* Top Progress Bar Simulation */}
@@ -103,6 +105,10 @@ export default function Loading() {
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes delayed-fade-in {
+          0%, 80% { opacity: 0; }
+          100% { opacity: 1; }
         }
       `}</style>
     </div>

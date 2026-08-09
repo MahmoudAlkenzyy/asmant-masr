@@ -51,7 +51,9 @@ export const Store = ({ prodacts, isStore = false }: { prodacts: prodactType[]; 
         >
           {prodacts.map((cardInfo, i) => (
             <SwiperSlide key={i} className="  px-2 ">
-              <StoreCard idx={i} cardInfo={cardInfo} />
+              <a href={"/store"}>
+                <StoreCard idx={i} cardInfo={cardInfo} />
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>

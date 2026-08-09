@@ -70,16 +70,16 @@ export default function PriceAccordion() {
   const [companies, setCompanies] = useState<IdName[]>([]);
   const [tradeNames, setTradeNames] = useState<IdName[]>([]);
 
+  // ── Date helpers ──────────────────────────────────────────────────────────
+  const today = new Date().toISOString().split("T")[0];
+
   // ── Filter state (stores IDs, empty string = "All") ───────────────────────
   const [selectedProductId, setSelectedProductId] = useState("");
   const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [selectedTradeNameId, setSelectedTradeNameId] = useState("");
   const [selectedCityId, setSelectedCityId] = useState("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-
-  // ── Date helpers ──────────────────────────────────────────────────────────
-  const today = new Date().toISOString().split("T")[0];
+  const [startDate, setStartDate] = useState<string>(today);
+  const [endDate, setEndDate] = useState<string>(today);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newStart = e.target.value;
@@ -135,6 +135,20 @@ export default function PriceAccordion() {
   // ── Main data fetch — triggered whenever any filter or date changes ────────
   useEffect(() => {
     const loadData = async () => {
+      // Check if user is trying to access past dates without active subscription
+      const isPastDateSelected = (startDate && startDate < today) || (endDate && endDate < today);
+      const isUserSubscribed = user && isAuth?.isSubscribed;
+
+      if (isPastDateSelected && !isUserSubscribed) {
+        setShowSubscribePopup(true);
+        setPriceData([]);
+        setLoading(false);
+        setIsLoading(false);
+        return;
+      } else {
+        setShowSubscribePopup(false);
+      }
+
       setLoading(true);
       setIsLoading(true);
       const allItems: PriceItem[] = [];

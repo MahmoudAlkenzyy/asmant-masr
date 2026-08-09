@@ -116,7 +116,7 @@ export default function NavBar() {
                       transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
                       animate={{
                         color: item.link === t("nav.store") ? "#618FB5" : "#000",
-                        textShadow: item.link === t("nav.store") ? "0 0 10px #618FB5" : "0 0 10px #618FB500",
+                        textShadow: item.link === t("nav.store") ? "0 0 10px #f008" : "0 0 10px #f000",
                       }}
                     >
                       {item.link}

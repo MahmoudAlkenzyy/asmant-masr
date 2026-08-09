@@ -1,14 +1,35 @@
 "use client";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useLoading } from "@/contexts/LoadingContext";
 
 export function PageLoader() {
   const { isLoading } = useLoading();
+  const [showLoader, setShowLoader] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isLoading) {
+      // Delay showing the loader by 400ms to prevent flashing on fast loads
+      timeoutId = setTimeout(() => {
+        setShowLoader(true);
+      }, 400);
+    } else {
+      setShowLoader(false);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isLoading]);
 
   return (
     <AnimatePresence mode="wait">
-      {isLoading && (
+      {showLoader && (
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
