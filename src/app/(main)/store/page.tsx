@@ -12,9 +12,9 @@ export default function Page() {
   return (
     <div className="bg-white">
       <Hero src="/images/Home/herostore.png" />
-      <div className="containerr py-10 text-center">
-        {/* <p className="text-gray-500">أفضل منتجات الأسمنت ومواد البناء بأعلى جودة</p> */}
-      </div>
+      {/* <div className="containerr py-10 text-center"> */}
+      {/* <p className="text-gray-500">أفضل منتجات الأسمنت ومواد البناء بأعلى جودة</p> */}
+      {/* </div> */}
       <StoreClient />
     </div>
   );
