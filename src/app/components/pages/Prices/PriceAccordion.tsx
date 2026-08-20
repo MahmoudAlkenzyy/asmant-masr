@@ -263,7 +263,7 @@ export default function PriceAccordion() {
         <option value="" disabled hidden>
           {language === "ar" ? "الشركة" : "Company"}
         </option>
-        <option value="">{language === "ar" ? "الكل" : "All"}</option>
+        <option value="">{language === "ar" ? "كل الشركات" : "All"}</option>
         {companies.map((c) => (
           <option key={c.id} value={c.id}>
             {c.name}
