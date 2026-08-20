@@ -165,7 +165,11 @@ export const Footer = () => {
             </div>
             <p className="max-w-[80%] m-0  mx-auto md:mx-0">Support@cementegypt.com</p>
             <p className="max-w-[80%] m-0  mx-auto md:mx-0">Info@cementegypt.com</p>
-            <p className="max-w-[80%] m-0  mx-auto md:mx-0">01110007733</p>
+            <p className="max-w-[80%] m-0  mx-auto md:mx-0"></p>
+            <p className="max-w-[80%] m-0  mx-auto md:mx-0 flex items-center gap-2">
+              <span>{t("footer.contact_number")}:</span>
+              <span className="pt-1">01110007733</span>
+            </p>
           </div>
         </div>
       </div>

@@ -187,6 +187,7 @@ const translationsAr: Record<string, string> = {
   "footer.community": "مجتمع أسمنت مصر",
   "footer.jobs": "وظائف أسمنت مصر",
   "footer.deals": "صفقات أسمنت مصر",
+  "footer.contact_number": "رقم التواصل",
   "footer.description": "الموقع الأول المتخصص في صناعة الأسمنت والصناعات الاقتصادية المختلفة",
 
   // Partner Tabs
@@ -484,6 +485,7 @@ const translationsEn: Record<string, string> = {
   "footer.community": "Cement Egypt Community",
   "footer.jobs": "Cement Egypt Jobs",
   "footer.deals": "Cement Egypt Deals",
+  "footer.contact_number": "Contact number",
   "footer.description": "The leading specialized platform for Egypt's cement industry and related economic sectors",
 
   // Partner Tabs
