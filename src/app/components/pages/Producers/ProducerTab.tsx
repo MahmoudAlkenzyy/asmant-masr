@@ -43,7 +43,7 @@ export const ProducerTab = ({ id = "" }: ProducerTabProps) => {
   }, []);
   const renderProducer = (pro: Producer) =>
     pro.websiteVisible ? (
-      <Link href={pro.websiteUrl} key={pro.id} className=" px-4 py-2">
+      <Link href={pro.websiteUrl ?? ""} key={pro.id} className=" px-4 py-2">
         <div className=" w-full h-full rounded-xl overflow-hidden border border-gray-300">
           <Image
             src={pro.imagePath ? `${pro.imagePath}` : "/placeholder.png"}

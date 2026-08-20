@@ -79,7 +79,7 @@ export const Tabs: React.FC<{
             aria-labelledby={`tab-${tab.id}`}
             hidden={tab.id !== active}
           >
-            <NewsTab id={categories.find((cat) => cat.name == tab.name)?.id || ""} />
+            <NewsTab id={tab.id} />
           </div>
         ))}
       </div>

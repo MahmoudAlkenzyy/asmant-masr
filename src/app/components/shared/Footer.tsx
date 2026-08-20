@@ -77,18 +77,14 @@ export const Footer = () => {
 
           <ul className="w-full sm:w-1/2 md:w-1/6 space-y-2">
             <li className="font-bold">{t("footer.news_section")}</li>
-            <li>
-              <Link href="/news">{t("nav.news")}</Link>
-            </li>
-            <li>
-              <Link href="/news">{t("footer.general_news")}</Link>
-            </li>
+
             <li>
               <Link href="/news">{t("footer.cement_news")}</Link>
             </li>
             <li>
-              <Link href="/news">{t("footer.egypt_news")}</Link>
+              <Link href="/news">{t("footer.general_news")}</Link>
             </li>
+
             <li>
               <Link href="/news">{t("footer.world_news")}</Link>
             </li>

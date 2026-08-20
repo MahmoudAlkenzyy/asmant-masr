@@ -6,7 +6,6 @@ import { TraderCategoryDetails } from "@/lib/api/traderCategories";
 import { Hero } from "../../../components/pages/News/Hero";
 import { useEffect, useState } from "react";
 
-
 export default function TraderClient({ categoryId }: { categoryId: string }) {
   const { getCategoryDetails } = useTraderCategories();
   const [categoryData, setCategoryData] = useState<TraderCategoryDetails | null>(null);
