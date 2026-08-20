@@ -132,6 +132,34 @@ export default function PriceAccordion() {
     getCities();
   }, []);
 
+  useEffect(() => {
+    const getCompaniesByProduct = async () => {
+      setCompanies([]);
+
+      try {
+        const params = new URLSearchParams();
+        if (selectedProductId) params.set("ProductId", selectedProductId);
+        if (selectedCityId) params.set("CityId", selectedCityId);
+
+        const query = params.toString();
+        const res = await fetchWithLanguage(
+          `https://cement.northeurope.cloudapp.azure.com:5000/api/PricePage/GetCompaniesByProduct${query ? `?${query}` : ""}`,
+        );
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: Failed to fetch companies`);
+        }
+
+        const data = await res.json();
+        setCompanies(data.companies || []);
+      } catch (err) {
+        console.error("Failed to fetch companies by product:", err);
+      }
+    };
+
+    getCompaniesByProduct();
+  }, [selectedProductId, selectedCityId]);
+
   // ── Main data fetch — triggered whenever any filter or date changes ────────
   useEffect(() => {
     const loadData = async () => {
@@ -200,27 +228,6 @@ export default function PriceAccordion() {
       }
 
       setPriceData(allItems);
-
-      // Derive company & trade-name lists from the fresh data
-      const allCompanies: IdName[] = [];
-      const allTradeNames: IdName[] = [];
-      const seenCompanies = new Set<string>();
-      const seenTrades = new Set<string>();
-
-      for (const item of allItems) {
-        for (const c of item.companies ?? []) {
-          if (c.companyId && !seenCompanies.has(c.companyId)) {
-            seenCompanies.add(c.companyId);
-            allCompanies.push({ id: c.companyId, name: c.companyName });
-          }
-          if (c.tradeNameId && !seenTrades.has(c.tradeNameId)) {
-            seenTrades.add(c.tradeNameId);
-            allTradeNames.push({ id: c.tradeNameId, name: c.tradeName });
-          }
-        }
-      }
-      setCompanies(allCompanies);
-      setTradeNames(allTradeNames);
 
       setLoading(false);
       setIsLoading(false);
